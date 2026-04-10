@@ -34,6 +34,7 @@ body{display:flex;min-height:100vh}
 .menu-icon{font-size:16px;width:20px;text-align:center}
 .main-content{margin-left:280px;flex:1;padding:0 20px;transition:margin-left 0.3s}
 .wrap{padding:1rem 0}
+.header-sticky{position:sticky;top:0;background:#FFFFFF;z-index:50;padding:16px 0;border-bottom:1px solid #E5E7EB;margin-bottom:16px}
 .controls{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
 .tab{padding:5px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);font-size:13px;cursor:pointer;background:transparent;color:var(--color-text-secondary)}
 .tab.active{background:var(--color-background-info);color:var(--color-text-info);border-color:transparent}
@@ -44,7 +45,7 @@ body{display:flex;min-height:100vh}
 .pfill{height:100%;background:#1D9E75;border-radius:2px;transition:width 0.3s}
 .ptext{font-size:13px;color:var(--color-text-secondary)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
-.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;cursor:pointer;transition:border-color 0.15s;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;position:relative}
+.card{background:var(--color-background-primary);border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px;cursor:pointer;transition:border-color 0.15s;min-height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;position:relative}
 .card:hover{border-color:var(--color-border-secondary)}
 .card.flipped{background:var(--color-background-secondary)}
 .card.flipped .front{display:none}
@@ -53,6 +54,7 @@ body{display:flex;min-height:100vh}
 .back{display:none;flex-direction:column;align-items:center;gap:5px;width:100%;overflow:hidden}
 .hanzi{font-size:28px;font-weight:600;color:var(--color-text-primary)}
 .pinyin{font-size:13px;color:var(--color-text-secondary)}
+.pinyin.hidden{display:none}
 .num{font-size:11px;color:var(--color-text-tertiary);align-self:flex-start;position:absolute;top:8px;left:10px}
 .meaning{font-size:14px;color:var(--color-text-primary);text-align:center;line-height:1.5}
 .example{font-size:11px;color:var(--color-text-secondary);text-align:center;line-height:1.5;margin-top:6px;max-width:100%;word-wrap:break-word;overflow-wrap:break-word}
@@ -71,6 +73,8 @@ body{display:flex;min-height:100vh}
 .remove-btn{position:absolute;top:8px;right:8px;background:#EF4444;color:white;border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1}
 .card:hover .remove-btn{display:flex}
 .remove-btn:hover{background:#DC2626}
+.speak-btn{position:absolute;top:8px;right:8px;background:#1FE2CD;color:white;border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;opacity:1;transition:opacity 0.2s;z-index:10}
+.speak-btn:hover{background:#1FD1B8}
 #gameModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
 #gameModal.show{display:flex}
 .game-container{background:#FFFFFF;border-radius:12px;padding:24px;max-width:800px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 10px 10px -5px rgba(0,0,0,0.2)}
@@ -101,11 +105,48 @@ body{display:flex;min-height:100vh}
 .article-para .zh-word:hover{text-decoration:underline}
 .article-back-btn{background:#F3F4F6;border:1px solid #D1D5DB;border-radius:8px;padding:8px 16px;font-size:14px;color:#374151;cursor:pointer;margin-bottom:16px}
 .article-back-btn:hover{background:#E5E7EB}
+.article-range-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.article-range-btn{padding:6px 14px;border:1px solid #D1D5DB;border-radius:20px;background:#F9FAFB;color:#6B7280;font-size:13px;cursor:pointer;transition:all 0.2s}
+.article-range-btn:hover{background:#F3F4F6;border-color:#9CA3AF}
+.article-range-btn.active{background:#DBEAFE;border-color:#3B82F6;color:#1E40AF;font-weight:500}
+.submenu{display:none;padding-left:20px;background:rgba(255,255,255,0.5)}
+.submenu.show{display:block}
+.submenu-toggle{cursor:pointer;user-select:none}
+.submenu-item{padding-left:12px;font-size:13px}
 #articleModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
 #articleModal.show{display:flex}
+#quizModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+#quizModal.show{display:flex}
 #strokeModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:1100;align-items:center;justify-content:center}
 #strokeModal.show{display:flex}
+.modal-overlay{cursor:pointer}
 .stroke-container{background:#FFFFFF;border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3)}
+.quiz-container{background:#FFFFFF;border-radius:16px;padding:24px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3)}
+.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #E5E7EB}
+.quiz-title{font-size:20px;font-weight:600;color:#1F2937}
+.quiz-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:#6B7280}
+.quiz-range-filter{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.quiz-range-btn{padding:6px 14px;border:1px solid #D1D5DB;border-radius:20px;background:#F9FAFB;color:#6B7280;font-size:13px;cursor:pointer;transition:all 0.2s}
+.quiz-range-btn:hover{background:#F3F4F6;border-color:#9CA3AF}
+.quiz-range-btn.active{background:#DBEAFE;border-color:#3B82F6;color:#1E40AF;font-weight:500}
+.quiz-article-title{font-size:16px;font-weight:600;color:#1F2937;margin-bottom:12px;padding:12px;background:#F9FAFB;border-radius:8px}
+.quiz-question{font-size:18px;font-weight:600;color:#1F2937;margin-bottom:16px}
+.quiz-options{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
+.quiz-option{padding:12px 16px;border:2px solid #D1D5DB;border-radius:8px;background:#FFFFFF;color:#374151;font-size:15px;cursor:pointer;transition:all 0.2s}
+.quiz-option:hover{border-color:#9CA3AF;background:#F9FAFB}
+.quiz-option.selected{border-color:#3B82F6;background:#DBEAFE}
+.quiz-option.correct{border-color:#10B981;background:#D1FAE5}
+.quiz-option.wrong{border-color:#EF4444;background:#FEE2E2}
+.quiz-quiz-result{padding:16px;background:#F9FAFB;border-radius:8px;margin-bottom:16px}
+.quiz-quiz-result.correct{background:#D1FAE5;border:2px solid #10B981}
+.quiz-quiz-result.wrong{background:#FEE2E2;border:2px solid #EF4444}
+.quiz-score{font-size:18px;font-weight:600;color:#1F2937;margin-bottom:16px}
+.quiz-actions{display:flex;gap:12px}
+.quiz-btn{padding:10px 20px;border:none;border-radius:8px;font-size:15px;cursor:pointer;transition:all 0.2s}
+.quiz-btn-primary{background:#3B82F6;color:#FFFFFF}
+.quiz-btn-primary:hover{background:#2563EB}
+.quiz-btn-secondary{background:#F3F4F6;color:#374151}
+.quiz-btn-secondary:hover{background:#E5E7EB}
 .stroke-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #E5E7EB}
 .stroke-title{font-size:20px;font-weight:600;color:#1F2937}
 .stroke-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:#6B7280}
@@ -124,6 +165,43 @@ body{display:flex;min-height:100vh}
 .stroke-legend{display:flex;justify-content:center;gap:16px;margin-bottom:16px;font-size:13px;color:#4B5563}
 .legend-item{display:flex;align-items:center;gap:6px}
 .legend-dot{width:12px;height:12px;border-radius:50%}
+#writingModal,#readingModal,#orderingModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+#writingModal.show,#readingModal.show,#orderingModal.show{display:flex}
+.exercise-container{background:#FFFFFF;border-radius:16px;padding:24px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3)}
+.exercise-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid #E5E7EB}
+.exercise-title{font-size:20px;font-weight:600;color:#1F2937}
+.exercise-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:#6B7280}
+.exercise-stats{display:flex;gap:20px;margin-bottom:20px;font-size:14px;color:#6B7280}
+.exercise-stats strong{color:#1F2937}
+.exercise-content{margin-bottom:20px}
+.writing-word{font-size:48px;font-weight:600;color:#1F2937;text-align:center;margin-bottom:8px}
+.writing-pinyin{font-size:18px;color:#6B7280;text-align:center;margin-bottom:8px}
+.writing-meaning{font-size:16px;color:#374151;text-align:center;margin-bottom:16px}
+.writing-canvas-area{display:flex;flex-direction:column;align-items:center;margin-bottom:12px}
+.writing-canvas{width:300px;height:300px;border:2px solid #E5E7EB;border-radius:12px;background:#F9FAFB;cursor:crosshair}
+.writing-canvas-controls{display:flex;gap:10px;margin-top:10px}
+.reading-question{font-size:18px;color:#1F2937;margin-bottom:16px;line-height:1.6}
+.reading-options{display:flex;flex-direction:column;gap:10px}
+.reading-option{padding:12px;border:2px solid #E5E7EB;border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:15px}
+.reading-option:hover{background:#F9FAFB;border-color:#D1D5DB}
+.reading-option.selected{background:#DBEAFE;border-color:#3B82F6}
+.reading-option.correct{background:#D1FAE5;border-color:#10B981}
+.reading-option.wrong{background:#FEE2E2;border-color:#EF4444}
+.ordering-hint{font-size:14px;color:#6B7280;margin-bottom:12px;text-align:center}
+.ordering-pinyin{font-size:16px;color:#3B82F6;text-align:center;margin-bottom:12px}
+.ordering-words{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;min-height:50px}
+.ordering-word{padding:8px 16px;background:#F3F4F6;border:2px solid #E5E7EB;border-radius:8px;cursor:pointer;font-size:16px;transition:all 0.2s}
+.ordering-word:hover{background:#E5E7EB;border-color:#D1D5DB}
+.ordering-word.selected{background:#DBEAFE;border-color:#3B82F6}
+.ordering-result{font-size:20px;font-weight:600;color:#1F2937;text-align:center;margin-bottom:12px;min-height:30px}
+.exercise-feedback{text-align:center;padding:12px;border-radius:8px;margin-top:12px;font-size:14px}
+.exercise-feedback.correct{background:#D1FAE5;color:#065F46}
+.exercise-feedback.wrong{background:#FEE2E2;color:#991B1B}
+.exercise-controls{display:flex;gap:10px;justify-content:center;padding-top:16px;border-top:1px solid #E5E7EB}
+.exercise-btn{background:#3B82F6;color:white;border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:background 0.2s}
+.exercise-btn:hover{background:#2563EB}
+.exercise-btn-secondary{background:#6B7280;color:white;border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:background 0.2s}
+.exercise-btn-secondary:hover{background:#4B5563}
 </style>
 <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -137,23 +215,79 @@ body{display:flex;min-height:100vh}
     <div class="menu-title">แบบฝึกหัด</div>
     <div class="menu-item" onclick="startPractice(null)">
       <span class="menu-icon">🎯</span>
-      <span>สุ่ม 50 คำ</span>
+      <span>สุ่มท่องศัพท์ 50 คำจากทั้งหมด</span>
     </div>
-    <div class="menu-item" onclick="startRangePractice(1,300)">
+    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu1')">
       <span class="menu-icon">📘</span>
-      <span>คำที่ 1-300</span>
+      <span>คำที่ 1-300 ▾</span>
     </div>
-    <div class="menu-item" onclick="startRangePractice(301,600)">
+    <div class="submenu" id="submenu1">
+      <div class="menu-item submenu-item" onclick="startWritingPractice(1,300)">
+        <span class="menu-icon">✍️</span>
+        <span>แบบฝึกหัดเขียน</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startReadingQuiz(1,300)">
+        <span class="menu-icon">📖</span>
+        <span>อ่าน แล้วตอบคำถาม</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startSentenceOrdering(1,300)">
+        <span class="menu-icon">🔤</span>
+        <span>เรียงประโยค</span>
+      </div>
+    </div>
+    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu2')">
       <span class="menu-icon">📗</span>
-      <span>คำที่ 301-600</span>
+      <span>คำที่ 301-600 ▾</span>
     </div>
-    <div class="menu-item" onclick="startRangePractice(601,900)">
+    <div class="submenu" id="submenu2">
+      <div class="menu-item submenu-item" onclick="startWritingPractice(301,600)">
+        <span class="menu-icon">✍️</span>
+        <span>แบบฝึกหัดเขียน</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startReadingQuiz(301,600)">
+        <span class="menu-icon">📖</span>
+        <span>อ่าน แล้วตอบคำถาม</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startSentenceOrdering(301,600)">
+        <span class="menu-icon">🔤</span>
+        <span>เรียงประโยค</span>
+      </div>
+    </div>
+    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu3')">
       <span class="menu-icon">📙</span>
-      <span>คำที่ 601-900</span>
+      <span>คำที่ 601-900 ▾</span>
     </div>
-    <div class="menu-item" onclick="startRangePractice(901,1200)">
+    <div class="submenu" id="submenu3">
+      <div class="menu-item submenu-item" onclick="startWritingPractice(601,900)">
+        <span class="menu-icon">✍️</span>
+        <span>แบบฝึกหัดเขียน</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startReadingQuiz(601,900)">
+        <span class="menu-icon">📖</span>
+        <span>อ่าน แล้วตอบคำถาม</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startSentenceOrdering(601,900)">
+        <span class="menu-icon">🔤</span>
+        <span>เรียงประโยค</span>
+      </div>
+    </div>
+    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu4')">
       <span class="menu-icon">📕</span>
-      <span>คำที่ 901-1200</span>
+      <span>คำที่ 901-1200 ▾</span>
+    </div>
+    <div class="submenu" id="submenu4">
+      <div class="menu-item submenu-item" onclick="startWritingPractice(901,1200)">
+        <span class="menu-icon">✍️</span>
+        <span>แบบฝึกหัดเขียน</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startReadingQuiz(901,1200)">
+        <span class="menu-icon">📖</span>
+        <span>อ่าน แล้วตอบคำถาม</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startSentenceOrdering(901,1200)">
+        <span class="menu-icon">🔤</span>
+        <span>เรียงประโยค</span>
+      </div>
     </div>
   </div>
   
@@ -167,18 +301,27 @@ body{display:flex;min-height:100vh}
       <span class="menu-icon">🎮</span>
       <span>เกมจับคู่ (30 คำ)</span>
     </div>
+    <div class="menu-item" onclick="togglePinyin()">
+      <span class="menu-icon">🔤</span>
+      <span id="pinyinToggleText">ซ่อน Pinyin</span>
+    </div>
   </div>
   
   <div class="menu-section">
     <div class="menu-title">บทความ</div>
     <div class="menu-item" onclick="showSampleArticles()">
       <span class="menu-icon">📖</span>
-      <span>ตัวอย่างบทความ (20)</span>
+      <span>ตัวอย่างบทความ (120)</span>
+    </div>
+    <div class="menu-item" onclick="showQuiz()">
+      <span class="menu-icon">📝</span>
+      <span>แบบฝึกหัดตอบคำถาม</span>
     </div>
   </div>
 </div>
 <div class="main-content">
 <div class="wrap">
+<div class="header-sticky">
 <div class="controls">
   <button class="tab active" onclick="setGroup('all',this)">ทั้งหมด</button>
   <button class="tab" onclick="setGroup('action',this)">กริยา</button>
@@ -193,6 +336,7 @@ body{display:flex;min-height:100vh}
   <span class="ptext" id="memCount">จำได้ 0 คำ</span>
   <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
   <span class="ptext" id="totalLearned"></span>
+</div>
 </div>
 <div class="grid" id="grid"></div>
 <div class="page-ctrl" id="pageCtrl"></div>
@@ -214,10 +358,19 @@ body{display:flex;min-height:100vh}
 <div id="articleModal">
   <div class="article-container">
     <div class="article-header">
-      <div class="article-title">📖 ตัวอย่างบทความ (คำศัพท์ 1-300)</div>
+      <div class="article-title">📖 ตัวอย่างบทความ (120 บทความ)</div>
       <button class="article-close" onclick="closeArticle()">✕</button>
     </div>
     <div id="articleContent"></div>
+  </div>
+</div>
+<div id="quizModal">
+  <div class="quiz-container">
+    <div class="quiz-header">
+      <div class="quiz-title">📝 แบบฝึกหัดตอบคำถาม</div>
+      <button class="quiz-close" onclick="closeQuiz()">✕</button>
+    </div>
+    <div id="quizContent"></div>
   </div>
 </div>
 <div id="strokeModal">
@@ -235,6 +388,80 @@ body{display:flex;min-height:100vh}
     <div class="stroke-controls">
       <button class="stroke-btn" onclick="replayAllStrokes()">▶️ เขียนทีละตัวใหม่</button>
       <button class="stroke-btn stroke-btn-secondary" onclick="closeStrokeModal()">ปิด</button>
+    </div>
+  </div>
+</div>
+<div id="writingModal">
+  <div class="exercise-container">
+    <div class="exercise-header">
+      <div class="exercise-title" id="writingTitle">✍️ แบบฝึกหัดเขียน</div>
+      <button class="exercise-close" onclick="closeWritingModal()">✕</button>
+    </div>
+    <div class="exercise-stats">
+      <span>คำที่: <strong id="writingProgress">1</strong>/<span id="writingTotal">10</span></span>
+    </div>
+    <div class="exercise-content">
+      <div id="writingWord" class="writing-word" style="display:none;"></div>
+      <div id="writingPinyin" class="writing-pinyin"></div>
+      <div id="writingMeaning" class="writing-meaning"></div>
+      <div class="writing-canvas-area">
+        <div id="writingCanvas" class="writing-canvas"></div>
+        <div class="writing-canvas-controls">
+          <button class="exercise-btn exercise-btn-secondary" onclick="clearWritingCanvas()">ล้าง</button>
+          <button class="exercise-btn" onclick="checkWriting()">ตรวจสอบ</button>
+        </div>
+      </div>
+      <div id="writingFeedback" class="exercise-feedback"></div>
+    </div>
+    <div class="exercise-controls">
+      <button class="exercise-btn exercise-btn-secondary" onclick="closeWritingModal()">ปิด</button>
+    </div>
+  </div>
+</div>
+<div id="readingModal">
+  <div class="exercise-container">
+    <div class="exercise-header">
+      <div class="exercise-title" id="readingTitle">📖 อ่าน แล้วตอบคำถาม</div>
+      <button class="exercise-close" onclick="closeReadingModal()">✕</button>
+    </div>
+    <div class="exercise-stats">
+      <span>ข้อที่: <strong id="readingProgress">1</strong>/<span id="readingTotal">15</span></span>
+      <span>คะแนน: <strong id="readingScore">0</strong></span>
+    </div>
+    <div class="exercise-content">
+      <div id="readingQuestion" class="reading-question"></div>
+      <div id="readingOptions" class="reading-options"></div>
+      <div id="readingFeedback" class="exercise-feedback"></div>
+    </div>
+    <div class="exercise-controls">
+      <button class="exercise-btn exercise-btn-secondary" onclick="closeReadingModal()">ปิด</button>
+    </div>
+  </div>
+</div>
+<div id="orderingModal">
+  <div class="exercise-container">
+    <div class="exercise-header">
+      <div class="exercise-title" id="orderingTitle">🔤 เรียงประโยค</div>
+      <button class="exercise-close" onclick="closeOrderingModal()">✕</button>
+    </div>
+    <div class="exercise-stats">
+      <span>ประโยคที่: <strong id="orderingProgress">1</strong>/<span id="orderingTotal">15</span></span>
+      <span>คะแนน: <strong id="orderingScore">0</strong></span>
+    </div>
+    <div class="exercise-content">
+      <div class="ordering-toggle-area">
+        <button class="writing-toggle-btn" onclick="toggleOrderingPinyin()">🔤 แสดง Pinyin</button>
+      </div>
+      <div id="orderingHint" class="ordering-hint"></div>
+      <div id="orderingPinyin" class="ordering-pinyin" style="display:none;"></div>
+      <div id="orderingWords" class="ordering-words"></div>
+      <div id="orderingResult" class="ordering-result"></div>
+      <div id="orderingFeedback" class="exercise-feedback"></div>
+    </div>
+    <div class="exercise-controls">
+      <button class="exercise-btn" onclick="checkOrdering()">ตรวจสอบ</button>
+      <button class="exercise-btn exercise-btn-secondary" onclick="resetOrdering()">เริ่มใหม่</button>
+      <button class="exercise-btn exercise-btn-secondary" onclick="closeOrderingModal()">ปิด</button>
     </div>
   </div>
 </div>
@@ -1446,6 +1673,7 @@ const catClass={action:"cat-action",noun:"cat-noun",adj:"cat-adj",adv:"cat-adv",
 const catName={action:"กริยา",noun:"นาม",adj:"คุณศัพท์",adv:"กริยาวิเศษณ์",other:"อื่นๆ"};
 const PAGE=60;
 let group="all",search="",page=1,learned=new Set(),filtered=[],practiceMode=false,practiceWords=[];
+let showPinyin=localStorage.getItem('hsk4_showPinyin')!=='false';
 
 // ระบบจดจำคำที่จำยาก: {wordNumber: {views: count, flips: count, lastSeen: timestamp}}
 let difficultWords=JSON.parse(localStorage.getItem('hsk4_difficult')||'{}');
@@ -1485,8 +1713,9 @@ function render(){
       <span class="num">#${v.n}</span>
       ${showDifficult?`<button class="remove-btn" onclick="event.stopPropagation();removeDifficult(${v.n})">×</button>`:''}
       <div class="front">
+        <button class="speak-btn" onclick="event.stopPropagation();speakChinese('${v.h}')" title="ฟังเสียง">🔊</button>
         <span class="hanzi">${v.h}</span>
-        <span class="pinyin">${v.p}</span>
+        <span class="pinyin${showPinyin?'':' hidden'}">${v.p}</span>
         <span class="cat-label ${catClass[v.cat]}">${catName[v.cat]}</span>
       </div>
       <div class="back">
@@ -1652,14 +1881,23 @@ function startMatchingGame(){
   gameWords=shuffled.slice(0,15);
   
   // สร้างการ์ด: ภาษาจีน + ความหมายไทย
-  gameCards=[];
+  const zhCards=[];
+  const thCards=[];
   gameWords.forEach((w,i)=>{
-    gameCards.push({id:i,type:'zh',text:w.h,pinyin:w.p,pair:i});
-    gameCards.push({id:i+15,type:'th',text:w.m,pair:i});
+    zhCards.push({id:i,type:'zh',text:w.h,pinyin:w.p,pair:i});
+    thCards.push({id:i+15,type:'th',text:w.m,pair:i});
   });
   
-  // สุ่มตำแหน่งการ์ด
-  gameCards.sort(()=>Math.random()-0.5);
+  // สุ่มตำแหน่งการ์ดแยกกัน
+  zhCards.sort(()=>Math.random()-0.5);
+  thCards.sort(()=>Math.random()-0.5);
+  
+  // จัดเรียง: คอลัมน์ซ้าย = จีน, คอลัมน์ขวา = ไทย
+  gameCards=[];
+  for(let i=0;i<zhCards.length;i++){
+    gameCards.push(zhCards[i]);
+    gameCards.push(thCards[i]);
+  }
   
   // รีเซ็ตเกม
   selectedCards=[];
@@ -1762,159 +2000,1338 @@ function toggleSidebar(){
   menuBtn.classList.toggle('hide');
 }
 
-// ตัวอย่างบทความ 20 บทความจากคำศัพท์ 1-300
+function togglePinyin(){
+  showPinyin=!showPinyin;
+  localStorage.setItem('hsk4_showPinyin',showPinyin);
+  document.getElementById('pinyinToggleText').textContent=showPinyin?'ซ่อน Pinyin':'แสดง Pinyin';
+  render();
+  // ถ้า modal บทความเปิดอยู่ ให้ re-render บทความด้วย
+  const articleModal=document.getElementById('articleModal');
+  if(articleModal.classList.contains('show')){
+    if(currentArticle){
+      showArticleContent(currentArticle.id);
+    }else{
+      showSampleArticles(currentArticleRange);
+    }
+  }
+  // ถ้า modal แบบฝึกหัดเปิดอยู่ ให้ re-render แบบฝึกหัดด้วย
+  const quizModal=document.getElementById('quizModal');
+  if(quizModal.classList.contains('show')){
+    showQuiz(currentQuizRange);
+  }
+}
+
+function toggleSubmenu(id){
+  const submenu=document.getElementById(id);
+  submenu.classList.toggle('show');
+  const toggle=submenu.previousElementSibling;
+  const span=toggle.querySelector('span:last-child');
+  span.textContent=span.textContent.includes('▾')?span.textContent.replace('▾','▴'):span.textContent.replace('▴','▾');
+}
+
+// แบบฝึกหัดเขียน
+let writingWords=[];
+let writingIndex=0;
+let writingScore=0;
+let writingAnswers=[];
+let writingWriter=null;
+let writingChars=[];
+let writingCharIndex=0;
+
+function startWritingPractice(start,end){
+  const words=vocab.filter(v=>v.n>=start&&v.n<=end);
+  writingWords=[...words].sort(()=>Math.random()-0.5).slice(0,10);
+  writingIndex=0;
+  writingScore=0;
+  writingAnswers=[];
+  document.getElementById('writingTitle').textContent=`✍️ แบบฝึกหัดเขียน (คำที่ ${start}-${end})`;
+  document.getElementById('writingTotal').textContent=writingWords.length;
+  document.getElementById('writingModal').classList.add('show');
+  showWritingQuestion();
+}
+
+function showWritingQuestion(){
+  if(writingIndex>=writingWords.length){
+    showWritingSummary();
+    return;
+  }
+  const word=writingWords[writingIndex];
+  // Split word into individual characters
+  writingChars=word.h.split('');
+  writingCharIndex=0;
+  
+  document.getElementById('writingProgress').textContent=`คำที่ ${writingIndex+1}/${writingWords.length} (ตัวอักษร ${writingCharIndex+1}/${writingChars.length})`;
+  document.getElementById('writingWord').textContent=word.h;
+  document.getElementById('writingPinyin').textContent=word.p;
+  document.getElementById('writingMeaning').textContent=word.m;
+  document.getElementById('writingFeedback').textContent='';
+  
+  // Initialize HanziWriter for current character
+  initWritingWriter(writingChars[writingCharIndex]);
+}
+
+function initWritingWriter(character){
+  const canvas=document.getElementById('writingCanvas');
+  canvas.innerHTML='';
+  
+  writingWriter=HanziWriter.create('writingCanvas', character, {
+    width: 300,
+    height: 300,
+    padding: 30,
+    strokeAnimationSpeed: 1,
+    delayBetweenStrokes: 200,
+    showOutline: true,
+    showCharacter: true,
+    outlineColor: '#D1D5DB',
+    strokeColor: '#1F2937',
+    radicalColor: '#3B82F6',
+    onLoadCharDataError: function(reason){
+      console.error('Failed to load character data:', reason);
+      canvas.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#EF4444;"><div>ไม่สามารถโหลดข้อมูลตัวอักษรได้</div><div style="font-size:14px;margin-top:8px;">ลองกดปุ่ม "ล้าง" หรือข้ามไปคำถัดไป</div></div>';
+    },
+    onComplete: function(){
+      // Quiz completed successfully
+    }
+  });
+  
+  // Enable quiz mode for user writing
+  try{
+    writingWriter.quiz({
+      onMistake: function(strokeData) {
+        console.log('Mistake on stroke');
+      },
+      onCorrectStroke: function(strokeData) {
+        console.log('Correct stroke');
+      }
+    });
+  }catch(e){
+    console.error('Quiz error:', e);
+    canvas.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:#EF4444;"><div>เกิดข้อผิดพลาด</div><div style="font-size:14px;margin-top:8px;">ลองกดปุ่ม "ล้าง"</div></div>';
+  }
+}
+
+function clearWritingCanvas(){
+  if(writingWriter){
+    writingWriter.cancelQuiz();
+    writingWriter.quiz();
+  }
+}
+
+function checkWriting(){
+  const word=writingWords[writingIndex];
+  const currentChar=writingChars[writingCharIndex];
+  const feedback=document.getElementById('writingFeedback');
+  
+  // Mark current character as correct
+  writingAnswers.push({
+    word: word.h,
+    character: currentChar,
+    correct: true,
+    userAnswer: 'handwriting'
+  });
+  
+  writingScore++;
+  
+  feedback.textContent=`✅ ตัวอักษร "${currentChar}" บันทึกแล้ว`;
+  feedback.className='exercise-feedback correct';
+  
+  setTimeout(()=>{
+    writingCharIndex++;
+    if(writingCharIndex>=writingChars.length){
+      // All characters in current word done, move to next word
+      writingIndex++;
+      showWritingQuestion();
+    }else{
+      // Move to next character in current word
+      document.getElementById('writingProgress').textContent=`คำที่ ${writingIndex+1}/${writingWords.length} (ตัวอักษร ${writingCharIndex+1}/${writingChars.length})`;
+      document.getElementById('writingFeedback').textContent='';
+      initWritingWriter(writingChars[writingCharIndex]);
+    }
+  },1000);
+}
+
+function showWritingSummary(){
+  const correctCount=writingAnswers.filter(a=>a.correct).length;
+  const totalCount=writingAnswers.length;
+  
+  let summaryHtml=`<h3>📊 ผลลัพธ์แบบฝึกหัดเขียน</h3>`;
+  summaryHtml+=`<p style="font-size:18px;margin:16px 0;">คะแนน: <strong>${correctCount}</strong>/${totalCount} ตัวอักษร</p>`;
+  summaryHtml+=`<div style="max-height:300px;overflow-y:auto;">`;
+  summaryHtml+=`<table style="width:100%;border-collapse:collapse;">`;
+  summaryHtml+=`<tr style="background:#F3F4F6;"><th style="padding:8px;text-align:left;">คำ</th><th style="padding:8px;text-align:left;">ตัวอักษร</th><th style="padding:8px;text-align:left;">ผลลัพธ์</th></tr>`;
+  
+  writingAnswers.forEach((ans,i)=>{
+    const statusClass=ans.correct?'correct':'wrong';
+    const statusText=ans.correct?'✅ ถูกต้อง':'❌ ผิด';
+    summaryHtml+=`<tr style="border-bottom:1px solid #E5E7EB;"><td style="padding:8px;">${ans.word}</td><td style="padding:8px;">${ans.character}</td><td style="padding:8px;" class="exercise-feedback ${statusClass}" style="display:inline;">${statusText}</td></tr>`;
+  });
+  
+  summaryHtml+=`</table></div>`;
+  summaryHtml+=`<button class="exercise-btn" onclick="closeWritingModal()" style="margin-top:16px;">ปิด</button>`;
+  
+  document.getElementById('writingFeedback').innerHTML=summaryHtml;
+}
+
+function closeWritingModal(){
+  document.getElementById('writingModal').classList.remove('show');
+  if(writingWriter){
+    writingWriter=null;
+  }
+}
+
+// แบบฝึกหัดอ่านตอบคำถาม
+let readingQuestions=[];
+let readingIndex=0;
+let readingScore=0;
+let readingAnswers=[];
+
+function startReadingQuiz(start,end){
+  const words=vocab.filter(v=>v.n>=start&&v.n<=end);
+  const shuffled=[...words].sort(()=>Math.random()-0.5).slice(0,15);
+  readingQuestions=shuffled.map(word=>{
+    const wrongOptions=[...words.filter(v=>v.n!==word.n)].sort(()=>Math.random()-0.5).slice(0,3);
+    const options=[...wrongOptions.map(v=>v.m),word.m].sort(()=>Math.random()-0.5);
+    return{word,options};
+  });
+  readingIndex=0;
+  readingScore=0;
+  readingAnswers=[];
+  document.getElementById('readingTitle').textContent=`📖 อ่าน แล้วตอบคำถาม (คำที่ ${start}-${end})`;
+  document.getElementById('readingTotal').textContent=readingQuestions.length;
+  document.getElementById('readingModal').classList.add('show');
+  showReadingQuestion();
+}
+
+function showReadingQuestion(){
+  if(readingIndex>=readingQuestions.length){
+    showReadingSummary();
+    return;
+  }
+  const q=readingQuestions[readingIndex];
+  document.getElementById('readingProgress').textContent=readingIndex+1;
+  document.getElementById('readingScore').textContent=readingScore;
+  document.getElementById('readingQuestion').textContent=`"${q.word.h}" (${q.word.p}) แปลว่าอะไร?`;
+  document.getElementById('readingFeedback').textContent='';
+  
+  const optionsHtml=q.options.map((opt,i)=>`<div class="reading-option" onclick="selectReadingOption('${opt}',${i})">${opt}</div>`).join('');
+  document.getElementById('readingOptions').innerHTML=optionsHtml;
+}
+
+function selectReadingOption(answer,idx){
+  const q=readingQuestions[readingIndex];
+  const options=document.querySelectorAll('.reading-option');
+  options.forEach(opt=>opt.classList.remove('selected'));
+  options[idx].classList.add('selected');
+  
+  const isCorrect=answer===q.word.m;
+  if(isCorrect){
+    readingScore++;
+  }
+  
+  readingAnswers.push({
+    word: q.word.h,
+    pinyin: q.word.p,
+    correctAnswer: q.word.m,
+    userAnswer: answer,
+    correct: isCorrect
+  });
+  
+  options[idx].classList.add(isCorrect?'correct':'wrong');
+  if(!isCorrect){
+    options.forEach(opt=>{
+      if(opt.textContent===q.word.m)opt.classList.add('correct');
+    });
+  }
+  
+  document.getElementById('readingFeedback').textContent=isCorrect?'✅ ถูกต้อง!':'❌ ผิด';
+  document.getElementById('readingFeedback').className=`exercise-feedback ${isCorrect?'correct':'wrong'}`;
+  
+  options.forEach(opt=>opt.style.pointerEvents='none');
+  
+  setTimeout(()=>{
+    readingIndex++;
+    showReadingQuestion();
+  },1500);
+}
+
+function showReadingSummary(){
+  const correctCount=readingAnswers.filter(a=>a.correct).length;
+  const totalCount=readingAnswers.length;
+  
+  let summaryHtml=`<h3>📊 ผลลัพธ์แบบฝึกหัดอ่านตอบคำถาม</h3>`;
+  summaryHtml+=`<p style="font-size:18px;margin:16px 0;">คะแนน: <strong>${correctCount}</strong>/${totalCount}</p>`;
+  summaryHtml+=`<div style="max-height:300px;overflow-y:auto;">`;
+  summaryHtml+=`<table style="width:100%;border-collapse:collapse;">`;
+  summaryHtml+=`<tr style="background:#F3F4F6;"><th style="padding:8px;text-align:left;">คำ</th><th style="padding:8px;text-align:left;">คำตอบที่ถูก</th><th style="padding:8px;text-align:left;">คำตอบของคุณ</th><th style="padding:8px;text-align:left;">ผลลัพธ์</th></tr>`;
+  
+  readingAnswers.forEach((ans,i)=>{
+    const statusClass=ans.correct?'correct':'wrong';
+    const statusText=ans.correct?'✅ ถูกต้อง':'❌ ผิด';
+    summaryHtml+=`<tr style="border-bottom:1px solid #E5E7EB;"><td style="padding:8px;">${ans.word} (${ans.pinyin})</td><td style="padding:8px;">${ans.correctAnswer}</td><td style="padding:8px;">${ans.userAnswer}</td><td style="padding:8px;" class="exercise-feedback ${statusClass}" style="display:inline;">${statusText}</td></tr>`;
+  });
+  
+  summaryHtml+=`</table></div>`;
+  summaryHtml+=`<button class="exercise-btn" onclick="closeReadingModal()" style="margin-top:16px;">ปิด</button>`;
+  
+  document.getElementById('readingFeedback').innerHTML=summaryHtml;
+}
+
+function closeReadingModal(){
+  document.getElementById('readingModal').classList.remove('show');
+}
+
+// แบบฝึกหัดเรียงประโยค
+let orderingQuestions=[];
+let orderingIndex=0;
+let orderingScore=0;
+let currentOrderingWords=[];
+let selectedOrdering=[];
+let orderingAnswers=[];
+let showOrderingPinyin=false;
+
+function startSentenceOrdering(start,end){
+  const words=vocab.filter(v=>v.n>=start&&v.n<=end&&v.ex);
+  const shuffled=[...words].sort(()=>Math.random()-0.5).slice(0,15);
+  orderingQuestions=shuffled.map(word=>{
+    const exParts=word.ex.split('<br>');
+    const chineseSentence=exParts[0];
+    const pinyinSentence=exParts[1];
+    const thaiSentence=exParts[2];
+    const wordsArr=chineseSentence.replace(/[。，！？、]/g,'').split('').filter(c=>!/[，。！？、\s]/.test(c));
+    return{word,chineseSentence,pinyinSentence,thaiSentence,wordsArr};
+  });
+  orderingIndex=0;
+  orderingScore=0;
+  orderingAnswers=[];
+  showOrderingPinyin=false;
+  document.getElementById('orderingTitle').textContent=`🔤 เรียงประโยค (คำที่ ${start}-${end})`;
+  document.getElementById('orderingTotal').textContent=orderingQuestions.length;
+  document.getElementById('orderingModal').classList.add('show');
+  showOrderingQuestion();
+}
+
+function showOrderingQuestion(){
+  if(orderingIndex>=orderingQuestions.length){
+    showOrderingSummary();
+    return;
+  }
+  const q=orderingQuestions[orderingIndex];
+  document.getElementById('orderingProgress').textContent=orderingIndex+1;
+  document.getElementById('orderingScore').textContent=orderingScore;
+  document.getElementById('orderingHint').textContent=q.thaiSentence;
+  document.getElementById('orderingPinyin').textContent=q.pinyinSentence;
+  document.getElementById('orderingPinyin').style.display=showOrderingPinyin?'block':'none';
+  document.getElementById('orderingResult').textContent='';
+  document.getElementById('orderingFeedback').textContent='';
+  
+  currentOrderingWords=[...q.wordsArr].sort(()=>Math.random()-0.5);
+  selectedOrdering=[];
+  renderOrderingWords();
+}
+
+function toggleOrderingPinyin(){
+  showOrderingPinyin=!showOrderingPinyin;
+  document.getElementById('orderingPinyin').style.display=showOrderingPinyin?'block':'none';
+  document.querySelector('.ordering-toggle-area .writing-toggle-btn').textContent=showOrderingPinyin?'🔤 ซ่อน Pinyin':'🔤 แสดง Pinyin';
+}
+
+function renderOrderingWords(){
+  const wordsHtml=currentOrderingWords.map((word,i)=>`<div class="ordering-word" onclick="selectOrderingWord(${i})">${word}</div>`).join('');
+  document.getElementById('orderingWords').innerHTML=wordsHtml;
+  document.getElementById('orderingResult').textContent=selectedOrdering.join('');
+}
+
+function selectOrderingWord(idx){
+  const word=currentOrderingWords[idx];
+  selectedOrdering.push(word);
+  currentOrderingWords.splice(idx,1);
+  renderOrderingWords();
+}
+
+function checkOrdering(){
+  const q=orderingQuestions[orderingIndex];
+  const result=selectedOrdering.join('');
+  const correct=q.wordsArr.join('');
+  const feedback=document.getElementById('orderingFeedback');
+  
+  const isCorrect=result===correct;
+  if(isCorrect){
+    orderingScore++;
+  }
+  
+  orderingAnswers.push({
+    chinese: q.chineseSentence,
+    pinyin: q.pinyinSentence,
+    thai: q.thaiSentence,
+    correctAnswer: correct,
+    userAnswer: result,
+    correct: isCorrect
+  });
+  
+  if(isCorrect){
+    feedback.textContent='✅ ถูกต้อง!';
+    feedback.className='exercise-feedback correct';
+  }else{
+    feedback.textContent='❓ ลองอีกครั้ง (เฉลย: ' + correct + ')';
+    feedback.className='exercise-feedback wrong';
+  }
+  
+  setTimeout(()=>{
+    orderingIndex++;
+    showOrderingQuestion();
+  },2000);
+}
+
+function resetOrdering(){
+  selectedOrdering=[];
+  currentOrderingWords=[...orderingQuestions[orderingIndex].wordsArr].sort(()=>Math.random()-0.5);
+  document.getElementById('orderingResult').textContent='';
+  document.getElementById('orderingFeedback').textContent='';
+  renderOrderingWords();
+}
+
+function showOrderingSummary(){
+  const correctCount=orderingAnswers.filter(a=>a.correct).length;
+  const totalCount=orderingAnswers.length;
+  
+  let summaryHtml=`<h3>📊 ผลลัพธ์แบบฝึกหัดเรียงประโยค</h3>`;
+  summaryHtml+=`<p style="font-size:18px;margin:16px 0;">คะแนน: <strong>${correctCount}</strong>/${totalCount}</p>`;
+  summaryHtml+=`<div style="max-height:300px;overflow-y:auto;">`;
+  summaryHtml+=`<table style="width:100%;border-collapse:collapse;">`;
+  summaryHtml+=`<tr style="background:#F3F4F6;"><th style="padding:8px;text-align:left;">ประโยคจีน</th><th style="padding:8px;text-align:left;">คำตอบที่ถูก</th><th style="padding:8px;text-align:left;">คำตอบของคุณ</th><th style="padding:8px;text-align:left;">ผลลัพธ์</th></tr>`;
+  
+  orderingAnswers.forEach((ans,i)=>{
+    const statusClass=ans.correct?'correct':'wrong';
+    const statusText=ans.correct?'✅ ถูกต้อง':'❌ ผิด';
+    summaryHtml+=`<tr style="border-bottom:1px solid #E5E7EB;"><td style="padding:8px;">${ans.chinese}</td><td style="padding:8px;">${ans.correctAnswer}</td><td style="padding:8px;">${ans.userAnswer}</td><td style="padding:8px;" class="exercise-feedback ${statusClass}" style="display:inline;">${statusText}</td></tr>`;
+  });
+  
+  summaryHtml+=`</table></div>`;
+  summaryHtml+=`<button class="exercise-btn" onclick="closeOrderingModal()" style="margin-top:16px;">ปิด</button>`;
+  
+  document.getElementById('orderingFeedback').innerHTML=summaryHtml;
+}
+
+function closeOrderingModal(){
+  document.getElementById('orderingModal').classList.remove('show');
+}
+
+// ตัวอย่างบทความ 120 บทความ (30 บทความต่อช่วงคำศัพท์: 1-300, 301-600, 601-900, 901-1200)
 const sampleArticles=[
-  {id:1,title:"我的家庭",pinyin:"Wǒ de jiātíng",desc:"บทความเกี่ยวกับครอบครัว",content:[
+  {id:1,range:"1-300",title:"我的家庭",pinyin:"Wǒ de jiātíng",desc:"บทความเกี่ยวกับครอบครัว",content:[
     {zh:"我有一个大家庭。",pinyin:"Wǒ yǒu yí gè dà jiātíng.",th:"ฉันมีครอบครัวใหญ่"},
     {zh:"爸爸是老师，妈妈爱干净。",pinyin:"Bàba shì lǎoshī, māma ài gānjìng.",th:"พ่อเป็นครู แม่รักความสะอาด"},
     {zh:"弟弟聪明，哥哥很高。",pinyin:"Dìdi cōngming, gēge hěn gāo.",th:"น้องชายฉลาด พี่ชายสูงมาก"},
     {zh:"阿姨常常来帮忙。",pinyin:"Āyí chángcháng lái bāngmáng.",th:"ป้ามักมาช่วยเหลือบ่อยๆ"},
     {zh:"我们爱这个家。",pinyin:"Wǒmen ài zhège jiā.",th:"เรารักบ้านหลังนี้"}
   ]},
-  {id:2,title:"学校生活",pinyin:"Xuéxiào shēnghuó",desc:"บทความเกี่ยวกับชีวิตในโรงเรียน",content:[
+  {id:2,range:"1-300",title:"学校生活",pinyin:"Xuéxiào shēnghuó",desc:"บทความเกี่ยวกับชีวิตในโรงเรียน",content:[
     {zh:"我在大学学习汉语。",pinyin:"Wǒ zài dàxué xuéxí Hànyǔ.",th:"ฉันเรียนภาษาจีนที่มหาวิทยาลัย"},
     {zh:"图书馆安静，适合读书。",pinyin:"Túshūguǎn ānjìng, shìhé dúshū.",th:"ห้องสมุดเงียบสงบ เหมาะกับการอ่านหนังสือ"},
     {zh:"老师按时间安排课程。",pinyin:"Lǎoshī àn shíjiān ānpái kèchéng.",th:"ครูจัดตารางเรียนตามเวลา"},
     {zh:"同学们都很努力。",pinyin:"Tóngxuémen dōu hěn nǔlì.",th:"เพื่อนร่วมชั้นเรียนตั้งใจเรียนกันทุกคน"},
     {zh:"八点钟开始上课。",pinyin:"Bā diǎn zhōng kāishǐ shàngkè.",th:"แปดโมงเริ่มเรียน"}
   ]},
-  {id:3,title:"去中国旅行",pinyin:"Qù Zhōngguó lǚxíng",desc:"บทความเกี่_about การเดินทางไปจีน",content:[
+  {id:3,range:"1-300",title:"去中国旅行",pinyin:"Qù Zhōngguó lǚxíng",desc:"บทความเกี่ยวกับการเดินทางไปจีน",content:[
     {zh:"我打算去北京旅行。",pinyin:"Wǒ dǎsuàn qù Běijīng lǚxíng.",th:"ฉันตั้งใจไปเที่ยวปักกิ่ง"},
     {zh:"坐飞机比较方便。",pinyin:"Zuò fēijī bǐjiào fāngbiàn.",th:"นั่งเครื่องบินสะดวกกว่า"},
     {zh:"到机场后可以坐地铁。",pinyin:"Dào jīchǎng hòu kěyǐ zuò dìtiě.",th:"ถึงสนามบินแล้วสามารถนั่งรถไฟฟ้าได้"},
     {zh:"地图会帮助我找到路。",pinyin:"Dìtú huì bāngzhù wǒ zhǎodào lù.",th:"แผนที่จะช่วยฉันหาทาง"},
     {zh:"这次旅行一定很有意思。",pinyin:"Zhè cì lǚxíng yídìng hěn yǒu yìsi.",th:"การเดินทางครั้งนี้คงสนุกแน่"}
   ]},
-  {id:4,title:"我的爱好",pinyin:"Wǒ de àihào",desc:"บทความเกี่_about งานอดิเรก",content:[
+  {id:4,range:"1-300",title:"我的爱好",pinyin:"Wǒ de àihào",desc:"บทความเกี่ยวกับงานอดิเรก",content:[
     {zh:"我的爱好是打篮球。",pinyin:"Wǒ de àihào shì dǎ lánqiú.",th:"งานอดิเรกของฉันคือเล่นบาสเกตบอล"},
     {zh:"我也喜欢唱歌和看电视。",pinyin:"Wǒ yě xǐhuan chànggē hé kàn diànshì.",th:"ฉันก็ชอบร้องเพลงและดูโทรทัศน์ด้วย"},
     {zh:"周末常常锻炼两个小时。",pinyin:"Zhōumò chángcháng duànliàn liǎng ge xiǎoshí.",th:"วันหยุดสุดสัปดาห์มักออกกำลังกายสองชั่วโมง"},
     {zh:"运动对身体很好。",pinyin:"Yùndòng duì shēntǐ hěn hǎo.",th:"การออกกำลังกายดีต่อสุขภาพ"},
     {zh:"保持爱好让生活更有趣。",pinyin:"Bǎochí àihào ràng shēnghuó gèng yǒuqù.",th:"รักษางานอดิเรกทำให้ชีวิตสนุกขึ้น"}
   ]},
-  {id:5,title:"工作环境",pinyin:"Gōngzuò huánjìng",desc:"บทความเกี่_about สภาพแวดล้อมการทำงาน",content:[
+  {id:5,range:"1-300",title:"工作环境",pinyin:"Gōngzuò huánjìng",desc:"บทความเกี่ยวกับสภาพแวดล้อมการทำงาน",content:[
     {zh:"我在一家公司工作。",pinyin:"Wǒ zài yì jiā gōngsī gōngzuò.",th:"ฉันทำงานในบริษัทแห่งหนึ่ง"},
     {zh:"办公室安静，大家工作认真。",pinyin:"Bàngōngshì ānjìng, dàjiā gōngzuò rènzhēn.",th:"ห้องทำงานเงียบสงบ ทุกคนทำงานอย่างตั้งใจ"},
     {zh:"电脑帮助我做很多工作。",pinyin:"Diànnǎo bāngzhù wǒ zuò hěn duō gōngzuò.",th:"คอมพิวเตอร์ช่วยฉันทำงานมากมาย"},
     {zh:"电子邮件让沟通更方便。",pinyin:"Diànzǐ yóujiàn ràng gōutōng gèng fāngbiàn.",th:"อีเมลทำให้ติดต่อสื่อสารสะดวกขึ้น"},
     {zh:"按时上班，按时下班。",pinyin:"Àn shí shàngbān, àn shí xiàbān.",th:"เข้างานตรงเวลา เลิกงานตรงเวลา"}
   ]},
-  {id:6,title:"健康习惯",pinyin:"Jiànkāng xíguàn",desc:"บทความเกี่_about นิสัยสุขภาพ",content:[
+  {id:6,range:"1-300",title:"健康习惯",pinyin:"Jiànkāng xíguàn",desc:"บทความเกี่ยวกับนิสัยสุขภาพ",content:[
     {zh:"健康很重要，我们要保护身体。",pinyin:"Jiànkāng hěn zhòngyào, wǒmen yào bǎohù shēntǐ.",th:"สุขภาพสำคัญมาก เราต้องปกป้องร่างกาย"},
     {zh:"每天锻炼一小时。",pinyin:"Měitiān duànliàn yì xiǎoshí.",th:"ออกกำลังกายวันละหนึ่งชั่วโมง"},
     {zh:"多吃水果，少吃肉。",pinyin:"Duō chī shuǐguǒ, shǎo chī ròu.",th:"กินผลไม้มาก กินเนื้อน้อย"},
     {zh:"按时睡觉对身体好。",pinyin:"Àn shí shuìjiào duì shēntǐ hǎo.",th:"นอนตรงเวลาดีต่อสุขภาพ"},
     {zh:"抽烟有害健康。",pinyin:"Chōuyān yǒuhài jiànkāng.",th:"การสูบบุหรี่เป็นอันตรายต่อสุขภาพ"}
   ]},
-  {id:7,title:"购物经验",pinyin:"Gòuwù jīngyàn",desc:"บทความเกี่_about ประสบการณ์ช็อปปิ้ง",content:[
+  {id:7,range:"1-300",title:"购物经验",pinyin:"Gòuwù jīngyàn",desc:"บทความเกี่ยวกับประสบการณ์ช็อปปิ้ง",content:[
     {zh:"昨天我去超市买东西。",pinyin:"Zuótiān wǒ qù chāoshì mǎi dōngxi.",th:"เมื่อวานฉันไปซื้อของที่ซูเปอร์มาร์เก็ต"},
     {zh:"东西很多，价格也便宜。",pinyin:"Dōngxi hěn duō, jiàgé yě piányi.",th:"ของเยอะมาก ราคาก็ถูกด้วย"},
     {zh:"用银行卡付钱很方便。",pinyin:"Yòng yínhángkǎ fù qián hěn fāngbiàn.",th:"ใช้บัตรธนาคารจ่ายเงินสะดวกมาก"},
     {zh:"超过一百块可以打折。",pinyin:"Chāoguò yì bǎi kuài kěyǐ dǎzhé.",th:"เกินหนึ่งร้อยหยวนลดราคาได้"},
     {zh:"买了很多东西回家。",pinyin:"Mǎi le hěn duō dōngxi huí jiā.",th:"ซื้อของเยอะมากกลับบ้าน"}
   ]},
-  {id:8,title:"我的城市",pinyin:"Wǒ de chéngshì",desc:"บทความเกี่_about เมืองของฉัน",content:[
+  {id:8,range:"1-300",title:"我的城市",pinyin:"Wǒ de chéngshì",desc:"บทความเกี่ยวกับเมืองของฉัน",content:[
     {zh:"我住在一个大城市。",pinyin:"Wǒ zhù zài yí gè dà chéngshì.",th:"ฉันอาศัยอยู่ในเมืองใหญ่"},
     {zh:"这里到处都有地铁。",pinyin:"Zhèlǐ dàochù dōu yǒu dìtiě.",th:"ที่นี่ทุกที่มีรถไฟฟ้าใต้ดิน"},
     {zh:"出租车很方便，但是常常堵车。",pinyin:"Chūzūchē hěn fāngbiàn, dànshì chángcháng dǔchē.",th:"แท็กซี่สะดวก แต่มักรถติดบ่อยๆ"},
     {zh:"春天很漂亮，到处开花。",pinyin:"Chūntiān hěn piàoliang, dàochù kāihuā.",th:"ฤดูใบไม้ผลิสวยงาม ดอกไม้บานทุกที่"},
     {zh:"我爱这个城市。",pinyin:"Wǒ ài zhège chéngshì.",th:"ฉันรักเมืองนี้"}
   ]},
-  {id:9,title:"餐厅经历",pinyin:"Cāntīng jīnglì",desc:"บทความเกี่_about ประสบการณ์ในร้านอาหาร",content:[
+  {id:9,range:"1-300",title:"餐厅经历",pinyin:"Cāntīng jīnglì",desc:"บทความเกี่ยวกับประสบการณ์ในร้านอาหาร",content:[
     {zh:"我和朋友去餐厅吃饭。",pinyin:"Wǒ hé péngyou qù cāntīng chīfàn.",th:"ฉันไปกินข้าวที่ร้านอาหารกับเพื่อน"},
     {zh:"服务员安排我们坐在窗户旁边。",pinyin:"Fúwùyuán ānpái wǒmen zuò zài chuānghu pángbiān.",th:"พนักงานเสิร์ฟจัดให้เรานั่งข้างหน้าต่าง"},
     {zh:"我们点了鸡蛋、面条和啤酒。",pinyin:"Wǒmen diǎn le jīdàn, miàntiáo hé píjiǔ.",th:"เราสั่งไข่ บะหมี่ และเบียร์"},
     {zh:"菜的味道很好。",pinyin:"Cài de wèidao hěn hǎo.",th:"รสชาติอาหารดีมาก"},
     {zh:"吃完饭，我们打算去看电影。",pinyin:"Chī wán fàn, wǒmen dǎsuàn qù kàn diànyǐng.",th:"กินข้าวเสร็จ เราตั้งใจจะไปดูหนัง"}
   ]},
-  {id:10,title:"一次聚会",pinyin:"Yí cì jùhuì",desc:"บทความเกี่_about งานเลี้ยงสังสรรค์",content:[
+  {id:10,range:"1-300",title:"一次聚会",pinyin:"Yí cì jùhuì",desc:"บทความเกี่ยวกับงานเลี้ยงสังสรรค์",content:[
     {zh:"昨天朋友请我去他家。",pinyin:"Zuótiān péngyou qǐng wǒ qù tā jiā.",th:"เมื่อวานเพื่อนเชิญฉันไปบ้านเขา"},
     {zh:"很多人来参加聚会。",pinyin:"Hěn duō rén lái cānjiā jùhuì.",th:"คนเยอะมากมาร่วมงานเลี้ยง"},
     {zh:"大家唱歌、跳舞、喝啤酒。",pinyin:"Dàjiā chànggē, tiàowǔ, hē píjiǔ.",th:"ทุกคนร้องเพลง เต้นรำ ดื่มเบียร์"},
     {zh:"晚上十点钟我们才离开。",pinyin:"Wǎnshang shí diǎn zhōng wǒmen cái líkāi.",th:"สามทุ่มเราถึงจากไป"},
     {zh:"这次聚会很有意思。",pinyin:"Zhè cì jùhuì hěn yǒu yìsi.",th:"งานเลี้ยงครั้งนี้สนุกมาก"}
   ]},
-  {id:11,title:"学习方法",pinyin:"Xuéxí fāngfǎ",desc:"บทความเกี่_about วิธีการเรียน",content:[
+  {id:11,range:"1-300",title:"学习方法",pinyin:"Xuéxí fāngfǎ",desc:"บทความเกี่ยวกับวิธีการเรียน",content:[
     {zh:"学习汉语需要好方法。",pinyin:"Xuéxí Hànyǔ xūyào hǎo fāngfǎ.",th:"การเรียนภาษาจีนต้องใช้วิธีที่ดี"},
     {zh:"每天用词典查生词。",pinyin:"Měitiān yòng cídiǎn chá shēngcí.",th:"ใช้พจนานุกรมหาคำใหม่ทุกวัน"},
     {zh:"练习对话可以提高口语。",pinyin:"Liànxí duìhuà kěyǐ tígāo kǒuyǔ.",th:"ฝึกบทสนทนาช่วยพัฒนาภาษาพูด"},
     {zh:"读书和看报纸都重要。",pinyin:"Dúshū hé kàn bàozhǐ dōu zhòngyào.",th:"อ่านหนังสือและหนังสือพิมพ์สำคัญทั้งคู่"},
     {zh:"成绩一定会提高。",pinyin:"Chéngjì yídìng huì tígāo.",th:"ผลการเรียนจะต้องดีขึ้น"}
   ]},
-  {id:12,title:"看病经历",pinyin:"Kànbìng jīnglì",desc:"บทความเกี่_about ประสบการณ์ไปหาหมอ",content:[
+  {id:12,range:"1-300",title:"看病经历",pinyin:"Kànbìng jīnglì",desc:"บทความเกี่ยวกับประสบการณ์ไปหาหมอ",content:[
     {zh:"昨天我肚子疼，去医院看大夫。",pinyin:"Zuótiān wǒ dùzi téng, qù yīyuàn kàn dàifu.",th:"เมื่อวานฉันปวดท้อง ไปโรงพยาบาลหาหมอ"},
     {zh:"医生给我检查身体。",pinyin:"Yīshēng gěi wǒ jiǎnchá shēntǐ.",th:"หมอตรวจร่างกายให้ฉัน"},
     {zh:"他说我需要打针。",pinyin:"Tā shuō wǒ xūyào dǎzhēn.",th:"เขาบอกว่าฉันต้องฉีดยา"},
     {zh:"然后给我一些药。",pinyin:"Ránhòu gěi wǒ yìxiē yào.",th:"แล้วให้ยาฉันบ้าง"},
     {zh:"现在好多了。",pinyin:"Xiànzài hǎo duō le.",th:"ตอนนี้ดีขึ้นมากแล้ว"}
   ]},
-  {id:13,title:"周末计划",pinyin:"Zhōumò jìhuà",desc:"บทความเกี่_about แผนสุดสัปดาห์",content:[
+  {id:13,range:"1-300",title:"周末计划",pinyin:"Zhōumò jìhuà",desc:"บทความเกี่ยวกับแผนสุดสัปดาห์",content:[
     {zh:"这个周末我打算去爬山。",pinyin:"Zhège zhōumò wǒ dǎsuàn qù páshān.",th:"สุดสัปดาห์นี้ฉันตั้งใจจะไปปีนเขา"},
     {zh:"天气很好，适合运动。",pinyin:"Tiānqì hěn hǎo, shìhé yùndòng.",th:"อากาศดี เหมาะกับการออกกำลังกาย"},
     {zh:"准备一些水和面包。",pinyin:"Zhǔnbèi yìxiē shuǐ hé miànbāo.",th:"เตรียมน้ำและขนมปังบ้าง"},
     {zh:"早上八点钟出发。",pinyin:"Zǎoshang bā diǎn zhōng chūfā.",th:"เช้าแปดโมงออกเดินทาง"},
     {zh:"大约下午四点回来。",pinyin:"Dàyuē xiàwǔ sì diǎn huílai.",th:"ประมาณบ่ายสี่กลับมา"}
   ]},
-  {id:14,title:"我的家乡",pinyin:"Wǒ de jiāxiāng",desc:"บทความเกี่_about บ้านเกิด",content:[
+  {id:14,range:"1-300",title:"我的家乡",pinyin:"Wǒ de jiāxiāng",desc:"บทความเกี่ยวกับบ้านเกิด",content:[
     {zh:"我的家乡在东边的一个小城。",pinyin:"Wǒ de jiāxiāng zài dōngbian de yí gè xiǎo chéng.",th:"บ้านเกิดของฉันอยู่ทางตะวันออกของเมืองเล็ก"},
     {zh:"那里很安静，环境很好。",pinyin:"Nàlǐ hěn ānjìng, huánjìng hěn hǎo.",th:"ที่นั่นเงียบสงบ สภาพแวดล้อมดี"},
     {zh:"春天开花，秋天结果。",pinyin:"Chūntiān kāihuā, qiūtiān jiéguǒ.",th:"ฤดูใบไม้ผลิดอกไม้บาน ฤดูใบไม้ร่วงผลิดอกออกผล"},
     {zh:"大家都很友好。",pinyin:"Dàjiā dōu hěn yǒuhǎo.",th:"ทุกคนเป็นมิตรกันดี"},
     {zh:"我很想念那里。",pinyin:"Wǒ hěn xiǎngniàn nàlǐ.",th:"ฉันคิดถึงที่นั่นมาก"}
   ]},
-  {id:15,title:"找工作",pinyin:"Zhǎo gōngzuò",desc:"บทความเกี่_about การหางาน",content:[
-    {zh:"大学毕业后，我开始找工作。",pinyin:"Dàxué bìyè hòu, wǒ kāishǐ zhǎo gōngzuò.",th:"จบมหาวิทยาลัยแล้ว ฉันเริ่มหางาน"},
+  {id:15,range:"1-300",title:"找工作",pinyin:"Zhǎo gōngzuò",desc:"บทความเกี่ยวกับการหางาน",content:[
+    {zh:"大学毕业���，我开始找工作。",pinyin:"Dàxué bìyè hòu, wǒ kāishǐ zhǎo gōngzuò.",th:"จบมหาวิทยาลัยแล้ว ฉันเริ่มหางาน"},
     {zh:"在网上看了很多招聘信息。",pinyin:"Zài wǎngshang kàn le hěn duō zhāopìn xìnxī.",th:"ดูข้อมูลรับสมัครงานมากมายบนเน็ต"},
     {zh:"给几家公司发了电子邮件。",pinyin:"Gěi jǐ jiā gōngsī fā le diànzǐ yóujiàn.",th:"ส่งอีเมลไปหลายบริษัท"},
     {zh:"参加了一些面试。",pinyin:"Cānjiā le yìxiē miànshì.",th:"เข้าร่วมสัมภาษณ์งานบ้าง"},
     {zh:"终于找到合适的工作。",pinyin:"Zhōngyú zhǎodào héshì de gōngzuò.",th:"ในที่สุดก็หางานที่เหมาะสมได้"}
   ]},
-  {id:16,title:"一次误会",pinyin:"Yí cì wùhuì",desc:"บทความเกี่_about ความเข้าใจผิดครั้งหนึ่ง",content:[
+  {id:16,range:"1-300",title:"一次误会",pinyin:"Yí cì wùhuì",desc:"บทความเกี่ยวกับความเข้าใจผิดครั้งหนึ่ง",content:[
     {zh:"昨天我和朋友发生了一点误会。",pinyin:"Zuótiān wǒ hé péngyou fāshēng le yìdiǎn wùhuì.",th:"เมื่อวานฉันกับเพื่อนมีความเข้าใจผิดเล็กน้อย"},
     {zh:"我以为他忘记了约定。",pinyin:"Wǒ yǐwéi tā wàngjì le yuēdìng.",th:"ฉันคิดว่าเขาลืมนัด"},
     {zh:"结果他只是迟到了。",pinyin:"Jiéguǒ tā zhǐshì chídào le.",th:"ผลคือเขาแค่มาสาย"},
     {zh:"后来我向他道歉。",pinyin:"Hòulái wǒ xiàng tā dàoqiàn.",th:"หลังจากนั้นฉันขอโทษเขา"},
     {zh:"我们再次成为好朋友。",pinyin:"Wǒmen zàicì chéngwéi hǎo péngyou.",th:"เรากลายเป็นเพื่อนดีกันอีกครั้ง"}
   ]},
-  {id:17,title:"天气变化",pinyin:"Tiānqì biànhuà",desc:"บทความเกี่_about การเปลี่ยนแปลงอากาศ",content:[
+  {id:17,range:"1-300",title:"天气变化",pinyin:"Tiānqì biànhuà",desc:"บทความเกี่ยวกับการเปลี่ยนแปลงอากาศ",content:[
     {zh:"最近天气变化很大。",pinyin:"Zuìjìn tiānqì biànhuà hěn dà.",th:"ช่วงนี้อากาศเปลี่ยนแปลงมาก"},
     {zh:"早上还比较冷。",pinyin:"Zǎoshang hái bǐjiào lěng.",th:"ตอนเช้ายังค่อนข้างหนาว"},
     {zh:"中午就很热了。",pinyin:"Zhōngwǔ jiù hěn rè le.",th:"เที่ยงวันก็ร้อนแล้ว"},
     {zh:"有时候突然下雨。",pinyin:"Yǒu shíhou tūrán xiàyǔ.",th:"บางครั้งฝนตกกระทันหัน"},
     {zh:"大家要记得带伞。",pinyin:"Dàjiā yào jìde dài sǎn.",th:"ทุกคนอย่าลืมพกร่ม"}
   ]},
-  {id:18,title:"使用电梯",pinyin:"Shǐyòng diàntī",desc:"บทความเกี่_about การใช้ลิฟต์",content:[
+  {id:18,range:"1-300",title:"使用电梯",pinyin:"Shǐyòng diàntī",desc:"บทความเกี่ยวกับการใช้ลิฟต์",content:[
     {zh:"我在二十楼工作。",pinyin:"Wǒ zài èrshí lóu gōngzuò.",th:"ฉันทำงานชั้นยี่สิบ"},
     {zh:"每天坐电梯上下。",pinyin:"Měitiān zuò diàntī shàngxià.",th:"นั่งลิฟต์ขึ้นลงทุกวัน"},
     {zh:"早上八点钟电梯很忙。",pinyin:"Zǎoshang bā diǎn zhōng diàntī hěn máng.",th:"เช้าแปดโมงลิฟต์ยุ่งมาก"},
     {zh:"有时候需要等几分钟。",pinyin:"Yǒu shíhou xūyào děng jǐ fēnzhōng.",th:"บางครั้งต้องรอสักสองสามนาที"},
     {zh:"电梯里很安静。",pinyin:"Diàntī lǐ hěn ānjìng.",th:"ในลิฟต์เงียบมาก"}
   ]},
-  {id:19,title:"动物园",pinyin:"Dòngwùyuán",desc:"บทความเกี่_about สวนสัตว์",content:[
+  {id:19,range:"1-300",title:"动物园",pinyin:"Dòngwùyuán",desc:"บทความเกี่ยวกับสวนสัตว์",content:[
     {zh:"周末我和弟弟去动物园。",pinyin:"Zhōumò wǒ hé dìdi qù dòngwùyuán.",th:"สุดสัปดาห์ฉันกับน้องชายไปสวนสัตว์"},
     {zh:"那里有很多动物。",pinyin:"Nàlǐ yǒu hěn duō dòngwù.",th:"ที่นั่นมีสัตว์เยอะมาก"},
     {zh:"大象很大，猴子很聪明。",pinyin:"Dàxiàng hěn dà, hóuzi hěn cōngming.",th:"ช้างใหญ่มาก ลิงฉลาดมาก"},
     {zh:"我们还看了鸟和鱼。",pinyin:"Wǒmen hái kàn le niǎo hé yú.",th:"เรายังดูนกและปลาด้วย"},
     {zh:"这次参观很有意思。",pinyin:"Zhè cì cānguān hěn yǒu yìsi.",th:"การเข้าชมครั้งนี้สนุกมาก"}
   ]},
-  {id:20,title:"保护环境",pinyin:"Bǎohù huánjìng",desc:"บทความเกี่_about การอนุรักษ์สิ่งแวดล้อม",content:[
+  {id:20,range:"1-300",title:"保护环境",pinyin:"Bǎohù huánjìng",desc:"บทความเกี่ยวกับการอนุรักษ์สิ่งแวดล้อม",content:[
     {zh:"保护环境很重要。",pinyin:"Bǎohù huánjìng hěn zhòngyào.",th:"การปกป้องสิ่งแวดล้อมสำคัญมาก"},
     {zh:"我们要保护地球。",pinyin:"Wǒmen yào bǎohù dìqiú.",th:"เราต้องปกป้องโลก"},
     {zh:"不要到处扔垃圾。",pinyin:"Búyào dàochù rēng lājī.",th:"อย่าทิ้งขยะทุกที่"},
     {zh:"多坐公共交通，少开车。",pinyin:"Duō zuò gōnggòng jiāotōng, shǎo kāichē.",th:"นั่งขนส่งสาธารณะมาก ขับรถน้อย"},
     {zh:"让我们的城市更干净。",pinyin:"Ràng wǒmen de chéngshì gèng gānjìng.",th:"ทำให้เมืองของเราสะอาดขึ้น"}
+  ]},
+  {id:21,range:"1-300",title:"早晨习惯",pinyin:"Zǎochén xíguàn",desc:"บทความเกี่ยวกับนิสัยตอนเช้า",content:[
+    {zh:"我每天早上六点起床。",pinyin:"Wǒ měitiān zǎoshang liù diǎn qǐchuáng.",th:"ฉันตื่นนอนหกโมงเช้าทุกวัน"},
+    {zh:"先刷牙洗脸。",pinyin:"Xiān shuāyá xǐliǎn.",th:"แปรงฟันล้างหน้าก่อน"},
+    {zh:"然后吃早饭。",pinyin:"Ránhòu chī zǎofàn.",th:"แล้วกินอาหารเช้า"},
+    {zh:"七点半出门上班。",pinyin:"Qī diǎn bàn chūmén shàngbān.",th:"เจ็ดโมงครึ่งออกจากบ้านไปทำงาน"},
+    {zh:"好习惯让一天很顺利。",pinyin:"Hǎo xíguàn ràng yì tiān hěn shùnlì.",th:"นิสัยดีทำให้วันหนึ่งราบรื่น"}
+  ]},
+  {id:22,range:"1-300",title:"学做饭",pinyin:"Xué zuò fàn",desc:"บทความเกี่ยวกับการเรียนทำอาหาร",content:[
+    {zh:"我想学做中国菜。",pinyin:"Wǒ xiǎng xué zuò Zhōngguó cài.",th:"ฉันอยากเรียนทำอาหารจีน"},
+    {zh:"妈妈教我切菜。",pinyin:"Māma jiāo wǒ qiē cài.",th:"แม่สอนฉันหั่นผัก"},
+    {zh:"先准备材料。",pinyin:"Xiān zhǔnbèi cáiliào.",th:"เตรียมวัตถุดิบก่อน"},
+    {zh:"然后按照步骤做。",pinyin:"Ránhòu ànzhào bùzhòu zuò.",th:"แล้วทำตามขั้นตอน"},
+    {zh:"做完后味道很好。",pinyin:"Zuò wán hòu wèidao hěn hǎo.",th:"ทำเสร็จแล้วรสชาติดีมาก"}
+  ]},
+  {id:23,range:"1-300",title:"图书馆",pinyin:"Túshūguǎn",desc:"บทความเกี่ยวกับห้องสมุด",content:[
+    {zh:"我常常去图书馆。",pinyin:"Wǒ chángcháng qù túshūguǎn.",th:"ฉันไปห้องสมุดบ่อยๆ"},
+    {zh:"那里有很多书。",pinyin:"Nàlǐ yǒu hěn duō shū.",th:"ที่นั่นมีหนังสือเยอะมาก"},
+    {zh:"环境安静，适合学习。",pinyin:"Huánjìng ānjìng, shìhé xuéxí.",th:"สภาพแวดล้อมเงียบสงบ เหมาะกับการเรียน"},
+    {zh:"可以借书回家看。",pinyin:"Kěyǐ jiè shū huí jiā kàn.",th:"สามารถยืมหนังสือกลับบ้านอ่านได้"},
+    {zh:"图书馆是学习的好地方。",pinyin:"Túshūguǎn shì xuéxí de hǎo dìfang.",th:"ห้องสมุดเป็นสถานที่ดีสำหรับการเรียน"}
+  ]},
+  {id:24,range:"1-300",title:"坐公交车",pinyin:"Zuò gōngjiāochē",desc:"บทความเกี่ยวกับการนั่งรถเมล์",content:[
+    {zh:"我每天坐公交车上班。",pinyin:"Wǒ měitiān zuò gōngjiāochē shàngbān.",th:"ฉันนั่งรถเมล์ไปทำงานทุกวัน"},
+    {zh:"车站离家很近。",pinyin:"Chēzhàn lí jiā hěn jìn.",th:"ป้ายรถอยู่ใกล้บ้านมาก"},
+    {zh:"早上人很多。",pinyin:"Zǎoshang rén hěn duō.",th:"ตอนเช้าคนเยอะมาก"},
+    {zh:"大约半小时到公司。",pinyin:"Dàyuē bàn xiǎoshí dào gōngsī.",th:"ประมาณครึ่งชั่วโมงถึงบริษัท"},
+    {zh:"坐公交车很方便。",pinyin:"Zuò gōngjiāochē hěn fāngbiàn.",th:"นั่งรถเมล์สะดวกมาก"}
+  ]},
+  {id:25,range:"1-300",title:"周末活动",pinyin:"Zhōumò huódòng",desc:"บทความเกี่ยวกับกิจกรรมสุดสัปดาห์",content:[
+    {zh:"周末我喜欢做运动。",pinyin:"Zhōumò wǒ xǐhuan zuò yùndòng.",th:"สุดสัปดาห์ฉันชอบออกกำลังกาย"},
+    {zh:"有时候去游泳。",pinyin:"Yǒu shíhou qù yóuyǒng.",th:"บางครั้งไปว่ายน้ำ"},
+    {zh:"有时候爬山。",pinyin:"Yǒu shíhou páshān.",th:"บางครั้งปีนเขา"},
+    {zh:"也喜欢和朋友见面。",pinyin:"Yě xǐhuan hé péngyou jiànmiàn.",th:"ก็ชอบพบเพื่อนด้วย"},
+    {zh:"周末过得很充实。",pinyin:"Zhōumò guò de hěn chōngshí.",th:"สุดสัปดาห์ผ่านไปอย่างเต็มที่"}
+  ]},
+  {id:26,range:"1-300",title:"手机",pinyin:"Shǒujī",desc:"บทความเกี่ยวกับโทรศัพท์มือถือ",content:[
+    {zh:"手机对我们很重要。",pinyin:"Shǒujī duì wǒmen hěn zhòngyào.",th:"โทรศัพท์มือถือสำคัญกับเรามาก"},
+    {zh:"可以打电话发短信。",pinyin:"Kěyǐ dǎ diànhuà fā duǎnxìn.",th:"สามารถโทรศัพท์ส่งข้อความได้"},
+    {zh:"也可以上网。",pinyin:"Yě kěyǐ shàngwǎng.",th:"ก็สามารถใช้อินเทอร์เน็ตได้"},
+    {zh:"现在手机功能很多。",pinyin:"Xiànzài shǒujī gōngnéng hěn duō.",th:"ตอนนี้โทรศัพท์มือถือมีฟังก์ชันเยอะมาก"},
+    {zh:"但是不要一直看手机。",pinyin:"Dànshì búyào yìzhí kàn shǒujī.",th:"แต่อย่าดูโทรศัพท์ตลอดเวลา"}
+  ]},
+  {id:27,range:"1-300",title:"节日",pinyin:"Jiérì",desc:"บทความเกี่ยวกับวันหยุดเทศกาล",content:[
+    {zh:"中国有很多传统节日。",pinyin:"Zhōngguó yǒu hěn duō chuántǒng jiérì.",th:"จีนมีเทศกาลดั้งเดิมเยอะมาก"},
+    {zh:"春节是最重要的。",pinyin:"Chūnjié shì zuì zhòngyào de.",th:"เทศกาลตรุษจีนสำคัญที่สุด"},
+    {zh:"大家回家团聚。",pinyin:"Dàjiā huí jiā tuánjù.",th:"ทุกคนกลับบ้านพบปะกัน"},
+    {zh:"吃饺子，放鞭炮。",pinyin:"Chī jiǎozi, fàng biānpào.",th:"กินเกี๊ยว จุดประทัด"},
+    {zh:"节日气氛很热闹。",pinyin:"Jiérì qìfēn hěn rènao.",th:"บรรยากาศเทศกาลคึกคักมาก"}
+  ]},
+  {id:28,range:"1-300",title:"邻居",pinyin:"Línjū",desc:"บทความเกี่ยวกับเพื่อนบ้าน",content:[
+    {zh:"我的邻居很友好。",pinyin:"Wǒ de línjū hěn yǒuhǎo.",th:"เพื่อนบ้านของฉันเป็นมิตรมาก"},
+    {zh:"我们常常互相帮助。",pinyin:"Wǒmen chángcháng hùxiāng bāngzhù.",th:"เรามักช่วยเหลือซึ่งกันและกัน"},
+    {zh:"有时候一起吃饭。",pinyin:"Yǒu shíhou yìqǐ chīfàn.",th:"บางครั้งกินข้าวด้วยกัน"},
+    {zh:"孩子们一起玩。",pinyin:"Háizimen yìqǐ wán.",th:"เด็กๆเล่นด้วยกัน"},
+    {zh:"好邻居很重要。",pinyin:"Hǎo línjū hěn zhòngyào.",th:"เพื่อนบ้านดีสำคัญมาก"}
+  ]},
+  {id:29,range:"1-300",title:"生日",pinyin:"Shēngrì",desc:"บทความเกี่ยวกับวันเกิด",content:[
+    {zh:"今天是我的生日。",pinyin:"Jīntiān shì wǒ de shēngrì.",th:"วันนี้เป็นวันเกิดของฉัน"},
+    {zh:"朋友们来祝贺我。",pinyin:"Péngyoumen lái zhùhè wǒ.",th:"เพื่อนๆมาอวยพรฉัน"},
+    {zh:"妈妈做了生日蛋糕。",pinyin:"Māma zuò le shēngrì dàngāo.",th:"แม่ทำเค้กวันเกิด"},
+    {zh:"大家唱生日歌。",pinyin:"Dàjiā chàng shēngrì gē.",th:"ทุกคนร้องเพลงวันเกิด"},
+    {zh:"我很开心。",pinyin:"Wǒ hěn kāixīn.",th:"ฉันมีความสุขมาก"}
+  ]},
+  {id:30,range:"1-300",title:"天气预报",pinyin:"Tiānqì yùbào",desc:"บทความเกี่ยวกับพยากรณ์อากาศ",content:[
+    {zh:"每天看天气预报。",pinyin:"Měitiān kàn tiānqì yùbào.",th:"ดูพยากรณ์อากาศทุกวัน"},
+    {zh:"知道明天的天气。",pinyin:"Zhīdào míngtiān de tiānqì.",th:"รู้อากาศวันพรุ่งนี้"},
+    {zh:"如果下雨，带伞。",pinyin:"Rúguǒ xiàyǔ, dài sǎn.",th:"ถ้าฝนตก เอาร่มไป"},
+    {zh:"如果很冷，多穿衣服。",pinyin:"Rúguǒ hěn lěng, duō chuān yīfu.",th:"ถ้าหนาวมาก ใส่เสื้อผ้าเยอะๆ"},
+    {zh:"天气预报很有用。",pinyin:"Tiānqì yùbào hěn yǒuyòng.",th:"พยากรณ์อากาศมีประโยชน์มาก"}
+  ]},
+  {id:31,range:"301-600",title:"发展经济",pinyin:"Fāzhǎn jīngjì",desc:"การพัฒนาเศรษฐกิจ",content:[
+    {zh:"国家重视经济发展。",pinyin:"Guójiā zhòngshì jīngjì fāzhǎn.",th:"ประเทศให้ความสำคัญกับการพัฒนาเศรษฐกิจ"},
+    {zh:"发现新的商业机会。",pinyin:"Fāxiàn xīn de shāngyè jīhuì.",th:"ค้นพบโอกาสทางธุรกิจใหม่"},
+    {zh:"法律保护企业发展。",pinyin:"Fǎlǜ bǎohù qǐyè fāzhǎn.",th:"กฎหมายปกป้องการพัฒนาธุรกิจ"},
+    {zh:"翻译帮助国际交流。",pinyin:"Fānyì bāngzhù guójì jiāoliú.",th:"การแปลช่วยการสื่อสารระหว่างประเทศ"},
+    {zh:"反映市场需求很重要。",pinyin:"Fǎnyìng shìchǎng xūqiú hěn zhòngyào.",th:"การสะท้อนความต้องการตลาดสำคัญมาก"}
+  ]},
+  {id:32,range:"301-600",title:"学习进步",pinyin:"Xuéxí jìnbù",desc:"ความก้าวหน้าในการเรียน",content:[
+    {zh:"复习功课很重要。",pinyin:"Fùxí gōngkè hěn zhòngyào.",th:"ทบทวนบทเรียนสำคัญมาก"},
+    {zh:"父母支持我学习。",pinyin:"Fùmǔ zhīchí wǒ xuéxí.",th:"พ่อแม่สนับสนุนการเรียนของฉัน"},
+    {zh:"负责任的态度很好。",pinyin:"Fùzérèn de tàidu hěn hǎo.",th:"ทัศนคติที่รับผิดชอบดีมาก"},
+    {zh:"附近有图书馆。",pinyin:"Fùjìn yǒu túshūguǎn.",th:"ใกล้ๆมีห้องสมุด"},
+    {zh:"改变学习方法。",pinyin:"Gǎibiàn xuéxí fāngfǎ.",th:"เปลี่ยนวิธีการเรียน"}
+  ]},
+  {id:33,range:"301-600",title:"日常生活",pinyin:"Rìcháng shēnghuó",desc:"ชีวิตประจำวัน",content:[
+    {zh:"干净的环境很舒服。",pinyin:"Gānjìng de huánjìng hěn shūfu.",th:"สภาพแวดล้อมสะอาดสบายมาก"},
+    {zh:"感动的故事。",pinyin:"Gǎndòng de gùshi.",th:"เรื่องราวที่ซาบซึ้ง"},
+    {zh:"感觉很好。",pinyin:"Gǎnjué hěn hǎo.",th:"รู้สึกดีมาก"},
+    {zh:"感冒了要休息。",pinyin:"Gǎnmào le yào xiūxi.",th:"เป็นหวัดต้องพักผ่อน"},
+    {zh:"感谢大家的帮助。",pinyin:"Gǎnxiè dàjiā de bāngzhù.",th:"ขอบคุณทุกคนที่ช่วยเหลือ"}
+  ]},
+  {id:34,range:"301-600",title:"工作态度",pinyin:"Gōngzuò tàidu",desc:"ทัศนคติการทำงาน",content:[
+    {zh:"赶快完成工作。",pinyin:"Gǎnkuài wánchéng gōngzuò.",th:"รีบทำงานให้เสร็จ"},
+    {zh:"刚才开会了。",pinyin:"Gāngcái kāihuì le.",th:"เพิ่งประชุมไป"},
+    {zh:"高兴地工作。",pinyin:"Gāoxìng de gōngzuò.",th:"ทำงานอย่างมีความสุข"},
+    {zh:"搞清楚问题。",pinyin:"Gǎo qīngchu wèntí.",th:"ทำความเข้าใจปัญหาให้ชัดเจน"},
+    {zh:"告诉同事消息。",pinyin:"Gàosu tóngshì xiāoxi.",th:"บอกข่าวเพื่อนร่วมงาน"}
+  ]},
+  {id:35,range:"301-600",title:"社交活动",pinyin:"Shèjiāo huódòng",desc:"กิจกรรมสังคม",content:[
+    {zh:"各种活动都参加。",pinyin:"Gè zhǒng huódòng dōu cānjiā.",th:"เข้าร่วมกิจกรรมทุกประเภท"},
+    {zh:"给朋友打电话。",pinyin:"Gěi péngyou dǎ diànhuà.",th:"โทรหาเพื่อน"},
+    {zh:"根据计划行动。",pinyin:"Gēnjù jìhuà xíngdòng.",th:"ดำเนินการตามแผน"},
+    {zh:"更加努力学习。",pinyin:"Gèngjiā nǔlì xuéxí.",th:"เรียนหนักขึ้นกว่าเดิม"},
+    {zh:"工资够用了。",pinyin:"Gōngzī gòu yòng le.",th:"เงินเดือนพอใช้แล้ว"}
+  ]},
+  {id:36,range:"301-600",title:"发展经济",pinyin:"Fāzhǎn jīngjì",desc:"การพัฒนาเศรษฐกิจ",content:[
+    {zh:"国家重视经济发展。",pinyin:"Guójiā zhòngshì jīngjì fāzhǎn.",th:"ประเทศให้ความสำคัญกับการพัฒนาเศรษฐกิจ"},
+    {zh:"发现新的商业机会。",pinyin:"Fāxiàn xīn de shāngyè jīhuì.",th:"ค้นพบโอกาสทางธุรกิจใหม่"},
+    {zh:"法律保护企业发展。",pinyin:"Fǎlǜ bǎohù qǐyè fāzhǎn.",th:"กฎหมายปกป้องการพัฒนาธุรกิจ"},
+    {zh:"翻译帮助国际交流。",pinyin:"Fānyì bāngzhù guójì jiāoliú.",th:"การแปลช่วยการสื่อสารระหว่างประเทศ"},
+    {zh:"反映市场需求很重要。",pinyin:"Fǎnyìng shìchǎng xūqiú hěn zhòngyào.",th:"การสะท้อนความต้องการตลาดสำคัญมาก"}
+  ]},
+  {id:37,range:"301-600",title:"学习进步",pinyin:"Xuéxí jìnbù",desc:"ความก้าวหน้าในการเรียน",content:[
+    {zh:"复习功课很重要。",pinyin:"Fùxí gōngkè hěn zhòngyào.",th:"ทบทวนบทเรียนสำคัญมาก"},
+    {zh:"父母支持我学习。",pinyin:"Fùmǔ zhīchí wǒ xuéxí.",th:"พ่อแม่สนับสนุนการเรียนของฉัน"},
+    {zh:"负责任的态度很好。",pinyin:"Fùzérèn de tàidu hěn hǎo.",th:"ทัศนคติที่รับผิดชอบดีมาก"},
+    {zh:"附近有图书馆。",pinyin:"Fùjìn yǒu túshūguǎn.",th:"ใกล้ๆมีห้องสมุด"},
+    {zh:"改变学习方法。",pinyin:"Gǎibiàn xuéxí fāngfǎ.",th:"เปลี่ยนวิธีการเรียน"}
+  ]},
+  {id:38,range:"301-600",title:"日常生活",pinyin:"Rìcháng shēnghuó",desc:"ชีวิตประจำวัน",content:[
+    {zh:"干净的环境很舒服。",pinyin:"Gānjìng de huánjìng hěn shūfu.",th:"สภาพแวดล้อมสะอาดสบายมาก"},
+    {zh:"感动的故事。",pinyin:"Gǎndòng de gùshi.",th:"เรื่องราวที่ซาบซึ้ง"},
+    {zh:"感觉很好。",pinyin:"Gǎnjué hěn hǎo.",th:"รู้สึกดีมาก"},
+    {zh:"感冒了要休息。",pinyin:"Gǎnmào le yào xiūxi.",th:"เป็นหวัดต้องพักผ่อน"},
+    {zh:"感谢大家的帮助。",pinyin:"Gǎnxiè dàjiā de bāngzhù.",th:"ขอบคุณทุกคนที่ช่วยเหลือ"}
+  ]},
+  {id:39,range:"301-600",title:"工作态度",pinyin:"Gōngzuò tàidu",desc:"ทัศนคติการทำงาน",content:[
+    {zh:"赶快完成工作。",pinyin:"Gǎnkuài wánchéng gōngzuò.",th:"รีบทำงานให้เสร็จ"},
+    {zh:"刚才开会了。",pinyin:"Gāngcái kāihuì le.",th:"เพิ่งประชุมไป"},
+    {zh:"高兴地工作。",pinyin:"Gāoxìng de gōngzuò.",th:"ทำงานอย่างมีความสุข"},
+    {zh:"搞清楚问题。",pinyin:"Gǎo qīngchu wèntí.",th:"ทำความเข้าใจปัญหาให้ชัดเจน"},
+    {zh:"告诉同事消息。",pinyin:"Gàosu tóngshì xiāoxi.",th:"บอกข่าวเพื่อนร่วมงาน"}
+  ]},
+  {id:40,range:"301-600",title:"社交活动",pinyin:"Shèjiāo huódòng",desc:"กิจกรรมสังคม",content:[
+    {zh:"各种活动都参加。",pinyin:"Gè zhǒng huódòng dōu cānjiā.",th:"เข้าร่วมกิจกรรมทุกประเภท"},
+    {zh:"给朋友打电话。",pinyin:"Gěi péngyou dǎ diànhuà.",th:"โทรหาเพื่อน"},
+    {zh:"根据计划行动。",pinyin:"Gēnjù jìhuà xíngdòng.",th:"ดำเนินการตามแผน"},
+    {zh:"更加努力学习。",pinyin:"Gèngjiā nǔlì xuéxí.",th:"เรียนหนักขึ้นกว่าเดิม"},
+    {zh:"工资够用了。",pinyin:"Gōngzī gòu yòng le.",th:"เงินเดือนพอใช้แล้ว"}
+  ]},
+  {id:41,range:"301-600",title:"发展经济",pinyin:"Fāzhǎn jīngjì",desc:"การพัฒนาเศรษฐกิจ",content:[
+    {zh:"国家重视经济发展。",pinyin:"Guójiā zhòngshì jīngjì fāzhǎn.",th:"ประเทศให้ความสำคัญกับการพัฒนาเศรษฐกิจ"},
+    {zh:"发现新的商业机会。",pinyin:"Fāxiàn xīn de shāngyè jīhuì.",th:"ค้นพบโอกาสทางธุรกิจใหม่"},
+    {zh:"法律保护企业发展。",pinyin:"Fǎlǜ bǎohù qǐyè fāzhǎn.",th:"กฎหมายปกป้องการพัฒนาธุรกิจ"},
+    {zh:"翻译帮助国际交流。",pinyin:"Fānyì bāngzhù guójì jiāoliú.",th:"การแปลช่วยการสื่อสารระหว่างประเทศ"},
+    {zh:"反映市场需求很重要。",pinyin:"Fǎnyìng shìchǎng xūqiú hěn zhòngyào.",th:"การสะท้อนความต้องการตลาดสำคัญมาก"}
+  ]},
+  {id:42,range:"301-600",title:"学习进步",pinyin:"Xuéxí jìnbù",desc:"ความก้าวหน้าในการเรียน",content:[
+    {zh:"复习功课很重要。",pinyin:"Fùxí gōngkè hěn zhòngyào.",th:"ทบทวนบทเรียนสำคัญมาก"},
+    {zh:"父母支持我学习。",pinyin:"Fùmǔ zhīchí wǒ xuéxí.",th:"พ่อแม่สนับสนุนการเรียนของฉัน"},
+    {zh:"负责任的态度很好。",pinyin:"Fùzérèn de tàidu hěn hǎo.",th:"ทัศนคติที่รับผิดชอบดีมาก"},
+    {zh:"附近有图书馆。",pinyin:"Fùjìn yǒu túshūguǎn.",th:"ใกล้ๆมีห้องสมุด"},
+    {zh:"改变学习方法。",pinyin:"Gǎibiàn xuéxí fāngfǎ.",th:"เปลี่ยนวิธีการเรียน"}
+  ]},
+  {id:43,range:"301-600",title:"日常生活",pinyin:"Rìcháng shēnghuó",desc:"ชีวิตประจำวัน",content:[
+    {zh:"干净的环境很舒服。",pinyin:"Gānjìng de huánjìng hěn shūfu.",th:"สภาพแวดล้อมสะอาดสบายมาก"},
+    {zh:"感动的故事。",pinyin:"Gǎndòng de gùshi.",th:"เรื่องราวที่ซาบซึ้ง"},
+    {zh:"感觉很好。",pinyin:"Gǎnjué hěn hǎo.",th:"รู้สึกดีมาก"},
+    {zh:"感冒了要休息。",pinyin:"Gǎnmào le yào xiūxi.",th:"เป็นหวัดต้องพักผ่อน"},
+    {zh:"感谢大家的帮助。",pinyin:"Gǎnxiè dàjiā de bāngzhù.",th:"ขอบคุณทุกคนที่ช่วยเหลือ"}
+  ]},
+  {id:44,range:"301-600",title:"工作态度",pinyin:"Gōngzuò tàidu",desc:"ทัศนคติการทำงาน",content:[
+    {zh:"赶快完成工作。",pinyin:"Gǎnkuài wánchéng gōngzuò.",th:"รีบทำงานให้เสร็จ"},
+    {zh:"刚才开会了。",pinyin:"Gāngcái kāihuì le.",th:"เพิ่งประชุมไป"},
+    {zh:"高兴地工作。",pinyin:"Gāoxìng de gōngzuò.",th:"ทำงานอย่างมีความสุข"},
+    {zh:"搞清楚问题。",pinyin:"Gǎo qīngchu wèntí.",th:"ทำความเข้าใจปัญหาให้ชัดเจน"},
+    {zh:"告诉同事消息。",pinyin:"Gàosu tóngshì xiāoxi.",th:"บอกข่าวเพื่อนร่วมงาน"}
+  ]},
+  {id:45,range:"301-600",title:"社交活动",pinyin:"Shèjiāo huódòng",desc:"กิจกรรมสังคม",content:[
+    {zh:"各种活动都参加。",pinyin:"Gè zhǒng huódòng dōu cānjiā.",th:"เข้าร่วมกิจกรรมทุกประเภท"},
+    {zh:"给朋友打电话。",pinyin:"Gěi péngyou dǎ diànhuà.",th:"โทรหาเพื่อน"},
+    {zh:"根据计划行动。",pinyin:"Gēnjù jìhuà xíngdòng.",th:"ดำเนินการตามแผน"},
+    {zh:"更加努力学习。",pinyin:"Gèngjiā nǔlì xuéxí.",th:"เรียนหนักขึ้นกว่าเดิม"},
+    {zh:"工资够用了。",pinyin:"Gōngzī gòu yòng le.",th:"เงินเดือนพอใช้แล้ว"}
+  ]},
+  {id:46,range:"301-600",title:"发展经济",pinyin:"Fāzhǎn jīngjì",desc:"การพัฒนาเศรษฐกิจ",content:[
+    {zh:"国家重视经济发展。",pinyin:"Guójiā zhòngshì jīngjì fāzhǎn.",th:"ประเทศให้ความสำคัญกับการพัฒนาเศรษฐกิจ"},
+    {zh:"发现新的商业机会。",pinyin:"Fāxiàn xīn de shāngyè jīhuì.",th:"ค้นพบโอกาสทางธุรกิจใหม่"},
+    {zh:"法律保护企业发展。",pinyin:"Fǎlǜ bǎohù qǐyè fāzhǎn.",th:"กฎหมายปกป้องการพัฒนาธุรกิจ"},
+    {zh:"翻译帮助国际交流。",pinyin:"Fānyì bāngzhù guójì jiāoliú.",th:"การแปลช่วยการสื่อสารระหว่างประเทศ"},
+    {zh:"反映市场需求很重要。",pinyin:"Fǎnyìng shìchǎng xūqiú hěn zhòngyào.",th:"การสะท้อนความต้องการตลาดสำคัญมาก"}
+  ]},
+  {id:47,range:"301-600",title:"学习进步",pinyin:"Xuéxí jìnbù",desc:"ความก้าวหน้าในการเรียน",content:[
+    {zh:"复习功课很重要。",pinyin:"Fùxí gōngkè hěn zhòngyào.",th:"ทบทวนบทเรียนสำคัญมาก"},
+    {zh:"父母支持我学习。",pinyin:"Fùmǔ zhīchí wǒ xuéxí.",th:"พ่อแม่สนับสนุนการเรียนของฉัน"},
+    {zh:"负责任的态度很好。",pinyin:"Fùzérèn de tàidu hěn hǎo.",th:"ทัศนคติที่รับผิดชอบดีมาก"},
+    {zh:"附近有图书馆。",pinyin:"Fùjìn yǒu túshūguǎn.",th:"ใกล้ๆมีห้องสมุด"},
+    {zh:"改变学习方法。",pinyin:"Gǎibiàn xuéxí fāngfǎ.",th:"เปลี่ยนวิธีการเรียน"}
+  ]},
+  {id:48,range:"301-600",title:"日常生活",pinyin:"Rìcháng shēnghuó",desc:"ชีวิตประจำวัน",content:[
+    {zh:"干净的环境很舒服。",pinyin:"Gānjìng de huánjìng hěn shūfu.",th:"สภาพแวดล้อมสะอาดสบายมาก"},
+    {zh:"感动的故事。",pinyin:"Gǎndòng de gùshi.",th:"เรื่องราวที่ซาบซึ้ง"},
+    {zh:"感觉很好。",pinyin:"Gǎnjué hěn hǎo.",th:"รู้สึกดีมาก"},
+    {zh:"感冒了要休息。",pinyin:"Gǎnmào le yào xiūxi.",th:"เป็นหวัดต้องพักผ่อน"},
+    {zh:"感谢大家的帮助。",pinyin:"Gǎnxiè dàjiā de bāngzhù.",th:"ขอบคุณทุกคนที่ช่วยเหลือ"}
+  ]},
+  {id:49,range:"301-600",title:"工作态度",pinyin:"Gōngzuò tàidu",desc:"ทัศนคติการทำงาน",content:[
+    {zh:"赶快完成工作。",pinyin:"Gǎnkuài wánchéng gōngzuò.",th:"รีบทำงานให้เสร็จ"},
+    {zh:"刚才开会了。",pinyin:"Gāngcái kāihuì le.",th:"เพิ่งประชุมไป"},
+    {zh:"高兴地工作。",pinyin:"Gāoxìng de gōngzuò.",th:"ทำงานอย่างมีความสุข"},
+    {zh:"搞清楚问题。",pinyin:"Gǎo qīngchu wèntí.",th:"ทำความเข้าใจปัญหาให้ชัดเจน"},
+    {zh:"告诉同事消息。",pinyin:"Gàosu tóngshì xiāoxi.",th:"บอกข่าวเพื่อนร่วมงาน"}
+  ]},
+  {id:50,range:"301-600",title:"社交活动",pinyin:"Shèjiāo huódòng",desc:"กิจกรรมสังคม",content:[
+    {zh:"各种活动都参加。",pinyin:"Gè zhǒng huódòng dōu cānjiā.",th:"เข้าร่วมกิจกรรมทุกประเภท"},
+    {zh:"给朋友打电话。",pinyin:"Gěi péngyou dǎ diànhuà.",th:"โทรหาเพื่อน"},
+    {zh:"根据计划行动。",pinyin:"Gēnjù jìhuà xíngdòng.",th:"ดำเนินการตามแผน"},
+    {zh:"更加努力学习。",pinyin:"Gèngjiā nǔlì xuéxí.",th:"เรียนหนักขึ้นกว่าเดิม"},
+    {zh:"工资够用了。",pinyin:"Gōngzī gòu yòng le.",th:"เงินเดือนพอใช้แล้ว"}
+  ]},
+  {id:51,range:"301-600",title:"发展经济",pinyin:"Fāzhǎn jīngjì",desc:"การพัฒนาเศรษฐกิจ",content:[
+    {zh:"国家重视经济发展。",pinyin:"Guójiā zhòngshì jīngjì fāzhǎn.",th:"ประเทศให้ความสำคัญกับการพัฒนาเศรษฐกิจ"},
+    {zh:"发现新的商业机会。",pinyin:"Fāxiàn xīn de shāngyè jīhuì.",th:"ค้นพบโอกาสทางธุรกิจใหม่"},
+    {zh:"法律保护企业发展。",pinyin:"Fǎlǜ bǎohù qǐyè fāzhǎn.",th:"กฎหมายปกป้องการพัฒนาธุรกิจ"},
+    {zh:"翻译帮助国际交流。",pinyin:"Fānyì bāngzhù guójì jiāoliú.",th:"การแปลช่วยการสื่อสารระหว่างประเทศ"},
+    {zh:"反映市场需求很重要。",pinyin:"Fǎnyìng shìchǎng xūqiú hěn zhòngyào.",th:"การสะท้อนความต้องการตลาดสำคัญมาก"}
+  ]},
+  {id:52,range:"301-600",title:"学习进步",pinyin:"Xuéxí jìnbù",desc:"ความก้าวหน้าในการเรียน",content:[
+    {zh:"复习功课很重要。",pinyin:"Fùxí gōngkè hěn zhòngyào.",th:"ทบทวนบทเรียนสำคัญมาก"},
+    {zh:"父母支持我学习。",pinyin:"Fùmǔ zhīchí wǒ xuéxí.",th:"พ่อแม่สนับสนุนการเรียนของฉัน"},
+    {zh:"负责任的态度很好。",pinyin:"Fùzérèn de tàidu hěn hǎo.",th:"ทัศนคติที่รับผิดชอบดีมาก"},
+    {zh:"附近有图书馆。",pinyin:"Fùjìn yǒu túshūguǎn.",th:"ใกล้ๆมีห้องสมุด"},
+    {zh:"改变学习方法。",pinyin:"Gǎibiàn xuéxí fāngfǎ.",th:"เปลี่ยนวิธีการเรียน"}
+  ]},
+  {id:53,range:"301-600",title:"日常生活",pinyin:"Rìcháng shēnghuó",desc:"ชีวิตประจำวัน",content:[
+    {zh:"干净的环境很舒服。",pinyin:"Gānjìng de huánjìng hěn shūfu.",th:"สภาพแวดล้อมสะอาดสบายมาก"},
+    {zh:"感动的故事。",pinyin:"Gǎndòng de gùshi.",th:"เรื่องราวที่ซาบซึ้ง"},
+    {zh:"感觉很好。",pinyin:"Gǎnjué hěn hǎo.",th:"รู้สึกดีมาก"},
+    {zh:"感冒了要休息。",pinyin:"Gǎnmào le yào xiūxi.",th:"เป็นหวัดต้องพักผ่อน"},
+    {zh:"感谢大家的帮助。",pinyin:"Gǎnxiè dàjiā de bāngzhù.",th:"ขอบคุณทุกคนที่ช่วยเหลือ"}
+  ]},
+  {id:54,range:"301-600",title:"工作态度",pinyin:"Gōngzuò tàidu",desc:"ทัศนคติการทำงาน",content:[
+    {zh:"赶快完成工作。",pinyin:"Gǎnkuài wánchéng gōngzuò.",th:"รีบทำงานให้เสร็จ"},
+    {zh:"刚才开会了。",pinyin:"Gāngcái kāihuì le.",th:"เพิ่งประชุมไป"},
+    {zh:"高兴地工作。",pinyin:"Gāoxìng de gōngzuò.",th:"ทำงานอย่างมีความสุข"},
+    {zh:"搞清楚问题。",pinyin:"Gǎo qīngchu wèntí.",th:"ทำความเข้าใจปัญหาให้ชัดเจน"},
+    {zh:"告诉同事消息。",pinyin:"Gàosu tóngshì xiāoxi.",th:"บอกข่าวเพื่อนร่วมงาน"}
+  ]},
+  {id:55,range:"301-600",title:"社交活动",pinyin:"Shèjiāo huódòng",desc:"กิจกรรมสังคม",content:[
+    {zh:"各种活动都参加。",pinyin:"Gè zhǒng huódòng dōu cānjiā.",th:"เข้าร่วมกิจกรรมทุกประเภท"},
+    {zh:"给朋友打电话。",pinyin:"Gěi péngyou dǎ diànhuà.",th:"โทรหาเพื่อน"},
+    {zh:"根据计划行动。",pinyin:"Gēnjù jìhuà xíngdòng.",th:"ดำเนินการตามแผน"},
+    {zh:"更加努力学习。",pinyin:"Gèngjiā nǔlì xuéxí.",th:"เรียนหนักขึ้นกว่าเดิม"},
+    {zh:"工资够用了。",pinyin:"Gōngzī gòu yòng le.",th:"เงินเดือนพอใช้แล้ว"}
+  ]},
+  {id:56,range:"301-600",title:"发展经济",pinyin:"Fāzhǎn jīngjì",desc:"การพัฒนาเศรษฐกิจ",content:[
+    {zh:"国家重视经济发展。",pinyin:"Guójiā zhòngshì jīngjì fāzhǎn.",th:"ประเทศให้ความสำคัญกับการพัฒนาเศรษฐกิจ"},
+    {zh:"发现新的商业机会。",pinyin:"Fāxiàn xīn de shāngyè jīhuì.",th:"ค้นพบโอกาสทางธุรกิจใหม่"},
+    {zh:"法律保护企业发展。",pinyin:"Fǎlǜ bǎohù qǐyè fāzhǎn.",th:"กฎหมายปกป้องการพัฒนาธุรกิจ"},
+    {zh:"翻译帮助国际交流。",pinyin:"Fānyì bāngzhù guójì jiāoliú.",th:"การแปลช่วยการสื่อสารระหว่างประเทศ"},
+    {zh:"反映市场需求很重要。",pinyin:"Fǎnyìng shìchǎng xūqiú hěn zhòngyào.",th:"การสะท้อนความต้องการตลาดสำคัญมาก"}
+  ]},
+  {id:57,range:"301-600",title:"学习进步",pinyin:"Xuéxí jìnbù",desc:"ความก้าวหน้าในการเรียน",content:[
+    {zh:"复习功课很重要。",pinyin:"Fùxí gōngkè hěn zhòngyào.",th:"ทบทวนบทเรียนสำคัญมาก"},
+    {zh:"父母支持我学习。",pinyin:"Fùmǔ zhīchí wǒ xuéxí.",th:"พ่อแม่สนับสนุนการเรียนของฉัน"},
+    {zh:"负责任的态度很好。",pinyin:"Fùzérèn de tàidu hěn hǎo.",th:"ทัศนคติที่รับผิดชอบดีมาก"},
+    {zh:"附近有图书馆。",pinyin:"Fùjìn yǒu túshūguǎn.",th:"ใกล้ๆมีห้องสมุด"},
+    {zh:"改变学习方法。",pinyin:"Gǎibiàn xuéxí fāngfǎ.",th:"เปลี่ยนวิธีการเรียน"}
+  ]},
+  {id:58,range:"301-600",title:"日常生活",pinyin:"Rìcháng shēnghuó",desc:"ชีวิตประจำวัน",content:[
+    {zh:"干净的环境很舒服。",pinyin:"Gānjìng de huánjìng hěn shūfu.",th:"สภาพแวดล้อมสะอาดสบายมาก"},
+    {zh:"感动的故事。",pinyin:"Gǎndòng de gùshi.",th:"เรื่องราวที่ซาบซึ้ง"},
+    {zh:"感觉很好。",pinyin:"Gǎnjué hěn hǎo.",th:"รู้สึกดีมาก"},
+    {zh:"感冒了要休息。",pinyin:"Gǎnmào le yào xiūxi.",th:"เป็นหวัดต้องพักผ่อน"},
+    {zh:"感谢大家的帮助。",pinyin:"Gǎnxiè dàjiā de bāngzhù.",th:"ขอบคุณทุกคนที่ช่วยเหลือ"}
+  ]},
+  {id:59,range:"301-600",title:"工作态度",pinyin:"Gōngzuò tàidu",desc:"ทัศนคติการทำงาน",content:[
+    {zh:"赶快完成工作。",pinyin:"Gǎnkuài wánchéng gōngzuò.",th:"รีบทำงานให้เสร็จ"},
+    {zh:"刚才开会了。",pinyin:"Gāngcái kāihuì le.",th:"เพิ่งประชุมไป"},
+    {zh:"高兴地工作。",pinyin:"Gāoxìng de gōngzuò.",th:"ทำงานอย่างมีความสุข"},
+    {zh:"搞清楚问题。",pinyin:"Gǎo qīngchu wèntí.",th:"ทำความเข้าใจปัญหาให้ชัดเจน"},
+    {zh:"告诉同事消息。",pinyin:"Gàosu tóngshì xiāoxi.",th:"บอกข่าวเพื่อนร่วมงาน"}
+  ]},
+  {id:60,range:"301-600",title:"社交活动",pinyin:"Shèjiāo huódòng",desc:"กิจกรรมสังคม",content:[
+    {zh:"各种活动都参加。",pinyin:"Gè zhǒng huódòng dōu cānjiā.",th:"เข้าร่วมกิจกรรมทุกประเภท"},
+    {zh:"给朋友打电话。",pinyin:"Gěi péngyou dǎ diànhuà.",th:"โทรหาเพื่อน"},
+    {zh:"根据计划行动。",pinyin:"Gēnjù jìhuà xíngdòng.",th:"ดำเนินการตามแผน"},
+    {zh:"更加努力学习。",pinyin:"Gèngjiā nǔlì xuéxí.",th:"เรียนหนักขึ้นกว่าเดิม"},
+    {zh:"工资够用了。",pinyin:"Gōngzī gòu yòng le.",th:"เงินเดือนพอใช้แล้ว"}
+  ]},
+  {id:61,range:"601-900",title:"旅游经历",pinyin:"Lǚyóu jīnglì",desc:"ประสบการณ์ท่องเที่ยว",content:[
+    {zh:"旅游让人放松。",pinyin:"Lǚyóu ràng rén fàngsōng.",th:"การท่องเที่ยวทำให้ผ่อนคลาย"},
+    {zh:"欣赏美丽的风景。",pinyin:"Xīnshǎng měilì de fēngjǐng.",th:"ชื่นชมทิวทัศน์ที่สวยงาม"},
+    {zh:"品尝当地美食。",pinyin:"Pǐncháng dāngdì měishí.",th:"ลิ้มรสอาหารท้องถิ่น"},
+    {zh:"拍照留念。",pinyin:"Pāizhào liúniàn.",th:"ถ่ายภาพเก็บไว้เป็นที่ระลึก"},
+    {zh:"结识新朋友。",pinyin:"Jiéshí xīn péngyou.",th:"รู้จักเพื่อนใหม่"}
+  ]},
+  {id:62,range:"601-900",title:"科技发展",pinyin:"Kējì fāzhǎn",desc:"การพัฒนาเทคโนโลยี",content:[
+    {zh:"科技改变生活。",pinyin:"Kējì gǎibiàn shēnghuó.",th:"เทคโนโลยีเปลี่ยนแปลงชีวิต"},
+    {zh:"网络很方便。",pinyin:"Wǎngluò hěn fāngbiàn.",th:"อินเทอร์เน็ตสะดวกมาก"},
+    {zh:"手机功能强大。",pinyin:"Shǒujī gōngnéng qiángdà.",th:"โทรศัพท์มือถือมีฟังก์ชันทรงพลัง"},
+    {zh:"电脑帮助工作。",pinyin:"Diànnǎo bāngzhù gōngzuò.",th:"คอมพิวเตอร์ช่วยงาน"},
+    {zh:"科技进步很快。",pinyin:"Kējì jìnbù hěn kuài.",th:"เทคโนโลยีก้าวหน้าเร็วมาก"}
+  ]},
+  {id:63,range:"601-900",title:"环境保护",pinyin:"Huánjìng bǎohù",desc:"การอนุรักษ์สิ่งแวดล้อม",content:[
+    {zh:"保护环境人人有责。",pinyin:"Bǎohù huánjìng rénrén yǒu zé.",th:"ทุกคนมีหน้าที่ปกป้องสิ่งแวดล้อม"},
+    {zh:"减少污染。",pinyin:"Jiǎnshǎo wūrǎn.",th:"ลดมลพิษ"},
+    {zh:"节约能源。",pinyin:"Jiéyuē néngyuán.",th:"ประหยัดพลังงาน"},
+    {zh:"种树绿化。",pinyin:"Zhòng shù lǜhuà.",th:"ปลูกต้นไม้ทำให้เขียวขจี"},
+    {zh:"爱护地球。",pinyin:"Àihù dìqiú.",th:"รักษาโลก"}
+  ]},
+  {id:64,range:"601-900",title:"文化交流",pinyin:"Wénhuà jiāoliú",desc:"การแลกเปลี่ยนวัฒนธรรม",content:[
+    {zh:"了解不同文化。",pinyin:"Liǎojiě bùtóng wénhuà.",th:"เข้าใจวัฒนธรรมที่แตกต่าง"},
+    {zh:"尊重传统习俗。",pinyin:"Zūnzhòng chuántǒng xísú.",th:"เคารพประเพณีดั้งเดิม"},
+    {zh:"学习外语。",pinyin:"Xuéxí wàiyǔ.",th:"เรียนภาษาต่างประเทศ"},
+    {zh:"参加文化活动。",pinyin:"Cānjiā wénhuà huódòng.",th:"เข้าร่วมกิจกรรมทางวัฒนธรรม"},
+    {zh:"促进交流合作。",pinyin:"Cùjìn jiāoliú hézuò.",th:"ส่งเสริมการแลกเปลี่ยนและความร่วมมือ"}
+  ]},
+  {id:65,range:"601-900",title:"健康生活",pinyin:"Jiànkāng shēnghuó",desc:"ชีวิตสุขภาพดี",content:[
+    {zh:"规律作息。",pinyin:"Guīlǜ zuòxī.",th:"มีกิจวัตรที่สม่ำเสมอ"},
+    {zh:"均衡饮食。",pinyin:"Jūnhéng yǐnshí.",th:"รับประทานอาหารสมดุล"},
+    {zh:"适量运动。",pinyin:"Shìliàng yùndòng.",th:"ออกกำลังกายพอเหมาะ"},
+    {zh:"保持心情愉快。",pinyin:"Bǎochí xīnqíng yúkuài.",th:"รักษาอารมณ์ให้แจ่มใส"},
+    {zh:"定期体检。",pinyin:"Dìngqī tǐjiǎn.",th:"ตรวจสุขภาพเป็นประจำ"}
+  ]},
+  {id:66,range:"601-900",title:"旅游经历",pinyin:"Lǚyóu jīnglì",desc:"ประสบการณ์ท่องเที่ยว",content:[
+    {zh:"旅游让人放松。",pinyin:"Lǚyóu ràng rén fàngsōng.",th:"การท่องเที่ยวทำให้ผ่อนคลาย"},
+    {zh:"欣赏美丽的风景。",pinyin:"Xīnshǎng měilì de fēngjǐng.",th:"ชื่นชมทิวทัศน์ที่สวยงาม"},
+    {zh:"品尝当地美食。",pinyin:"Pǐncháng dāngdì měishí.",th:"ลิ้มรสอาหารท้องถิ่น"},
+    {zh:"拍照留念。",pinyin:"Pāizhào liúniàn.",th:"ถ่ายภาพเก็บไว้เป็นที่ระลึก"},
+    {zh:"结识新朋友。",pinyin:"Jiéshí xīn péngyou.",th:"รู้จักเพื่อนใหม่"}
+  ]},
+  {id:67,range:"601-900",title:"科技发展",pinyin:"Kējì fāzhǎn",desc:"การพัฒนาเทคโนโลยี",content:[
+    {zh:"科技改变生活。",pinyin:"Kējì gǎibiàn shēnghuó.",th:"เทคโนโลยีเปลี่ยนแปลงชีวิต"},
+    {zh:"网络很方便。",pinyin:"Wǎngluò hěn fāngbiàn.",th:"อินเทอร์เน็ตสะดวกมาก"},
+    {zh:"手机功能强大。",pinyin:"Shǒujī gōngnéng qiángdà.",th:"โทรศัพท์มือถือมีฟังก์ชันทรงพลัง"},
+    {zh:"电脑帮助工作。",pinyin:"Diànnǎo bāngzhù gōngzuò.",th:"คอมพิวเตอร์ช่วยงาน"},
+    {zh:"科技进步很快。",pinyin:"Kējì jìnbù hěn kuài.",th:"เทคโนโลยีก้าวหน้าเร็วมาก"}
+  ]},
+  {id:68,range:"601-900",title:"环境保护",pinyin:"Huánjìng bǎohù",desc:"การอนุรักษ์สิ่งแวดล้อม",content:[
+    {zh:"保护环境人人有责。",pinyin:"Bǎohù huánjìng rénrén yǒu zé.",th:"ทุกคนมีหน้าที่ปกป้องสิ่งแวดล้อม"},
+    {zh:"减少污染。",pinyin:"Jiǎnshǎo wūrǎn.",th:"ลดมลพิษ"},
+    {zh:"节约能源。",pinyin:"Jiéyuē néngyuán.",th:"ประหยัดพลังงาน"},
+    {zh:"种树绿化。",pinyin:"Zhòng shù lǜhuà.",th:"ปลูกต้นไม้ทำให้เขียวขจี"},
+    {zh:"爱护地球。",pinyin:"Àihù dìqiú.",th:"รักษาโลก"}
+  ]},
+  {id:69,range:"601-900",title:"文化交流",pinyin:"Wénhuà jiāoliú",desc:"การแลกเปลี่ยนวัฒนธรรม",content:[
+    {zh:"了解不同文化。",pinyin:"Liǎojiě bùtóng wénhuà.",th:"เข้าใจวัฒนธรรมที่แตกต่าง"},
+    {zh:"尊重传统习俗。",pinyin:"Zūnzhòng chuántǒng xísú.",th:"เคารพประเพณีดั้งเดิม"},
+    {zh:"学习外语。",pinyin:"Xuéxí wàiyǔ.",th:"เรียนภาษาต่างประเทศ"},
+    {zh:"参加文化活动。",pinyin:"Cānjiā wénhuà huódòng.",th:"เข้าร่วมกิจกรรมทางวัฒนธรรม"},
+    {zh:"促进交流合作。",pinyin:"Cùjìn jiāoliú hézuò.",th:"ส่งเสริมการแลกเปลี่ยนและความร่วมมือ"}
+  ]},
+  {id:70,range:"601-900",title:"健康生活",pinyin:"Jiànkāng shēnghuó",desc:"ชีวิตสุขภาพดี",content:[
+    {zh:"规律作息。",pinyin:"Guīlǜ zuòxī.",th:"มีกิจวัตรที่สม่ำเสมอ"},
+    {zh:"均衡饮食。",pinyin:"Jūnhéng yǐnshí.",th:"รับประทานอาหารสมดุล"},
+    {zh:"适量运动。",pinyin:"Shìliàng yùndòng.",th:"ออกกำลังกายพอเหมาะ"},
+    {zh:"保持心情愉快。",pinyin:"Bǎochí xīnqíng yúkuài.",th:"รักษาอารมณ์ให้แจ่มใส"},
+    {zh:"定期体检。",pinyin:"Dìngqī tǐjiǎn.",th:"ตรวจสุขภาพเป็นประจำ"}
+  ]},
+  {id:71,range:"601-900",title:"旅游经历",pinyin:"Lǚyóu jīnglì",desc:"ประสบการณ์ท่องเที่ยว",content:[
+    {zh:"旅游让人放松。",pinyin:"Lǚyóu ràng rén fàngsōng.",th:"การท่องเที่ยวทำให้ผ่อนคลาย"},
+    {zh:"欣赏美丽的风景。",pinyin:"Xīnshǎng měilì de fēngjǐng.",th:"ชื่นชมทิวทัศน์ที่สวยงาม"},
+    {zh:"品尝当地美食。",pinyin:"Pǐncháng dāngdì měishí.",th:"ลิ้มรสอาหารท้องถิ่น"},
+    {zh:"拍照留念。",pinyin:"Pāizhào liúniàn.",th:"ถ่ายภาพเก็บไว้เป็นที่ระลึก"},
+    {zh:"结识新朋友。",pinyin:"Jiéshí xīn péngyou.",th:"รู้จักเพื่อนใหม่"}
+  ]},
+  {id:72,range:"601-900",title:"科技发展",pinyin:"Kējì fāzhǎn",desc:"การพัฒนาเทคโนโลยี",content:[
+    {zh:"科技改变生活。",pinyin:"Kējì gǎibiàn shēnghuó.",th:"เทคโนโลยีเปลี่ยนแปลงชีวิต"},
+    {zh:"网络很方便。",pinyin:"Wǎngluò hěn fāngbiàn.",th:"อินเทอร์เน็ตสะดวกมาก"},
+    {zh:"手机功能强大。",pinyin:"Shǒujī gōngnéng qiángdà.",th:"โทรศัพท์มือถือมีฟังก์ชันทรงพลัง"},
+    {zh:"电脑帮助工作。",pinyin:"Diànnǎo bāngzhù gōngzuò.",th:"คอมพิวเตอร์ช่วยงาน"},
+    {zh:"科技进步很快。",pinyin:"Kējì jìnbù hěn kuài.",th:"เทคโนโลยีก้าวหน้าเร็วมาก"}
+  ]},
+  {id:73,range:"601-900",title:"环境保护",pinyin:"Huánjìng bǎohù",desc:"การอนุรักษ์สิ่งแวดล้อม",content:[
+    {zh:"保护环境人人有责。",pinyin:"Bǎohù huánjìng rénrén yǒu zé.",th:"ทุกคนมีหน้าที่ปกป้องสิ่งแวดล้อม"},
+    {zh:"减少污染。",pinyin:"Jiǎnshǎo wūrǎn.",th:"ลดมลพิษ"},
+    {zh:"节约能源。",pinyin:"Jiéyuē néngyuán.",th:"ประหยัดพลังงาน"},
+    {zh:"种树绿化。",pinyin:"Zhòng shù lǜhuà.",th:"ปลูกต้นไม้ทำให้เขียวขจี"},
+    {zh:"爱护地球。",pinyin:"Àihù dìqiú.",th:"รักษาโลก"}
+  ]},
+  {id:74,range:"601-900",title:"文化交流",pinyin:"Wénhuà jiāoliú",desc:"การแลกเปลี่ยนวัฒนธรรม",content:[
+    {zh:"了解不同文化。",pinyin:"Liǎojiě bùtóng wénhuà.",th:"เข้าใจวัฒนธรรมที่แตกต่าง"},
+    {zh:"尊重传统习俗。",pinyin:"Zūnzhòng chuántǒng xísú.",th:"เคารพประเพณีดั้งเดิม"},
+    {zh:"学习外语。",pinyin:"Xuéxí wàiyǔ.",th:"เรียนภาษาต่างประเทศ"},
+    {zh:"参加文化活动。",pinyin:"Cānjiā wénhuà huódòng.",th:"เข้าร่วมกิจกรรมทางวัฒนธรรม"},
+    {zh:"促进交流合作。",pinyin:"Cùjìn jiāoliú hézuò.",th:"ส่งเสริมการแลกเปลี่ยนและความร่วมมือ"}
+  ]},
+  {id:75,range:"601-900",title:"健康生活",pinyin:"Jiànkāng shēnghuó",desc:"ชีวิตสุขภาพดี",content:[
+    {zh:"规律作息。",pinyin:"Guīlǜ zuòxī.",th:"มีกิจวัตรที่สม่ำเสมอ"},
+    {zh:"均衡饮食。",pinyin:"Jūnhéng yǐnshí.",th:"รับประทานอาหารสมดุล"},
+    {zh:"适量运动。",pinyin:"Shìliàng yùndòng.",th:"ออกกำลังกายพอเหมาะ"},
+    {zh:"保持心情愉快。",pinyin:"Bǎochí xīnqíng yúkuài.",th:"รักษาอารมณ์ให้แจ่มใส"},
+    {zh:"定期体检。",pinyin:"Dìngqī tǐjiǎn.",th:"ตรวจสุขภาพเป็นประจำ"}
+  ]},
+  {id:76,range:"601-900",title:"旅游经历",pinyin:"Lǚyóu jīnglì",desc:"ประสบการณ์ท่องเที่ยว",content:[
+    {zh:"旅游让人放松。",pinyin:"Lǚyóu ràng rén fàngsōng.",th:"การท่องเที่ยวทำให้ผ่อนคลาย"},
+    {zh:"欣赏美丽的风景。",pinyin:"Xīnshǎng měilì de fēngjǐng.",th:"ชื่นชมทิวทัศน์ที่สวยงาม"},
+    {zh:"品尝当地美食。",pinyin:"Pǐncháng dāngdì měishí.",th:"ลิ้มรสอาหารท้องถิ่น"},
+    {zh:"拍照留念。",pinyin:"Pāizhào liúniàn.",th:"ถ่ายภาพเก็บไว้เป็นที่ระลึก"},
+    {zh:"结识新朋友。",pinyin:"Jiéshí xīn péngyou.",th:"รู้จักเพื่อนใหม่"}
+  ]},
+  {id:77,range:"601-900",title:"科技发展",pinyin:"Kējì fāzhǎn",desc:"การพัฒนาเทคโนโลยี",content:[
+    {zh:"科技改变生活。",pinyin:"Kējì gǎibiàn shēnghuó.",th:"เทคโนโลยีเปลี่ยนแปลงชีวิต"},
+    {zh:"网络很方便。",pinyin:"Wǎngluò hěn fāngbiàn.",th:"อินเทอร์เน็ตสะดวกมาก"},
+    {zh:"手机功能强大。",pinyin:"Shǒujī gōngnéng qiángdà.",th:"โทรศัพท์มือถือมีฟังก์ชันทรงพลัง"},
+    {zh:"电脑帮助工作。",pinyin:"Diànnǎo bāngzhù gōngzuò.",th:"คอมพิวเตอร์ช่วยงาน"},
+    {zh:"科技进步很快。",pinyin:"Kējì jìnbù hěn kuài.",th:"เทคโนโลยีก้าวหน้าเร็วมาก"}
+  ]},
+  {id:78,range:"601-900",title:"环境保护",pinyin:"Huánjìng bǎohù",desc:"การอนุรักษ์สิ่งแวดล้อม",content:[
+    {zh:"保护环境人人有责。",pinyin:"Bǎohù huánjìng rénrén yǒu zé.",th:"ทุกคนมีหน้าที่ปกป้องสิ่งแวดล้อม"},
+    {zh:"减少污染。",pinyin:"Jiǎnshǎo wūrǎn.",th:"ลดมลพิษ"},
+    {zh:"节约能源。",pinyin:"Jiéyuē néngyuán.",th:"ประหยัดพลังงาน"},
+    {zh:"种树绿化。",pinyin:"Zhòng shù lǜhuà.",th:"ปลูกต้นไม้ทำให้เขียวขจี"},
+    {zh:"爱护地球。",pinyin:"Àihù dìqiú.",th:"รักษาโลก"}
+  ]},
+  {id:79,range:"601-900",title:"文化交流",pinyin:"Wénhuà jiāoliú",desc:"การแลกเปลี่ยนวัฒนธรรม",content:[
+    {zh:"了解不同文化。",pinyin:"Liǎojiě bùtóng wénhuà.",th:"เข้าใจวัฒนธรรมที่แตกต่าง"},
+    {zh:"尊重传统习俗。",pinyin:"Zūnzhòng chuántǒng xísú.",th:"เคารพประเพณีดั้งเดิม"},
+    {zh:"学习外语。",pinyin:"Xuéxí wàiyǔ.",th:"เรียนภาษาต่างประเทศ"},
+    {zh:"参加文化活动。",pinyin:"Cānjiā wénhuà huódòng.",th:"เข้าร่วมกิจกรรมทางวัฒนธรรม"},
+    {zh:"促进交流合作。",pinyin:"Cùjìn jiāoliú hézuò.",th:"ส่งเสริมการแลกเปลี่ยนและความร่วมมือ"}
+  ]},
+  {id:80,range:"601-900",title:"健康生活",pinyin:"Jiànkāng shēnghuó",desc:"ชีวิตสุขภาพดี",content:[
+    {zh:"规律作息。",pinyin:"Guīlǜ zuòxī.",th:"มีกิจวัตรที่สม่ำเสมอ"},
+    {zh:"均衡饮食。",pinyin:"Jūnhéng yǐnshí.",th:"รับประทานอาหารสมดุล"},
+    {zh:"适量运动。",pinyin:"Shìliàng yùndòng.",th:"ออกกำลังกายพอเหมาะ"},
+    {zh:"保持心情愉快。",pinyin:"Bǎochí xīnqíng yúkuài.",th:"รักษาอารมณ์ให้แจ่มใส"},
+    {zh:"定期体检。",pinyin:"Dìngqī tǐjiǎn.",th:"ตรวจสุขภาพเป็นประจำ"}
+  ]},
+  {id:81,range:"601-900",title:"旅游经历",pinyin:"Lǚyóu jīnglì",desc:"ประสบการณ์ท่องเที่ยว",content:[
+    {zh:"旅游让人放松。",pinyin:"Lǚyóu ràng rén fàngsōng.",th:"การท่องเที่ยวทำให้ผ่อนคลาย"},
+    {zh:"欣赏美丽的风景。",pinyin:"Xīnshǎng měilì de fēngjǐng.",th:"ชื่นชมทิวทัศน์ที่สวยงาม"},
+    {zh:"品尝当地美食。",pinyin:"Pǐncháng dāngdì měishí.",th:"ลิ้มรสอาหารท้องถิ่น"},
+    {zh:"拍照留念。",pinyin:"Pāizhào liúniàn.",th:"ถ่ายภาพเก็บไว้เป็นที่ระลึก"},
+    {zh:"结识新朋友。",pinyin:"Jiéshí xīn péngyou.",th:"รู้จักเพื่อนใหม่"}
+  ]},
+  {id:82,range:"601-900",title:"科技发展",pinyin:"Kējì fāzhǎn",desc:"การพัฒนาเทคโนโลยี",content:[
+    {zh:"科技改变生活。",pinyin:"Kējì gǎibiàn shēnghuó.",th:"เทคโนโลยีเปลี่ยนแปลงชีวิต"},
+    {zh:"网络很方便。",pinyin:"Wǎngluò hěn fāngbiàn.",th:"อินเทอร์เน็ตสะดวกมาก"},
+    {zh:"手机功能强大。",pinyin:"Shǒujī gōngnéng qiángdà.",th:"โทรศัพท์มือถือมีฟังก์ชันทรงพลัง"},
+    {zh:"电脑帮助工作。",pinyin:"Diànnǎo bāngzhù gōngzuò.",th:"คอมพิวเตอร์ช่วยงาน"},
+    {zh:"科技进步很快。",pinyin:"Kējì jìnbù hěn kuài.",th:"เทคโนโลยีก้าวหน้าเร็วมาก"}
+  ]},
+  {id:83,range:"601-900",title:"环境保护",pinyin:"Huánjìng bǎohù",desc:"การอนุรักษ์สิ่งแวดล้อม",content:[
+    {zh:"保护环境人人有责。",pinyin:"Bǎohù huánjìng rénrén yǒu zé.",th:"ทุกคนมีหน้าที่ปกป้องสิ่งแวดล้อม"},
+    {zh:"减少污染。",pinyin:"Jiǎnshǎo wūrǎn.",th:"ลดมลพิษ"},
+    {zh:"节约能源。",pinyin:"Jiéyuē néngyuán.",th:"ประหยัดพลังงาน"},
+    {zh:"种树绿化。",pinyin:"Zhòng shù lǜhuà.",th:"ปลูกต้นไม้ทำให้เขียวขจี"},
+    {zh:"爱护地球。",pinyin:"Àihù dìqiú.",th:"รักษาโลก"}
+  ]},
+  {id:84,range:"601-900",title:"文化交流",pinyin:"Wénhuà jiāoliú",desc:"การแลกเปลี่ยนวัฒนธรรม",content:[
+    {zh:"了解不同文化。",pinyin:"Liǎojiě bùtóng wénhuà.",th:"เข้าใจวัฒนธรรมที่แตกต่าง"},
+    {zh:"尊重传统习俗。",pinyin:"Zūnzhòng chuántǒng xísú.",th:"เคารพประเพณีดั้งเดิม"},
+    {zh:"学习外语。",pinyin:"Xuéxí wàiyǔ.",th:"เรียนภาษาต่างประเทศ"},
+    {zh:"参加文化活动。",pinyin:"Cānjiā wénhuà huódòng.",th:"เข้าร่วมกิจกรรมทางวัฒนธรรม"},
+    {zh:"促进交流合作。",pinyin:"Cùjìn jiāoliú hézuò.",th:"ส่งเสริมการแลกเปลี่ยนและความร่วมมือ"}
+  ]},
+  {id:85,range:"601-900",title:"健康生活",pinyin:"Jiànkāng shēnghuó",desc:"ชีวิตสุขภาพดี",content:[
+    {zh:"规律作息。",pinyin:"Guīlǜ zuòxī.",th:"มีกิจวัตรที่สม่ำเสมอ"},
+    {zh:"均衡饮食。",pinyin:"Jūnhéng yǐnshí.",th:"รับประทานอาหารสมดุล"},
+    {zh:"适量运动。",pinyin:"Shìliàng yùndòng.",th:"ออกกำลังกายพอเหมาะ"},
+    {zh:"保持心情愉快。",pinyin:"Bǎochí xīnqíng yúkuài.",th:"รักษาอารมณ์ให้แจ่มใส"},
+    {zh:"定期体检。",pinyin:"Dìngqī tǐjiǎn.",th:"ตรวจสุขภาพเป็นประจำ"}
+  ]},
+  {id:86,range:"601-900",title:"旅游经历",pinyin:"Lǚyóu jīnglì",desc:"ประสบการณ์ท่องเที่ยว",content:[
+    {zh:"旅游让人放松。",pinyin:"Lǚyóu ràng rén fàngsōng.",th:"การท่องเที่ยวทำให้ผ่อนคลาย"},
+    {zh:"欣赏美丽的风景。",pinyin:"Xīnshǎng měilì de fēngjǐng.",th:"ชื่นชมทิวทัศน์ที่สวยงาม"},
+    {zh:"品尝当地美食。",pinyin:"Pǐncháng dāngdì měishí.",th:"ลิ้มรสอาหารท้องถิ่น"},
+    {zh:"拍照留念。",pinyin:"Pāizhào liúniàn.",th:"ถ่ายภาพเก็บไว้เป็นที่ระลึก"},
+    {zh:"结识新朋友。",pinyin:"Jiéshí xīn péngyou.",th:"รู้จักเพื่อนใหม่"}
+  ]},
+  {id:87,range:"601-900",title:"科技发展",pinyin:"Kējì fāzhǎn",desc:"การพัฒนาเทคโนโลยี",content:[
+    {zh:"科技改变生活。",pinyin:"Kējì gǎibiàn shēnghuó.",th:"เทคโนโลยีเปลี่ยนแปลงชีวิต"},
+    {zh:"网络很方便。",pinyin:"Wǎngluò hěn fāngbiàn.",th:"อินเทอร์เน็ตสะดวกมาก"},
+    {zh:"手机功能强大。",pinyin:"Shǒujī gōngnéng qiángdà.",th:"โทรศัพท์มือถือมีฟังก์ชันทรงพลัง"},
+    {zh:"电脑帮助工作。",pinyin:"Diànnǎo bāngzhù gōngzuò.",th:"คอมพิวเตอร์ช่วยงาน"},
+    {zh:"科技进步很快。",pinyin:"Kējì jìnbù hěn kuài.",th:"เทคโนโลยีก้าวหน้าเร็วมาก"}
+  ]},
+  {id:88,range:"601-900",title:"环境保护",pinyin:"Huánjìng bǎohù",desc:"การอนุรักษ์สิ่งแวดล้อม",content:[
+    {zh:"保护环境人人有责。",pinyin:"Bǎohù huánjìng rénrén yǒu zé.",th:"ทุกคนมีหน้าที่ปกป้องสิ่งแวดล้อม"},
+    {zh:"减少污染。",pinyin:"Jiǎnshǎo wūrǎn.",th:"ลดมลพิษ"},
+    {zh:"节约能源。",pinyin:"Jiéyuē néngyuán.",th:"ประหยัดพลังงาน"},
+    {zh:"种树绿化。",pinyin:"Zhòng shù lǜhuà.",th:"ปลูกต้นไม้ทำให้เขียวขจี"},
+    {zh:"爱护地球。",pinyin:"Àihù dìqiú.",th:"รักษาโลก"}
+  ]},
+  {id:89,range:"601-900",title:"文化交流",pinyin:"Wénhuà jiāoliú",desc:"การแลกเปลี่ยนวัฒนธรรม",content:[
+    {zh:"了解不同文化。",pinyin:"Liǎojiě bùtóng wénhuà.",th:"เข้าใจวัฒนธรรมที่แตกต่าง"},
+    {zh:"尊重传统习俗。",pinyin:"Zūnzhòng chuántǒng xísú.",th:"เคารพประเพณีดั้งเดิม"},
+    {zh:"学习外语。",pinyin:"Xuéxí wàiyǔ.",th:"เรียนภาษาต่างประเทศ"},
+    {zh:"参加文化活动。",pinyin:"Cānjiā wénhuà huódòng.",th:"เข้าร่วมกิจกรรมทางวัฒนธรรม"},
+    {zh:"促进交流合作。",pinyin:"Cùjìn jiāoliú hézuò.",th:"ส่งเสริมการแลกเปลี่ยนและความร่วมมือ"}
+  ]},
+  {id:90,range:"601-900",title:"健康生活",pinyin:"Jiànkāng shēnghuó",desc:"ชีวิตสุขภาพดี",content:[
+    {zh:"规律作息。",pinyin:"Guīlǜ zuòxī.",th:"มีกิจวัตรที่สม่ำเสมอ"},
+    {zh:"均衡饮食。",pinyin:"Jūnhéng yǐnshí.",th:"รับประทานอาหารสมดุล"},
+    {zh:"适量运动。",pinyin:"Shìliàng yùndòng.",th:"ออกกำลังกายพอเหมาะ"},
+    {zh:"保持心情愉快。",pinyin:"Bǎochí xīnqíng yúkuài.",th:"รักษาอารมณ์ให้แจ่มใส"},
+    {zh:"定期体检。",pinyin:"Dìngqī tǐjiǎn.",th:"ตรวจสุขภาพเป็นประจำ"}
+  ]},
+  {id:91,range:"901-1200",title:"职业发展",pinyin:"Zhíyè fāzhǎn",desc:"การพัฒนาอาชีพ",content:[
+    {zh:"职业规划很重要。",pinyin:"Zhíyè guīhuà hěn zhòngyào.",th:"การวางแผนอาชีพสำคัญมาก"},
+    {zh:"不断学习新技能。",pinyin:"Búduàn xuéxí xīn jìnéng.",th:"เรียนรู้ทักษะใหม่อย่างต่อเนื่อง"},
+    {zh:"积累工作经验。",pinyin:"Jīlěi gōngzuò jīngyàn.",th:"สะสมประสบการณ์การทำงาน"},
+    {zh:"建立人际关系。",pinyin:"Jiànlì rénjì guānxi.",th:"สร้างความสัมพันธ์ระหว่างบุคคล"},
+    {zh:"追求职业目标。",pinyin:"Zhuīqiú zhíyè mùbiāo.",th:"ไล่ตามเป้าหมายอาชีพ"}
+  ]},
+  {id:92,range:"901-1200",title:"人际关系",pinyin:"Rénjì guānxi",desc:"ความสัมพันธ์ระหว่างบุคคล",content:[
+    {zh:"真诚待人。",pinyin:"Zhēnchéng dàirén.",th:"ปฏิบัติต่อผู้อื่นด้วยความจริงใจ"},
+    {zh:"学会倾听。",pinyin:"Xuéhuì qīngtīng.",th:"เรียนรู้ที่จะรับฟัง"},
+    {zh:"尊重他人。",pinyin:"Zūnzhòng tārén.",th:"เคารพผู้อื่น"},
+    {zh:"保持沟通。",pinyin:"Bǎochí gōutōng.",th:"รักษาการสื่อสาร"},
+    {zh:"互相理解。",pinyin:"Hùxiāng lǐjiě.",th:"เข้าใจซึ่งกันและกัน"}
+  ]},
+  {id:93,range:"901-1200",title:"时间管理",pinyin:"Shíjiān guǎnlǐ",desc:"การบริหารเวลา",content:[
+    {zh:"合理安排时间。",pinyin:"Hélǐ ānpái shíjiān.",th:"จัดเวลาอย่างสมเหตุสมผล"},
+    {zh:"分清轻重缓急。",pinyin:"Fēnqīng qīngzhòng huǎnjí.",th:"แยกแยะความสำคัญเร่งด่วน"},
+    {zh:"避免拖延。",pinyin:"Bìmiǎn tuōyán.",th:"หลีกเลี่ยงการผัดวันประกันพรุ่ง"},
+    {zh:"提高效率。",pinyin:"Tígāo xiàolǜ.",th:"เพิ่มประสิทธิภาพ"},
+    {zh:"劳逸结合。",pinyin:"Láoyì jiéhé.",th:"ผสมผสานระหว่างงานและการพักผ่อน"}
+  ]},
+  {id:94,range:"901-1200",title:"学习态度",pinyin:"Xuéxí tàidu",desc:"ทัศนคติการเรียน",content:[
+    {zh:"保持好奇心。",pinyin:"Bǎochí hàoqíxīn.",th:"รักษาความอยากรู้อยากเห็น"},
+    {zh:"勇于提问。",pinyin:"Yǒngyú tíwèn.",th:"กล้าตั้งคำถาม"},
+    {zh:"善于总结。",pinyin:"Shànyú zǒngjié.",th:"เก่งในการสรุป"},
+    {zh:"持之以恒。",pinyin:"Chízhīyǐhéng.",th:"มีความมุ่งมั่นอย่างต่อเนื่อง"},
+    {zh:"不怕失败。",pinyin:"Bú pà shībài.",th:"ไม่กลัวความล้มเหลว"}
+  ]},
+  {id:95,range:"901-1200",title:"生活智慧",pinyin:"Shēnghuó zhìhuì",desc:"ภูมิปัญญาชีวิต",content:[
+    {zh:"知足常乐。",pinyin:"Zhīzú chánglè.",th:"รู้จักพอใจมีความสุขเสมอ"},
+    {zh:"珍惜当下。",pinyin:"Zhēnxī dāngxià.",th:"ให้คุณค่ากับปัจจุบัน"},
+    {zh:"积极乐观。",pinyin:"Jījí lèguān.",th:"มองโลกในแง่บวก"},
+    {zh:"感恩生活。",pinyin:"Gǎn'ēn shēnghuó.",th:"มีความกตัญญูต่อชีวิต"},
+    {zh:"享受过程。",pinyin:"Xiǎngshòu guòchéng.",th:"เพลิดเพลินกับกระบวนการ"}
+  ]},
+  {id:96,range:"901-1200",title:"职业发展",pinyin:"Zhíyè fāzhǎn",desc:"การพัฒนาอาชีพ",content:[
+    {zh:"职业规划很重要。",pinyin:"Zhíyè guīhuà hěn zhòngyào.",th:"การวางแผนอาชีพสำคัญมาก"},
+    {zh:"不断学习新技能。",pinyin:"Búduàn xuéxí xīn jìnéng.",th:"เรียนรู้ทักษะใหม่อย่างต่อเนื่อง"},
+    {zh:"积累工作经验。",pinyin:"Jīlěi gōngzuò jīngyàn.",th:"สะสมประสบการณ์การทำงาน"},
+    {zh:"建立人际关系。",pinyin:"Jiànlì rénjì guānxi.",th:"สร้างความสัมพันธ์ระหว่างบุคคล"},
+    {zh:"追求职业目标。",pinyin:"Zhuīqiú zhíyè mùbiāo.",th:"ไล่ตามเป้าหมายอาชีพ"}
+  ]},
+  {id:97,range:"901-1200",title:"人际关系",pinyin:"Rénjì guānxi",desc:"ความสัมพันธ์ระหว่างบุคคล",content:[
+    {zh:"真诚待人。",pinyin:"Zhēnchéng dàirén.",th:"ปฏิบัติต่อผู้อื่นด้วยความจริงใจ"},
+    {zh:"学会倾听。",pinyin:"Xuéhuì qīngtīng.",th:"เรียนรู้ที่จะรับฟัง"},
+    {zh:"尊重他人。",pinyin:"Zūnzhòng tārén.",th:"เคารพผู้อื่น"},
+    {zh:"保持沟通。",pinyin:"Bǎochí gōutōng.",th:"รักษาการสื่อสาร"},
+    {zh:"互相理解。",pinyin:"Hùxiāng lǐjiě.",th:"เข้าใจซึ่งกันและกัน"}
+  ]},
+  {id:98,range:"901-1200",title:"时间管理",pinyin:"Shíjiān guǎnlǐ",desc:"การบริหารเวลา",content:[
+    {zh:"合理安排时间。",pinyin:"Hélǐ ānpái shíjiān.",th:"จัดเวลาอย่างสมเหตุสมผล"},
+    {zh:"分清轻重缓急。",pinyin:"Fēnqīng qīngzhòng huǎnjí.",th:"แยกแยะความสำคัญเร่งด่วน"},
+    {zh:"避免拖延。",pinyin:"Bìmiǎn tuōyán.",th:"หลีกเลี่ยงการผัดวันประกันพรุ่ง"},
+    {zh:"提高效率。",pinyin:"Tígāo xiàolǜ.",th:"เพิ่มประสิทธิภาพ"},
+    {zh:"劳逸结合。",pinyin:"Láoyì jiéhé.",th:"ผสมผสานระหว่างงานและการพักผ่อน"}
+  ]},
+  {id:99,range:"901-1200",title:"学习态度",pinyin:"Xuéxí tàidu",desc:"ทัศนคติการเรียน",content:[
+    {zh:"保持好奇心。",pinyin:"Bǎochí hàoqíxīn.",th:"รักษาความอยากรู้อยากเห็น"},
+    {zh:"勇于提问。",pinyin:"Yǒngyú tíwèn.",th:"กล้าตั้งคำถาม"},
+    {zh:"善于总结。",pinyin:"Shànyú zǒngjié.",th:"เก่งในการสรุป"},
+    {zh:"持之以恒。",pinyin:"Chízhīyǐhéng.",th:"มีความมุ่งมั่นอย่างต่อเนื่อง"},
+    {zh:"不怕失败。",pinyin:"Bú pà shībài.",th:"ไม่กลัวความล้มเหลว"}
+  ]},
+  {id:100,range:"901-1200",title:"生活智慧",pinyin:"Shēnghuó zhìhuì",desc:"ภูมิปัญญาชีวิต",content:[
+    {zh:"知足常乐。",pinyin:"Zhīzú chánglè.",th:"รู้จักพอใจมีความสุขเสมอ"},
+    {zh:"珍惜当下。",pinyin:"Zhēnxī dāngxià.",th:"ให้คุณค่ากับปัจจุบัน"},
+    {zh:"积极乐观。",pinyin:"Jījí lèguān.",th:"มองโลกในแง่บวก"},
+    {zh:"感恩生活。",pinyin:"Gǎn'ēn shēnghuó.",th:"มีความกตัญญูต่อชีวิต"},
+    {zh:"享受过程。",pinyin:"Xiǎngshòu guòchéng.",th:"เพลิดเพลินกับกระบวนการ"}
+  ]},
+  {id:101,range:"901-1200",title:"职业发展",pinyin:"Zhíyè fāzhǎn",desc:"การพัฒนาอาชีพ",content:[
+    {zh:"职业规划很重要。",pinyin:"Zhíyè guīhuà hěn zhòngyào.",th:"การวางแผนอาชีพสำคัญมาก"},
+    {zh:"不断学习新技能。",pinyin:"Búduàn xuéxí xīn jìnéng.",th:"เรียนรู้ทักษะใหม่อย่างต่อเนื่อง"},
+    {zh:"积累工作经验。",pinyin:"Jīlěi gōngzuò jīngyàn.",th:"สะสมประสบการณ์การทำงาน"},
+    {zh:"建立人际关系。",pinyin:"Jiànlì rénjì guānxi.",th:"สร้างความสัมพันธ์ระหว่างบุคคล"},
+    {zh:"追求职业目标。",pinyin:"Zhuīqiú zhíyè mùbiāo.",th:"ไล่ตามเป้าหมายอาชีพ"}
+  ]},
+  {id:102,range:"901-1200",title:"人际关系",pinyin:"Rénjì guānxi",desc:"ความสัมพันธ์ระหว่างบุคคล",content:[
+    {zh:"真诚待人。",pinyin:"Zhēnchéng dàirén.",th:"ปฏิบัติต่อผู้อื่นด้วยความจริงใจ"},
+    {zh:"学会倾听。",pinyin:"Xuéhuì qīngtīng.",th:"เรียนรู้ที่จะรับฟัง"},
+    {zh:"尊重他人。",pinyin:"Zūnzhòng tārén.",th:"เคารพผู้อื่น"},
+    {zh:"保持沟通。",pinyin:"Bǎochí gōutōng.",th:"รักษาการสื่อสาร"},
+    {zh:"互相理解。",pinyin:"Hùxiāng lǐjiě.",th:"เข้าใจซึ่งกันและกัน"}
+  ]},
+  {id:103,range:"901-1200",title:"时间管理",pinyin:"Shíjiān guǎnlǐ",desc:"การบริหารเวลา",content:[
+    {zh:"合理安排时间。",pinyin:"Hélǐ ānpái shíjiān.",th:"จัดเวลาอย่างสมเหตุสมผล"},
+    {zh:"分清轻重缓急。",pinyin:"Fēnqīng qīngzhòng huǎnjí.",th:"แยกแยะความสำคัญเร่งด่วน"},
+    {zh:"避免拖延。",pinyin:"Bìmiǎn tuōyán.",th:"หลีกเลี่ยงการผัดวันประกันพรุ่ง"},
+    {zh:"提高效率。",pinyin:"Tígāo xiàolǜ.",th:"เพิ่มประสิทธิภาพ"},
+    {zh:"劳逸结合。",pinyin:"Láoyì jiéhé.",th:"ผสมผสานระหว่างงานและการพักผ่อน"}
+  ]},
+  {id:104,range:"901-1200",title:"学习态度",pinyin:"Xuéxí tàidu",desc:"ทัศนคติการเรียน",content:[
+    {zh:"保持好奇心。",pinyin:"Bǎochí hàoqíxīn.",th:"รักษาความอยากรู้อยากเห็น"},
+    {zh:"勇于提问。",pinyin:"Yǒngyú tíwèn.",th:"กล้าตั้งคำถาม"},
+    {zh:"善于总结。",pinyin:"Shànyú zǒngjié.",th:"เก่งในการสรุป"},
+    {zh:"持之以恒。",pinyin:"Chízhīyǐhéng.",th:"มีความมุ่งมั่นอย่างต่อเนื่อง"},
+    {zh:"不怕失败。",pinyin:"Bú pà shībài.",th:"ไม่กลัวความล้มเหลว"}
+  ]},
+  {id:105,range:"901-1200",title:"生活智慧",pinyin:"Shēnghuó zhìhuì",desc:"ภูมิปัญญาชีวิต",content:[
+    {zh:"知足常乐。",pinyin:"Zhīzú chánglè.",th:"รู้จักพอใจมีความสุขเสมอ"},
+    {zh:"珍惜当下。",pinyin:"Zhēnxī dāngxià.",th:"ให้คุณค่ากับปัจจุบัน"},
+    {zh:"积极乐观。",pinyin:"Jījí lèguān.",th:"มองโลกในแง่บวก"},
+    {zh:"感恩生活。",pinyin:"Gǎn'ēn shēnghuó.",th:"มีความกตัญญูต่อชีวิต"},
+    {zh:"享受过程。",pinyin:"Xiǎngshòu guòchéng.",th:"เพลิดเพลินกับกระบวนการ"}
+  ]},
+  {id:106,range:"901-1200",title:"职业发展",pinyin:"Zhíyè fāzhǎn",desc:"การพัฒนาอาชีพ",content:[
+    {zh:"职业规划很重要。",pinyin:"Zhíyè guīhuà hěn zhòngyào.",th:"การวางแผนอาชีพสำคัญมาก"},
+    {zh:"不断学习新技能。",pinyin:"Búduàn xuéxí xīn jìnéng.",th:"เรียนรู้ทักษะใหม่อย่างต่อเนื่อง"},
+    {zh:"积累工作经验。",pinyin:"Jīlěi gōngzuò jīngyàn.",th:"สะสมประสบการณ์การทำงาน"},
+    {zh:"建立人际关系。",pinyin:"Jiànlì rénjì guānxi.",th:"สร้างความสัมพันธ์ระหว่างบุคคล"},
+    {zh:"追求职业目标。",pinyin:"Zhuīqiú zhíyè mùbiāo.",th:"ไล่ตามเป้าหมายอาชีพ"}
+  ]},
+  {id:107,range:"901-1200",title:"人际关系",pinyin:"Rénjì guānxi",desc:"ความสัมพันธ์ระหว่างบุคคล",content:[
+    {zh:"真诚待人。",pinyin:"Zhēnchéng dàirén.",th:"ปฏิบัติต่อผู้อื่นด้วยความจริงใจ"},
+    {zh:"学会倾听。",pinyin:"Xuéhuì qīngtīng.",th:"เรียนรู้ที่จะรับฟัง"},
+    {zh:"尊重他人。",pinyin:"Zūnzhòng tārén.",th:"เคารพผู้อื่น"},
+    {zh:"保持沟通。",pinyin:"Bǎochí gōutōng.",th:"รักษาการสื่อสาร"},
+    {zh:"互相理解。",pinyin:"Hùxiāng lǐjiě.",th:"เข้าใจซึ่งกันและกัน"}
+  ]},
+  {id:108,range:"901-1200",title:"时间管理",pinyin:"Shíjiān guǎnlǐ",desc:"การบริหารเวลา",content:[
+    {zh:"合理安排时间。",pinyin:"Hélǐ ānpái shíjiān.",th:"จัดเวลาอย่างสมเหตุสมผล"},
+    {zh:"分清轻重缓急。",pinyin:"Fēnqīng qīngzhòng huǎnjí.",th:"แยกแยะความสำคัญเร่งด่วน"},
+    {zh:"避免拖延。",pinyin:"Bìmiǎn tuōyán.",th:"หลีกเลี่ยงการผัดวันประกันพรุ่ง"},
+    {zh:"提高效率。",pinyin:"Tígāo xiàolǜ.",th:"เพิ่มประสิทธิภาพ"},
+    {zh:"劳逸结合。",pinyin:"Láoyì jiéhé.",th:"ผสมผสานระหว่างงานและการพักผ่อน"}
+  ]},
+  {id:109,range:"901-1200",title:"学习态度",pinyin:"Xuéxí tàidu",desc:"ทัศนคติการเรียน",content:[
+    {zh:"保持好奇心。",pinyin:"Bǎochí hàoqíxīn.",th:"รักษาความอยากรู้อยากเห็น"},
+    {zh:"勇于提问。",pinyin:"Yǒngyú tíwèn.",th:"กล้าตั้งคำถาม"},
+    {zh:"善于总结。",pinyin:"Shànyú zǒngjié.",th:"เก่งในการสรุป"},
+    {zh:"持之以恒。",pinyin:"Chízhīyǐhéng.",th:"มีความมุ่งมั่นอย่างต่อเนื่อง"},
+    {zh:"不怕失败。",pinyin:"Bú pà shībài.",th:"ไม่กลัวความล้มเหลว"}
+  ]},
+  {id:110,range:"901-1200",title:"生活智慧",pinyin:"Shēnghuó zhìhuì",desc:"ภูมิปัญญาชีวิต",content:[
+    {zh:"知足常乐。",pinyin:"Zhīzú chánglè.",th:"รู้จักพอใจมีความสุขเสมอ"},
+    {zh:"珍惜当下。",pinyin:"Zhēnxī dāngxià.",th:"ให้คุณค่ากับปัจจุบัน"},
+    {zh:"积极乐观。",pinyin:"Jījí lèguān.",th:"มองโลกในแง่บวก"},
+    {zh:"感恩生活。",pinyin:"Gǎn'ēn shēnghuó.",th:"มีความกตัญญูต่อชีวิต"},
+    {zh:"享受过程。",pinyin:"Xiǎngshòu guòchéng.",th:"เพลิดเพลินกับกระบวนการ"}
+  ]},
+  {id:111,range:"901-1200",title:"职业发展",pinyin:"Zhíyè fāzhǎn",desc:"การพัฒนาอาชีพ",content:[
+    {zh:"职业规划很重要。",pinyin:"Zhíyè guīhuà hěn zhòngyào.",th:"การวางแผนอาชีพสำคัญมาก"},
+    {zh:"不断学习新技能。",pinyin:"Búduàn xuéxí xīn jìnéng.",th:"เรียนรู้ทักษะใหม่อย่างต่อเนื่อง"},
+    {zh:"积累工作经验。",pinyin:"Jīlěi gōngzuò jīngyàn.",th:"สะสมประสบการณ์การทำงาน"},
+    {zh:"建立人际关系。",pinyin:"Jiànlì rénjì guānxi.",th:"สร้างความสัมพันธ์ระหว่างบุคคล"},
+    {zh:"追求职业目标。",pinyin:"Zhuīqiú zhíyè mùbiāo.",th:"ไล่ตามเป้าหมายอาชีพ"}
+  ]},
+  {id:112,range:"901-1200",title:"人际关系",pinyin:"Rénjì guānxi",desc:"ความสัมพันธ์ระหว่างบุคคล",content:[
+    {zh:"真诚待人。",pinyin:"Zhēnchéng dàirén.",th:"ปฏิบัติต่อผู้อื่นด้วยความจริงใจ"},
+    {zh:"学会倾听。",pinyin:"Xuéhuì qīngtīng.",th:"เรียนรู้ที่จะรับฟัง"},
+    {zh:"尊重他人。",pinyin:"Zūnzhòng tārén.",th:"เคารพผู้อื่น"},
+    {zh:"保持沟通。",pinyin:"Bǎochí gōutōng.",th:"รักษาการสื่อสาร"},
+    {zh:"互相理解。",pinyin:"Hùxiāng lǐjiě.",th:"เข้าใจซึ่งกันและกัน"}
+  ]},
+  {id:113,range:"901-1200",title:"时间管理",pinyin:"Shíjiān guǎnlǐ",desc:"การบริหารเวลา",content:[
+    {zh:"合理安排时间。",pinyin:"Hélǐ ānpái shíjiān.",th:"จัดเวลาอย่างสมเหตุสมผล"},
+    {zh:"分清轻重缓急。",pinyin:"Fēnqīng qīngzhòng huǎnjí.",th:"แยกแยะความสำคัญเร่งด่วน"},
+    {zh:"避免拖延。",pinyin:"Bìmiǎn tuōyán.",th:"หลีกเลี่ยงการผัดวันประกันพรุ่ง"},
+    {zh:"提高效率。",pinyin:"Tígāo xiàolǜ.",th:"เพิ่มประสิทธิภาพ"},
+    {zh:"劳逸结合。",pinyin:"Láoyì jiéhé.",th:"ผสมผสานระหว่างงานและการพักผ่อน"}
+  ]},
+  {id:114,range:"901-1200",title:"学习态度",pinyin:"Xuéxí tàidu",desc:"ทัศนคติการเรียน",content:[
+    {zh:"保持好奇心。",pinyin:"Bǎochí hàoqíxīn.",th:"รักษาความอยากรู้อยากเห็น"},
+    {zh:"勇于提问。",pinyin:"Yǒngyú tíwèn.",th:"กล้าตั้งคำถาม"},
+    {zh:"善于总结。",pinyin:"Shànyú zǒngjié.",th:"เก่งในการสรุป"},
+    {zh:"持之以恒。",pinyin:"Chízhīyǐhéng.",th:"มีความมุ่งมั่นอย่างต่อเนื่อง"},
+    {zh:"不怕失败。",pinyin:"Bú pà shībài.",th:"ไม่กลัวความล้มเหลว"}
+  ]},
+  {id:115,range:"901-1200",title:"生活智慧",pinyin:"Shēnghuó zhìhuì",desc:"ภูมิปัญญาชีวิต",content:[
+    {zh:"知足常乐。",pinyin:"Zhīzú chánglè.",th:"รู้จักพอใจมีความสุขเสมอ"},
+    {zh:"珍惜当下。",pinyin:"Zhēnxī dāngxià.",th:"ให้คุณค่ากับปัจจุบัน"},
+    {zh:"积极乐观。",pinyin:"Jījí lèguān.",th:"มองโลกในแง่บวก"},
+    {zh:"感恩生活。",pinyin:"Gǎn'ēn shēnghuó.",th:"มีความกตัญญูต่อชีวิต"},
+    {zh:"享受过程。",pinyin:"Xiǎngshòu guòchéng.",th:"เพลิดเพลินกับกระบวนการ"}
+  ]},
+  {id:116,range:"901-1200",title:"职业发展",pinyin:"Zhíyè fāzhǎn",desc:"การพัฒนาอาชีพ",content:[
+    {zh:"职业规划很重要。",pinyin:"Zhíyè guīhuà hěn zhòngyào.",th:"การวางแผนอาชีพสำคัญมาก"},
+    {zh:"不断学习新技能。",pinyin:"Búduàn xuéxí xīn jìnéng.",th:"เรียนรู้ทักษะใหม่อย่างต่อเนื่อง"},
+    {zh:"积累工作经验。",pinyin:"Jīlěi gōngzuò jīngyàn.",th:"สะสมประสบการณ์การทำงาน"},
+    {zh:"建立人际关系。",pinyin:"Jiànlì rénjì guānxi.",th:"สร้างความสัมพันธ์ระหว่างบุคคล"},
+    {zh:"追求职业目标。",pinyin:"Zhuīqiú zhíyè mùbiāo.",th:"ไล่ตามเป้าหมายอาชีพ"}
+  ]},
+  {id:117,range:"901-1200",title:"人际关系",pinyin:"Rénjì guānxi",desc:"ความสัมพันธ์ระหว่างบุคคล",content:[
+    {zh:"真诚待人。",pinyin:"Zhēnchéng dàirén.",th:"ปฏิบัติต่อผู้อื่นด้วยความจริงใจ"},
+    {zh:"学会倾听。",pinyin:"Xuéhuì qīngtīng.",th:"เรียนรู้ที่จะรับฟัง"},
+    {zh:"尊重他人。",pinyin:"Zūnzhòng tārén.",th:"เคารพผู้อื่น"},
+    {zh:"保持沟通。",pinyin:"Bǎochí gōutōng.",th:"รักษาการสื่อสาร"},
+    {zh:"互相理解。",pinyin:"Hùxiāng lǐjiě.",th:"เข้าใจซึ่งกันและกัน"}
+  ]},
+  {id:118,range:"901-1200",title:"时间管理",pinyin:"Shíjiān guǎnlǐ",desc:"การบริหารเวลา",content:[
+    {zh:"合理安排时间。",pinyin:"Hélǐ ānpái shíjiān.",th:"จัดเวลาอย่างสมเหตุสมผล"},
+    {zh:"分清轻重缓急。",pinyin:"Fēnqīng qīngzhòng huǎnjí.",th:"แยกแยะความสำคัญเร่งด่วน"},
+    {zh:"避免拖延。",pinyin:"Bìmiǎn tuōyán.",th:"หลีกเลี่ยงการผัดวันประกันพรุ่ง"},
+    {zh:"提高效率。",pinyin:"Tígāo xiàolǜ.",th:"เพิ่มประสิทธิภาพ"},
+    {zh:"劳逸结合。",pinyin:"Láoyì jiéhé.",th:"ผสมผสานระหว่างงานและการพักผ่อน"}
+  ]},
+  {id:119,range:"901-1200",title:"学习态度",pinyin:"Xuéxí tàidu",desc:"ทัศนคติการเรียน",content:[
+    {zh:"保持好奇心。",pinyin:"Bǎochí hàoqíxīn.",th:"รักษาความอยากรู้อยากเห็น"},
+    {zh:"勇于提问。",pinyin:"Yǒngyú tíwèn.",th:"กล้าตั้งคำถาม"},
+    {zh:"善于总结。",pinyin:"Shànyú zǒngjié.",th:"เก่งในการสรุป"},
+    {zh:"持之以恒。",pinyin:"Chízhīyǐhéng.",th:"มีความมุ่งมั่นอย่างต่อเนื่อง"},
+    {zh:"不怕失败。",pinyin:"Bú pà shībài.",th:"ไม่กลัวความล้มเหลว"}
+  ]},
+  {id:120,range:"901-1200",title:"生活智慧",pinyin:"Shēnghuó zhìhuì",desc:"ภูมิปัญญาชีวิต",content:[
+    {zh:"知足常乐。",pinyin:"Zhīzú chánglè.",th:"รู้จักพอใจมีความสุขเสมอ"},
+    {zh:"珍惜当下。",pinyin:"Zhēnxī dāngxià.",th:"ให้คุณค่ากับปัจจุบัน"},
+    {zh:"积极乐观。",pinyin:"Jījí lèguān.",th:"มองโลกในแง่บวก"},
+    {zh:"感恩生活。",pinyin:"Gǎn'ēn shēnghuó.",th:"มีความกตัญญูต่อชีวิต"},
+    {zh:"享受过程。",pinyin:"Xiǎngshòu guòchéng.",th:"เพลิดเพลินกับกระบวนการ"}
   ]}
 ];
 
 let currentArticle=null;
+let currentArticleRange='all';
 
-function showSampleArticles(){
+// คำถามแบบฝึกหัดตอบคำถามจากบทความ
+const quizQuestions=[
+  {articleId:1,range:"1-300",articleTitle:"我的家庭",question:"บทความนี้พูดถึงอะไร?",options:["ครอบครัว","โรงเรียน","การท่องเที่ยว","งานอดิเรก"],answer:0,answerText:"ครอบครัว"},
+  {articleId:2,range:"1-300",articleTitle:"学校生活",question:"ในบทความ ผู้เขียนเรียนภาษาอะไรที่มหาวิทยาลัย?",options:["อังกฤษ","ญี่ปุ่น","ภาษาจีน","เกาหลี"],answer:2,answerText:"ภาษาจีน"},
+  {articleId:3,range:"1-300",articleTitle:"去中国旅行",question:"ผู้เขียนตั้งใจจะไปเที่ยวที่ไหน?",options:["เซี่ยงไฮ้","ปักกิ่ง","กวางโจว","เสิ่นเจิ้น"],answer:1,answerText:"ปักกิ่ง"},
+  {articleId:4,range:"1-300",articleTitle:"我的爱好",question:"งานอดิเรกของผู้เขียนคืออะไร?",options:["เล่นฟุตบอล","เล่นบาสเกตบอล","เล่นเทนนิส","ว่ายน้ำ"],answer:1,answerText:"เล่นบาสเกตบอล"},
+  {articleId:5,range:"1-300",articleTitle:"工作环境",question:"ผู้เขียนทำงานที่ไหน?",options:["ร้านอาหาร","บริษัท","โรงพยาบาล","โรงเรียน"],answer:1,answerText:"บริษัท"},
+  {articleId:6,range:"1-300",articleTitle:"健康习惯",question:"สิ่งใดที่เป็นอันตรายต่อสุขภาพตามบทความ?",options:["การออกกำลังกาย","การกินผลไม้","การสูบบุหรี่","การนอนตรงเวลา"],answer:2,answerText:"การสูบบุหรี่"},
+  {articleId:7,range:"1-300",articleTitle:"购物经验",question:"ผู้เขียนไปซื้อของที่ไหน?",options:["ตลาด","ห้างสรรพสินค้า","ซูเปอร์มาร์เก็ต","ร้านค้า"],answer:2,answerText:"ซูเปอร์มาร์เก็ต"},
+  {articleId:8,range:"1-300",articleTitle:"我的城市",question:"ผู้เขียนอาศัยอยู่ในเมืองขนาดใด?",options:["เมืองเล็ก","เมืองกลาง","เมืองใหญ่","เมืองชายแดน"],answer:2,answerText:"เมืองใหญ่"},
+  {articleId:9,range:"1-300",articleTitle:"餐厅经历",question:"ผู้เขียนและเพื่อนสั่งอาหารอะไร?",options:["ข้าวผัด","ไข่ บะหมี่ และเบียร์","ต้มยำ","สเต็ก"],answer:1,answerText:"ไข่ บะหมี่ และเบียร์"},
+  {articleId:10,range:"1-300",articleTitle:"一次聚会",question:"ในงานเลี้ยง ทุกคนทำอะไร?",options:["ดูหนัง","ร้องเพลง เต้นรำ ดื่มเบียร์","เล่นเกม","คุยเล่น"],answer:1,answerText:"ร้องเพลง เต้นรำ ดื่มเบียร์"},
+  {articleId:11,range:"1-300",articleTitle:"学习方法",question:"สิ่งใดที่ช่วยพัฒนาภาษาพูด?",options:["อ่านหนังสือ","ฝึกบทสนทนา","ฟังเพลง","ดูหนัง"],answer:1,answerText:"ฝึกบทสนทนา"},
+  {articleId:12,range:"1-300",articleTitle:"看病经历",question:"ผู้เขียนป่วยอะไร?",options:["ปวดหัว","ปวดท้อง","ไข้","ไอ"],answer:1,answerText:"ปวดท้อง"},
+  {articleId:13,range:"1-300",articleTitle:"周末计划",question:"ผู้เขียนตั้งใจจะไปไหนสุดสัปดาห์?",options:["ชายหาด","ปีนเขา","ช้อปปิ้ง","พักผ่อนที่บ้าน"],answer:1,answerText:"ปีนเขา"},
+  {articleId:14,range:"1-300",articleTitle:"我的家乡",question:"บ้านเกิดของผู้เขียนอยู่ทางทิศใด?",options:["ทิศตะวันตก","ทิศตะวันออก","ทิศเหนือ","ทิศใต้"],answer:1,answerText:"ทิศตะวันออก"},
+  {articleId:15,range:"1-300",articleTitle:"找工作",question:"ผู้เขียนเริ่มหางานเมื่อไหร?",options:["ก่อนจบมหาวิทยาลัย","หลังจบมหาวิทยาลัย","ขณะเรียน","ไม่ได้หางาน"],answer:1,answerText:"หลังจบมหาวิทยาลัย"},
+  {articleId:16,range:"1-300",articleTitle:"一次误会",question:"เหตุผลที่ทำให้เกิดความเข้าใจผิดคืออะไร?",options:["เพื่อนลืมนัด","ผู้เขียนลืมนัด","ทั้งคู่มาสาย","ไม่ได้นัดกัน"],answer:0,answerText:"เพื่อนลืมนัด"},
+  {articleId:17,range:"1-300",articleTitle:"天气变化",question:"ช่วงนี้อากาศเปลี่ยนแปลงอย่างไร?",options:["เปลี่ยนน้อย","เปลี่ยนมาก","ไม่เปลี่ยน","เปลี่ยนเล็กน้อย"],answer:1,answerText:"เปลี่ยนมาก"},
+  {articleId:18,range:"1-300",articleTitle:"使用电梯",question:"ผู้เขียนทำงานชั้นที่เท่าไหร่?",options:["ชั้นสิบ","ชั้นยี่สิบ","ชั้นสามสิบ","ชั้นสี่สิบ"],answer:1,answerText:"ชั้นยี่สิบ"},
+  {articleId:19,range:"1-300",articleTitle:"动物园",question:"ผู้เขียนไปสวนสัตว์กับใคร?",options:["พี่ชาย","น้องชาย","พี่สาว","เพื่อน"],answer:1,answerText:"น้องชาย"},
+  {articleId:20,range:"1-300",articleTitle:"保护环境",question:"สิ่งใดที่เราไม่ควรทำตามบทความ?",options:["ปลูกต้นไม้","ทิ้งขยะทุกที่","รักษาโลก","ประหยัดพลังงาน"],answer:1,answerText:"ทิ้งขยะทุกที่"},
+  {articleId:31,range:"301-600",articleTitle:"发展经济",question:"บทความนี้พูดถึงอะไร?",options:["การพัฒนาเศรษฐกิจ","การศึกษา","การท่องเที่ยว","การกีฬา"],answer:0,answerText:"การพัฒนาเศรษฐกิจ"},
+  {articleId:32,range:"301-600",articleTitle:"学习进步",question:"การทบทวนบทเรียนมีความสำคัญอย่างไร?",options:["ไม่สำคัญ","สำคัญมาก","สำคัญน้อย","ไม่แน่ใจ"],answer:1,answerText:"สำคัญมาก"},
+  {articleId:33,range:"301-600",articleTitle:"日常生活",question:"สภาพแวดล้อมที่สะอาดทำให้รู้สึกอย่างไร?",options:["ไม่สบาย","สบาย","เฉยๆ","รำคาญ"],answer:1,answerText:"สบาย"},
+  {articleId:34,range:"301-600",articleTitle:"工作态度",question:"ควรทำงานอย่างไร?",options:["เกียจคร้าน","ตั้งใจ","ไม่สนใจ","หลีกเลี่ยง"],answer:1,answerText:"ตั้งใจ"},
+  {articleId:35,range:"301-600",articleTitle:"社交活动",question:"ผู้เขียนเข้าร่วมกิจกรรมอะไร?",options:["กิจกรรมทุกประเภท","กิจกรรมกีฬา","กิจกรรมศิลปะ","กิจกรรมการศึกษา"],answer:0,answerText:"กิจกรรมทุกประเภท"},
+  {articleId:61,range:"601-900",articleTitle:"旅游经历",question:"การท่องเที่ยวทำให้คนรู้สึกอย่างไร?",options:["เครียด","ผ่อนคลาย","เศร้า","โกรธ"],answer:1,answerText:"ผ่อนคลาย"},
+  {articleId:62,range:"601-900",articleTitle:"科技发展",question:"เทคโนโลยีทำให้ชีวิตเปลี่ยนแปลงอย่างไร?",options:["ไม่เปลี่ยน","เปลี่ยนน้อย","เปลี่ยนมาก","ไม่แน่ใจ"],answer:2,answerText:"เปลี่ยนมาก"},
+  {articleId:63,range:"601-900",articleTitle:"环境保护",question:"ทุกคนมีหน้าที่อะไร?",options:["ทำลายสิ่งแวดล้อม","ปกป้องสิ่งแวดล้อม","ไม่สนใจ","ละเลย"],answer:1,answerText:"ปกป้องสิ่งแวดล้อม"},
+  {articleId:64,range:"601-900",articleTitle:"文化交流",question:"การเข้าใจวัฒนธรรมที่แตกต่างช่วยอะไร?",options:["ไม่ช่วยอะไร","ช่วยสื่อสาร","ช่วยสร้างสันติภาพ","ทั้งกและข้อ 2 และ 3"],answer:3,answerText:"ทั้งกและข้อ 2 และ 3"},
+  {articleId:65,range:"601-900",articleTitle:"健康生活",question:"กิจวัตรที่สม่ำเสมอช่วยอะไร?",options:["ทำให้ป่วย","ทำให้สุขภาพดี","ไม่มีผล","ทำให้เหนื่อย"],answer:1,answerText:"ทำให้สุขภาพดี"},
+  {articleId:91,range:"901-1200",articleTitle:"职业发展",question:"การวางแผนอาชีพสำคัญอย่างไร?",options:["ไม่สำคัญ","สำคัญมาก","สำคัญน้อย","ไม่แน่ใจ"],answer:1,answerText:"สำคัญมาก"},
+  {articleId:92,range:"901-1200",articleTitle:"人际关系",question:"การปฏิบัติต่อผู้อื่นควรทำอย่างไร?",options:["ด้วยความจริงใจ","ด้วยความหลอกลวง","ไม่สนใจ","ด้วยความโกรธ"],answer:0,answerText:"ด้วยความจริงใจ"},
+  {articleId:93,range:"901-1200",articleTitle:"时间管理",question:"การจัดเวลาอย่างสมเหตุสมผลช่วยอะไร?",options:["ทำให้เสียเวลา","ทำให้มีประสิทธิภาพ","ไม่มีผล","ทำให้เหนื่อย"],answer:1,answerText:"ทำให้มีประสิทธิภาพ"},
+  {articleId:94,range:"901-1200",articleTitle:"学习态度",question:"ความมุ่งมั่นช่วยอะไร?",options:["ทำให้ล้มเหลว","ทำให้สำเร็จ","ไม่มีผล","ทำให้อ่อนผ่อน"],answer:1,answerText:"ทำให้สำเร็จ"},
+  {articleId:95,range:"901-1200",articleTitle:"生活智慧",question:"รู้จักพอใจช่วยให้มีอะไร?",options:["ความทุกข์","ความสุข","ความโกรธ","ความเศร้า"],answer:1,answerText:"ความสุข"}
+];
+
+let currentQuizRange='all';
+let currentQuizIndex=0;
+let quizScore=0;
+let showThaiTranslation=false;
+
+function showSampleArticles(range='all'){
+  currentArticleRange=range;
   const content=document.getElementById('articleContent');
-  let html='<div class="article-list">';
-  sampleArticles.forEach(article=>{
+  
+  // กรองบทความตามช่วง
+  let filteredArticles=sampleArticles;
+  if(range!=='all'){
+    filteredArticles=sampleArticles.filter(a=>a.range===range);
+  }
+  
+  let html='<div class="article-range-filter">';
+  const ranges=['all','1-300','301-600','601-900','901-1200'];
+  const rangeLabels=['ทั้งหมด','1-300','301-600','601-900','901-1200'];
+  ranges.forEach((r,i)=>{
+    const activeClass=r===range?'active':'';
+    html+=`<button class="article-range-btn ${activeClass}" onclick="showSampleArticles('${r}')">${rangeLabels[i]}</button>`;
+  });
+  html+='</div>';
+  
+  html+='<div class="article-list">';
+  filteredArticles.forEach(article=>{
+    const pinyinHtml=showPinyin?` <span style="font-size:13px;color:#6B7280;font-weight:400">(${article.pinyin})</span>`:'';
     html+=`<div class="article-item" onclick="showArticleContent(${article.id})">
-      <div class="article-item-title">${article.id}. ${article.title} <span style="font-size:13px;color:#6B7280;font-weight:400">(${article.pinyin})</span></div>
-      <div class="article-item-desc">${article.desc} - ${article.content.length} ประโยค</div>
+      <div class="article-item-title">${article.id}. ${article.title}${pinyinHtml}</div>
+      <div class="article-item-desc">${article.desc} - ${article.content.length} ประโยค - <span style="color:#3B82F6">คำศัพท์ ${article.range}</span></div>
     </div>`;
   });
   html+='</div>';
@@ -1928,11 +3345,13 @@ function showArticleContent(id){
   if(!currentArticle)return;
   const content=document.getElementById('articleContent');
   let html=`<button class="article-back-btn" onclick="showArticleList()">← กลับไปรายการบทความ</button>`;
-  html+=`<div class="article-content"><h3>${currentArticle.id}. ${currentArticle.title} <span style="font-size:14px;color:#6B7280;font-weight:400">(${currentArticle.pinyin})</span></h3>`;
+  const pinyinHtml=showPinyin?`<span style="font-size:14px;color:#6B7280;font-weight:400">(${currentArticle.pinyin})</span>`:'';
+  html+=`<div class="article-content"><h3>${currentArticle.id}. ${currentArticle.title} ${pinyinHtml}</h3>`;
   currentArticle.content.forEach(para=>{
+    const pinyinLine=showPinyin?`<span style="color:#6B7280;font-size:13px">${para.pinyin}</span><br>`:'';
     html+=`<div class="article-para">
       <span class="zh-word" onclick="lookupWord('${para.zh}')">${para.zh}</span><br>
-      <span style="color:#6B7280;font-size:13px">${para.pinyin}</span><br>
+      ${pinyinLine}
       <span style="color:#059669">${para.th}</span>
     </div>`;
   });
@@ -1941,7 +3360,7 @@ function showArticleContent(id){
 }
 
 function showArticleList(){
-  showSampleArticles();
+  showSampleArticles(currentArticleRange);
 }
 
 function closeArticle(){
@@ -1949,10 +3368,177 @@ function closeArticle(){
   currentArticle=null;
 }
 
+function showQuiz(range='all'){
+  currentQuizRange=range;
+  currentQuizIndex=0;
+  quizScore=0;
+  const content=document.getElementById('quizContent');
+  
+  // กรองคำถามตามช่วง
+  let filteredQuestions=quizQuestions;
+  if(range!=='all'){
+    filteredQuestions=quizQuestions.filter(q=>q.range===range);
+  }
+  
+  if(filteredQuestions.length===0){
+    content.innerHTML='<div style="text-align:center;padding:40px;color:#6B7280">ไม่มีคำถามในช่วงนี้</div>';
+    document.getElementById('quizModal').classList.add('show');
+    if(window.innerWidth<=1024)toggleSidebar();
+    return;
+  }
+  
+  let html='<div class="quiz-range-filter">';
+  const ranges=['all','1-300','301-600','601-900','901-1200'];
+  const rangeLabels=['ทั้งหมด','1-300','301-600','601-900','901-1200'];
+  ranges.forEach((r,i)=>{
+    const activeClass=r===range?'active':'';
+    html+=`<button class="quiz-range-btn ${activeClass}" onclick="showQuiz('${r}')">${rangeLabels[i]}</button>`;
+  });
+  html+='</div>';
+  
+  html+=`<div class="quiz-score">คำถามที่ ${currentQuizIndex+1} / ${filteredQuestions.length}</div>`;
+  
+  const question=filteredQuestions[currentQuizIndex];
+  const article=sampleArticles.find(a=>a.id===question.articleId);
+  
+  html+=`<div class="quiz-article-title">📖 ${article.title} (${article.range})</div>`;
+  
+  // แสดงเนื้อหาบทความ
+  html+='<div class="article-content" style="margin-bottom:20px;padding:16px;background:#F9FAFB;border-radius:8px">';
+  article.content.forEach(para=>{
+    html+=`<div class="article-para">
+      <span style="color:#1E40AF;font-weight:600">${para.zh}</span><br>
+      ${showPinyin?`<span style="color:#6B7280;font-size:13px">${para.pinyin}</span><br>`:''}
+      ${showThaiTranslation?`<span style="color:#059669">${para.th}</span>`:''}
+    </div>`;
+  });
+  html+='</div>';
+  
+  // เพิ่มปุ่มสลับคำแปลไทย
+  html+=`<button class="quiz-btn quiz-btn-secondary" onclick="toggleThaiTranslation()" style="margin-bottom:16px">
+    ${showThaiTranslation?'ซ่อนคำแปลไทย':'แสดงคำแปลไทย'}
+  </button>`;
+  
+  html+=`<div class="quiz-question">${question.question}</div>`;
+  
+  html+='<div class="quiz-options">';
+  question.options.forEach((opt,i)=>{
+    html+=`<div class="quiz-option" onclick="checkAnswer(${i}, ${question.answer}, '${question.answerText}', ${filteredQuestions.length})">${opt}</div>`;
+  });
+  html+='</div>';
+  
+  content.innerHTML=html;
+  document.getElementById('quizModal').classList.add('show');
+  if(window.innerWidth<=1024)toggleSidebar();
+}
+
+function checkAnswer(selected, correct, correctText, totalQuestions){
+  const options=document.querySelectorAll('.quiz-option');
+  options.forEach((opt,i)=>{
+    opt.onclick=null;
+    if(i===correct){
+      opt.classList.add('correct');
+    }else if(i===selected && selected!==correct){
+      opt.classList.add('wrong');
+    }
+  });
+  
+  const content=document.getElementById('quizContent');
+  let resultHtml='<div class="quiz-quiz-result ';
+  if(selected===correct){
+    resultHtml+='correct';
+    quizScore++;
+    resultHtml+='>✅ ตอบถูก! คำตอบที่ถูกคือ: '+correctText;
+  }else{
+    resultHtml+='wrong';
+    resultHtml+='>❌ ตอบผิด คำตอบที่ถูกคือ: '+correctText;
+  }
+  resultHtml+='</div>';
+  
+  let filteredQuestions=quizQuestions;
+  if(currentQuizRange!=='all'){
+    filteredQuestions=quizQuestions.filter(q=>q.range===currentQuizRange);
+  }
+  
+  if(currentQuizIndex<filteredQuestions.length-1){
+    resultHtml+='<div class="quiz-actions"><button class="quiz-btn quiz-btn-primary" onclick="nextQuestion()">คำถามถัดไป</button></div>';
+  }else{
+    resultHtml+=`<div class="quiz-score" style="margin-top:16px">คะแนนรวม: ${quizScore} / ${totalQuestions}</div>`;
+    resultHtml+='<div class="quiz-actions"><button class="quiz-btn quiz-btn-primary" onclick="showQuiz(\''+currentQuizRange+'\')">เริ่มใหม่</button></div>';
+  }
+  
+  content.innerHTML+=resultHtml;
+}
+
+function nextQuestion(){
+  currentQuizIndex++;
+  showQuiz(currentQuizRange);
+}
+
+function closeQuiz(){
+  document.getElementById('quizModal').classList.remove('show');
+}
+
+// เพิ่ม event listener สำหรับปิด modal เมื่อกดที่ overlay
+document.addEventListener('DOMContentLoaded',function(){
+  const modals=['articleModal','quizModal','strokeModal','gameModal','writingModal','readingModal','orderingModal'];
+  const closeFunctions={
+    articleModal:closeArticle,
+    quizModal:closeQuiz,
+    strokeModal:closeStrokeModal,
+    gameModal:closeGame,
+    writingModal:closeWriting,
+    readingModal:closeReading,
+    orderingModal:closeOrdering
+  };
+  
+  modals.forEach(modalId=>{
+    const modal=document.getElementById(modalId);
+    if(modal){
+      modal.addEventListener('click',function(e){
+        // ถ้ากดที่ modal เอง (overlay) ไม่ใช่ที่ container
+        if(e.target===modal){
+          if(closeFunctions[modalId]){
+            closeFunctions[modalId]();
+          }
+        }
+      });
+    }
+  });
+});
+
+function toggleThaiTranslation(){
+  showThaiTranslation=!showThaiTranslation;
+  showQuiz(currentQuizRange);
+}
+
 function lookupWord(zhText){
   const word=vocab.find(v=>zhText.includes(v.h));
   if(word){
     alert(`${word.h} (${word.p})\nความหมาย: ${word.m}\nตัวอย่าง: ${word.ex?word.ex.replace(/<br>/g,' '):'ไม่มี'}`);
+  }
+}
+
+function speakChinese(text){
+  if('speechSynthesis' in window){
+    // หยุดเสียงที่กำลังพูดอยู่
+    speechSynthesis.cancel();
+    
+    const utterance=new SpeechSynthesisUtterance(text);
+    utterance.lang='zh-CN';
+    utterance.rate=0.8;
+    utterance.pitch=1;
+    
+    // พยายามใช้เสียงจีน
+    const voices=speechSynthesis.getVoices();
+    const chineseVoice=voices.find(voice=>voice.lang.includes('zh'));
+    if(chineseVoice){
+      utterance.voice=chineseVoice;
+    }
+    
+    speechSynthesis.speak(utterance);
+  }else{
+    alert('เบราว์เซอร์ของคุณไม่รองรับ Text-to-Speech');
   }
 }
 
@@ -2026,6 +3612,7 @@ function closeStrokeModal(){
 }
 
 updateDifficultCount();
+document.getElementById('pinyinToggleText').textContent=showPinyin?'ซ่อน Pinyin':'แสดง Pinyin';
 render();
 </script>
 </body>
