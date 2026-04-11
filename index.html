@@ -65,7 +65,7 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .card-back{background:linear-gradient(145deg,#F5F0E8 0%,var(--accent-light) 100%);transform:rotateY(180deg);border:1.5px solid var(--border);min-height:220px;height:220px;align-items:flex-start;justify-content:flex-start;padding:22px 20px 18px}
 .card-back::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent-soft));border-radius:16px 16px 0 0}
 .card-number{position:absolute;top:12px;left:14px;font-family:'Sarabun',sans-serif;font-size:0.72rem;color:var(--accent);font-weight:600;letter-spacing:0.5px}
-.learned-btn{position:absolute;top:8px;right:10px;background:none;border:none;font-size:1.1rem;cursor:pointer;opacity:0.4;transition:opacity .2s,transform .2s;z-index:2;visibility:visible}
+.learned-btn{position:absolute;top:8px;right:10px;background:none;border:none;font-size:1.1rem;cursor:pointer;opacity:0.4;transition:opacity .2s,transform .2s;z-index:2;visibility:visible;padding:8px;margin:-8px}
 .learned-btn:hover{opacity:0.8;transform:scale(1.2)}
 .learned-btn.done{opacity:1}
 .card.flipped .card-front .learned-btn{visibility:hidden}
@@ -100,8 +100,8 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .speak-btn:hover{background:var(--text)}
 #gameModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
 #gameModal.show{display:flex}
-.game-container{background:var(--surface);border-radius:12px;padding:24px;max-width:800px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 10px 10px -5px rgba(0,0,0,0.2)}
-.game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.game-container{background:var(--surface);border-radius:12px;padding:0 24px 24px 24px;max-width:800px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 10px 10px -5px rgba(0,0,0,0.2);position:relative}
+.game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:16px 0;position:sticky;top:0;z-index:10;background:var(--surface)}
 .game-title{font-size:20px;font-weight:600;color:var(--text)}
 .game-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
 .game-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
@@ -112,8 +112,23 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .game-card.wrong{background:#FEE2E2;border-color:#EF4444;animation:shake 0.3s;color:#991B1B}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .game-stats{display:flex;gap:20px;justify-content:center;font-size:14px;color:var(--text-soft);margin-bottom:16px}
-.article-container{background:var(--surface);border-radius:12px;padding:24px;max-width:900px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 10px 10px -5px rgba(0,0,0,0.2)}
-.article-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+.game-over-modal{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(253,252,248,0.95);display:flex;align-items:center;justify-content:center;z-index:100;border-radius:12px}
+.game-over-content{text-align:center;padding:32px}
+.game-over-title{font-size:32px;font-weight:600;color:#10B981;margin-bottom:16px}
+.game-over-message{font-size:18px;color:var(--text);margin-bottom:8px}
+.game-over-time{font-size:16px;color:var(--text-soft);margin-bottom:24px}
+.game-over-btn{background:var(--accent);color:var(--surface);border:none;border-radius:8px;padding:12px 32px;font-size:16px;cursor:pointer;transition:background 0.2s}
+.game-over-btn:hover{background:var(--text)}
+.game-result-modal{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(253,252,248,0.98);display:flex;align-items:center;justify-content:center;z-index:101;border-radius:12px}
+.game-result-content{text-align:center;padding:40px;background:var(--surface);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.15);max-width:350px;width:90%}
+.game-result-title{font-size:28px;font-weight:600;color:#10B981;margin-bottom:20px}
+.game-result-message{font-size:18px;color:var(--text);margin-bottom:12px}
+.game-result-time{font-size:16px;color:var(--text-soft);margin-bottom:20px}
+.game-result-stars{font-size:24px;margin-bottom:28px;letter-spacing:4px}
+.game-result-btn{background:var(--accent);color:var(--surface);border:none;border-radius:8px;padding:14px 40px;font-size:16px;cursor:pointer;transition:background 0.2s;font-weight:500}
+.game-result-btn:hover{background:var(--text)}
+.article-container{background:var(--surface);border-radius:12px;padding:0 24px 24px 24px;max-width:900px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 10px 10px -5px rgba(0,0,0,0.2);position:relative}
+.article-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:16px 0 12px 0;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;background:var(--surface)}
 .article-title{font-size:22px;font-weight:600;color:var(--text)}
 .article-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
 .article-list{display:flex;flex-direction:column;gap:12px}
@@ -138,39 +153,11 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .submenu-item{padding-left:12px;font-size:13px}
 #articleModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
 #articleModal.show{display:flex}
-#quizModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
-#quizModal.show{display:flex}
 #strokeModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:1100;align-items:center;justify-content:center}
 #strokeModal.show{display:flex}
 .modal-overlay{cursor:pointer}
 .stroke-container{background:var(--surface);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3)}
-.quiz-container{background:var(--surface);border-radius:16px;padding:24px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3)}
-.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border)}
-.quiz-title{font-size:20px;font-weight:600;color:var(--text)}
-.quiz-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
-.quiz-range-filter{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.quiz-range-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:var(--bg);color:var(--text-soft);font-size:13px;cursor:pointer;transition:all 0.2s}
-.quiz-range-btn:hover{background:var(--accent-light);border-color:var(--accent)}
-.quiz-range-btn.active{background:var(--accent-light);border-color:var(--accent);color:var(--text);font-weight:500}
-.quiz-article-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:12px;padding:12px;background:var(--bg);border-radius:8px}
-.quiz-question{font-size:18px;font-weight:600;color:var(--text);margin-bottom:16px}
-.quiz-options{display:flex;flex-direction:column;gap:12px;margin-bottom:20px}
-.quiz-option{padding:12px 16px;border:2px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:15px;cursor:pointer;transition:all 0.2s}
-.quiz-option:hover{border-color:var(--accent);background:var(--bg)}
-.quiz-option.selected{border-color:var(--accent);background:var(--accent-light)}
-.quiz-option.correct{border-color:#10B981;background:#D1FAE5}
-.quiz-option.wrong{border-color:#EF4444;background:#FEE2E2}
-.quiz-quiz-result{padding:16px;background:#F9FAFB;border-radius:8px;margin-bottom:16px}
-.quiz-quiz-result.correct{background:#D1FAE5;border:2px solid #10B981}
-.quiz-quiz-result.wrong{background:#FEE2E2;border:2px solid #EF4444}
-.quiz-score{font-size:18px;font-weight:600;color:var(--text);margin-bottom:16px}
-.quiz-actions{display:flex;gap:12px}
-.quiz-btn{padding:10px 20px;border:none;border-radius:8px;font-size:15px;cursor:pointer;transition:all 0.2s}
-.quiz-btn-primary{background:var(--accent);color:var(--surface)}
-.quiz-btn-primary:hover{background:var(--text)}
-.quiz-btn-secondary{background:var(--bg);color:var(--text)}
-.quiz-btn-secondary:hover{background:var(--accent-light)}
-.stroke-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+.stroke-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border);position:relative}
 .stroke-title{font-size:20px;font-weight:600;color:var(--text)}
 .stroke-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
 .stroke-characters{display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin-bottom:16px}
@@ -183,16 +170,16 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .stroke-btn-secondary{background:var(--border);color:var(--text)}
 .stroke-btn-secondary:hover{background:var(--accent-light)}
 .stroke-info{text-align:center;margin-bottom:16px;color:var(--text-soft);font-size:14px}
-.stroke-btn-small{position:absolute;top:8px;right:8px;background:none;border:none;font-size:1.1rem;cursor:pointer;opacity:0.6;transition:opacity .2s,transform .2s;z-index:2;padding:0;visibility:visible}
+.stroke-btn-small{position:absolute;top:8px;right:8px;background:none;border:none;font-size:1.1rem;cursor:pointer;opacity:0.6;transition:opacity .2s,transform .2s;z-index:2;padding:8px;margin:-8px;visibility:visible}
 .stroke-btn-small:hover{opacity:1;transform:scale(1.2)}
 .card.flipped .card-front .stroke-btn-small{visibility:hidden}
 .stroke-legend{display:flex;justify-content:center;gap:16px;margin-bottom:16px;font-size:13px;color:var(--text-soft)}
 .legend-item{display:flex;align-items:center;gap:6px}
 .legend-dot{width:12px;height:12px;border-radius:50%}
-#writingModal,#readingModal,#orderingModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
-#writingModal.show,#readingModal.show,#orderingModal.show{display:flex}
-.exercise-container{background:var(--surface);border-radius:16px;padding:24px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3)}
-.exercise-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+#writingModal,#readingModal,#orderingModal,#similarModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+#writingModal.show,#readingModal.show,#orderingModal.show,#similarModal.show{display:flex}
+.exercise-container{background:var(--surface);border-radius:16px;padding:0 24px 24px 24px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3);position:relative}
+.exercise-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:16px 0 12px 0;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;background:var(--surface)}
 .exercise-title{font-size:20px;font-weight:600;color:var(--text)}
 .exercise-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
 .exercise-stats{display:flex;gap:20px;margin-bottom:20px;font-size:14px;color:var(--text-soft)}
@@ -206,7 +193,7 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .writing-canvas-controls{display:flex;gap:10px;margin-top:10px}
 .reading-question{font-size:18px;color:var(--text);margin-bottom:16px;line-height:1.6}
 .reading-options{display:flex;flex-direction:column;gap:10px}
-.reading-option{padding:12px;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:15px}
+.reading-option{padding:16px 20px;border:2px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:15px;margin-bottom:8px}
 .reading-option:hover{background:var(--bg);border-color:var(--accent)}
 .reading-option.selected{background:var(--accent-light);border-color:var(--accent)}
 .reading-option.correct{background:#D1FAE5;border-color:#10B981}
@@ -226,6 +213,58 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .exercise-btn:hover{background:var(--text)}
 .exercise-btn-secondary{background:var(--border);color:var(--text);border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:background 0.2s}
 .exercise-btn-secondary:hover{background:var(--accent-light)}
+.similar-container{background:var(--surface);border-radius:16px;padding:0 24px 24px 24px;max-width:700px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3);position:relative}
+.similar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:16px 0 12px 0;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;background:var(--surface)}
+.similar-title{font-size:20px;font-weight:600;color:var(--text)}
+.similar-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
+.similar-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.similar-card{border:2px solid var(--border);border-radius:12px;padding:16px;background:var(--bg);cursor:pointer;transition:all 0.2s}
+.similar-card:hover{border-color:var(--accent);background:var(--accent-light)}
+.similar-card-header{display:flex;justify-content:center;gap:24px;margin-bottom:12px}
+.similar-char{font-size:48px;font-weight:600;color:var(--text)}
+.similar-char-label{font-size:12px;color:var(--text-soft);text-align:center;margin-top:4px}
+.similar-meaning{text-align:center;font-size:14px;color:var(--text);margin-bottom:8px}
+.similar-diff-box{background:#F9FAFB;border-radius:8px;padding:12px;margin-top:12px;font-size:13px;color:var(--text-soft);line-height:1.6}
+.similar-example{margin-top:8px;padding:8px;background:#F3F4F6;border-radius:6px;font-size:12px}
+.similar-example-zh{color:#1E40AF;font-weight:500}
+.similar-example-py{color:#6B7280}
+.similar-example-th{color:#059669}
+.similar-detail-view{display:none}
+.similar-detail-view.active{display:block}
+.similar-list-view{display:block}
+.similar-list-view.hidden{display:none}
+.similar-back-btn{background:var(--border);color:var(--text);border:none;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;transition:background 0.2s;margin-bottom:16px}
+.similar-back-btn:hover{background:var(--accent-light)}
+.similar-detail-content{background:var(--bg);border-radius:12px;padding:20px}
+.similar-detail-header{display:flex;justify-content:center;align-items:center;gap:40px;margin-bottom:20px}
+.similar-detail-char{font-size:64px;font-weight:600;color:var(--text)}
+.similar-detail-pinyin{font-size:18px;color:var(--text-soft);text-align:center;margin-bottom:4px}
+.similar-detail-meaning{font-size:16px;color:var(--text);text-align:center;margin-bottom:12px}
+.similar-detail-box{flex:1;background:var(--surface);border-radius:12px;padding:16px;border:2px solid var(--border)}
+.similar-detail-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px;text-align:center}
+.similar-diff-highlight{background:var(--accent-light);padding:12px;border-radius:8px;margin-bottom:16px;font-size:14px;line-height:1.6;color:var(--text)}
+#listeningModal,#randomQuizModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+#listeningModal.show,#randomQuizModal.show{display:flex}
+.listening-container,.quiz-container{background:var(--surface);border-radius:16px;padding:0 24px 24px 24px;max-width:700px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3);position:relative}
+.listening-word{font-size:64px;text-align:center;margin:30px 0;color:var(--text-soft);opacity:0.3}
+.listening-input{width:100%;padding:16px;font-size:32px;text-align:center;border:2px solid var(--border);border-radius:12px;font-family:'Noto Serif SC',serif;margin-bottom:16px}
+.listening-input:focus{outline:none;border-color:var(--accent)}
+.listening-result{text-align:center;padding:8px;border-radius:6px;margin:8px 0;font-size:14px}
+.listening-result.correct{background:#D1FAE5;color:#065F46}
+.listening-result.wrong{background:#FEE2E2;color:#991B1B}
+.quiz-mode-selector{display:flex;gap:10px;margin-bottom:20px;justify-content:center;flex-wrap:wrap}
+.quiz-mode-btn{padding:10px 20px;border:2px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text-soft);cursor:pointer;transition:all 0.2s;font-size:14px}
+.quiz-mode-btn:hover{border-color:var(--accent);background:var(--accent-light)}
+.quiz-mode-btn.active{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.quiz-question{font-size:20px;color:var(--text);margin-bottom:20px;text-align:center;font-weight:500}
+.quiz-input{width:100%;padding:12px;font-size:18px;border:2px solid var(--border);border-radius:8px;margin-bottom:16px;font-family:'Noto Serif SC',serif}
+.quiz-progress-chart{margin-top:24px;padding:20px;background:var(--bg);border-radius:12px}
+.quiz-chart-bar{height:30px;background:var(--accent);border-radius:4px;margin-bottom:8px;position:relative;transition:width 0.3s}
+.quiz-chart-label{font-size:13px;color:var(--text-soft);margin-bottom:4px}
+.game-mode-selector{display:flex;gap:10px;margin-bottom:16px;justify-content:center;flex-wrap:wrap}
+.game-mode-btn{padding:8px 16px;border:2px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text-soft);cursor:pointer;transition:all 0.2s;font-size:13px}
+.game-mode-btn:hover{border-color:var(--accent);background:var(--accent-light)}
+.game-mode-btn.active{background:var(--accent);color:var(--surface);border-color:var(--accent)}
 </style>
 <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -321,9 +360,39 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
       <span class="menu-icon">❌</span>
       <span>คำที่จำยาก (<span id="difficultCount">0</span>)</span>
     </div>
-    <div class="menu-item" onclick="startMatchingGame()">
+    <div class="menu-item" onclick="showSimilarWords()">
+      <span class="menu-icon">🔍</span>
+      <span>เปรียบเทียบคำคล้ายกัน</span>
+    </div>
+    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenuGame')">
       <span class="menu-icon">🎮</span>
-      <span>เกมจับคู่ (30 คำ)</span>
+      <span>เกมจับคู่ ▾</span>
+    </div>
+    <div class="submenu" id="submenuGame">
+      <div class="menu-item submenu-item" onclick="startMatchingGame('chinese-thai', 15)">
+        <span class="menu-icon">🎯</span>
+        <span>จีน-ไทย (15 คำ)</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startMatchingGame('chinese-thai', 30)">
+        <span class="menu-icon">🎯</span>
+        <span>จีน-ไทย (30 คำ)</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startMatchingGame('chinese-thai', 50)">
+        <span class="menu-icon">🎯</span>
+        <span>จีน-ไทย (50 คำ)</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startMatchingGame('chinese-pinyin', 15)">
+        <span class="menu-icon">🔤</span>
+        <span>จีน-Pinyin (15 คำ)</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startMatchingGame('chinese-pinyin', 30)">
+        <span class="menu-icon">🔤</span>
+        <span>จีน-Pinyin (30 คำ)</span>
+      </div>
+      <div class="menu-item submenu-item" onclick="startMatchingGame('chinese-pinyin', 50)">
+        <span class="menu-icon">🔤</span>
+        <span>จีน-Pinyin (50 คำ)</span>
+      </div>
     </div>
     <div class="menu-item" onclick="togglePinyin()">
       <span class="menu-icon">🔤</span>
@@ -332,14 +401,22 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
   </div>
   
   <div class="menu-section">
+    <div class="menu-title">แบบทดสอบ</div>
+    <div class="menu-item" onclick="startListeningDictation()">
+      <span class="menu-icon">🎧</span>
+      <span>โหมดฟังและพิมพ์</span>
+    </div>
+    <div class="menu-item" onclick="startRandomQuiz()">
+      <span class="menu-icon">📝</span>
+      <span>แบบทดสอบแบบสุ่ม</span>
+    </div>
+  </div>
+  
+  <div class="menu-section">
     <div class="menu-title">บทความ</div>
     <div class="menu-item" onclick="showSampleArticles()">
       <span class="menu-icon">📖</span>
       <span>ตัวอย่างบทความ (120)</span>
-    </div>
-    <div class="menu-item" onclick="showQuiz()">
-      <span class="menu-icon">📝</span>
-      <span>แบบฝึกหัดตอบคำถาม</span>
     </div>
   </div>
 </div>
@@ -373,10 +450,27 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
       <button class="game-close" onclick="closeGame()">✕</button>
     </div>
     <div class="game-stats">
-      <span>คู่ที่จับได้: <strong id="matchedCount">0</strong>/15</span>
+      <span>คู่ที่จับได้: <strong id="matchedCount">0</strong>/<strong id="totalPairs">15</strong></span>
       <span>เวลา: <strong id="gameTime">0:00</strong></span>
     </div>
     <div class="game-grid" id="gameGrid"></div>
+    <div id="gameOverModal" class="game-over-modal" style="display:none;">
+      <div class="game-over-content">
+        <div class="game-over-title">🎉 ยินดีด้วย!</div>
+        <div class="game-over-message">คุณจับคู่ครบทั้งหมดแล้ว</div>
+        <div class="game-over-time">ใช้เวลา: <span id="gameOverTime">0:00</span></div>
+        <button class="game-over-btn" onclick="showGameResultModal()">ตกลง</button>
+      </div>
+    </div>
+    <div id="gameResultModal" class="game-result-modal" style="display:none;">
+      <div class="game-result-content">
+        <div class="game-result-title">🏆 สรุปผลการเล่น</div>
+        <div class="game-result-message">จับคู่สำเร็จทั้งหมด 15 คู่</div>
+        <div class="game-result-time">เวลาที่ใช้: <span id="gameResultTime">0:00</span></div>
+        <div class="game-result-stars">⭐ ⭐ ⭐</div>
+        <button class="game-result-btn" onclick="closeGame()">ปิดเกม</button>
+      </div>
+    </div>
   </div>
 </div>
 <div id="articleModal">
@@ -386,15 +480,6 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
       <button class="article-close" onclick="closeArticle()">✕</button>
     </div>
     <div id="articleContent"></div>
-  </div>
-</div>
-<div id="quizModal">
-  <div class="quiz-container">
-    <div class="quiz-header">
-      <div class="quiz-title">📝 แบบฝึกหัดตอบคำถาม</div>
-      <button class="quiz-close" onclick="closeQuiz()">✕</button>
-    </div>
-    <div id="quizContent"></div>
   </div>
 </div>
 <div id="strokeModal">
@@ -488,6 +573,69 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
       <button class="exercise-btn exercise-btn-secondary" onclick="resetOrdering()">เริ่มใหม่</button>
       <button class="exercise-btn exercise-btn-secondary" onclick="closeOrderingModal()">ปิด</button>
     </div>
+  </div>
+</div>
+<div id="listeningModal">
+  <div class="listening-container">
+    <div class="exercise-header">
+      <div class="exercise-title">🎧 โหมดฟังและพิมพ์</div>
+      <button class="exercise-close" onclick="closeListening()">✕</button>
+    </div>
+    <div class="exercise-stats">
+      <span>คำที่ <strong id="listeningCurrent">1</strong>/<strong id="listeningTotal">10</strong></span>
+      <span>คะแนน: <strong id="listeningScore">0</strong></span>
+    </div>
+    <div class="exercise-content">
+      <div class="listening-word" id="listeningWord">?</div>
+      <button class="exercise-btn" onclick="playListeningAudio()" style="margin-bottom:20px">🔊 เล่นเสียง</button>
+      <input type="text" class="listening-input" id="listeningInput" placeholder="พิมพ์ตัวอักษรจีนที่คุณได้ยิน...">
+      <div class="listening-result" id="listeningResult"></div>
+    </div>
+    <div class="exercise-controls">
+      <button class="exercise-btn" onclick="checkListeningAnswer()">ตรวจคำตอบ</button>
+      <button class="exercise-btn-secondary" onclick="skipListening()">ข้าม</button>
+      <button class="exercise-btn-secondary" onclick="closeListening()">ปิด</button>
+    </div>
+  </div>
+</div>
+<div id="randomQuizModal">
+  <div class="quiz-container">
+    <div class="exercise-header">
+      <div class="exercise-title">📝 แบบทดสอบแบบสุ่ม</div>
+      <button class="exercise-close" onclick="closeRandomQuiz()">✕</button>
+    </div>
+    <div class="quiz-mode-selector" id="quizModeSelector">
+      <button class="quiz-mode-btn active" onclick="setQuizMode('easy')">ง่าย (4 ตัวเลือก)</button>
+      <button class="quiz-mode-btn" onclick="setQuizMode('medium')">ปานกลาง (เติมคำ)</button>
+      <button class="quiz-mode-btn" onclick="setQuizMode('hard')">ยาก (เขียนเอง)</button>
+    </div>
+    <div class="exercise-stats">
+      <span>คำถามที่ <strong id="quizCurrent">1</strong>/<strong id="quizTotal">10</strong></span>
+      <span>คะแนน: <strong id="quizScore">0</strong></span>
+    </div>
+    <div class="exercise-content" id="quizContent">
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div id="quizAnswerArea"></div>
+      <div class="listening-result" id="quizResult"></div>
+    </div>
+    <div class="exercise-controls">
+      <button class="exercise-btn" id="quizCheckBtn" onclick="checkAndNextQuiz()">ตรวจคำตอบ</button>
+      <button class="exercise-btn-secondary" onclick="closeRandomQuiz()">ปิด</button>
+    </div>
+    <div class="quiz-progress-chart" id="quizChart" style="display:none">
+      <h3 style="margin-bottom:12px;color:var(--text)">📊 ความก้าวหน้า</h3>
+      <div class="quiz-chart-label">คะแนนรวม: <strong id="chartScore">0</strong>/<strong id="chartTotal">0</strong></div>
+      <div class="quiz-chart-bar" id="chartBar" style="width:0%"></div>
+    </div>
+  </div>
+</div>
+<div id="similarModal">
+  <div class="similar-container">
+    <div class="similar-header">
+      <div class="similar-title">🔍 เปรียบเทียบคำคล้ายกัน</div>
+      <button class="similar-close" onclick="closeSimilarModal()">✕</button>
+    </div>
+    <div id="similarContent"></div>
   </div>
 </div>
 <script>
@@ -1694,6 +1842,69 @@ const vocab=[
 {n:1200,h:"作者",p:"zuòzhě",m:"ผู้เขียน",cat:"noun",ex:"这本书的作者。<br>Zhè běn shū de zuòzhě.<br>(ผู้เขียนหนังสือเล่มนี้)"},
 ];
 
+// คำคล้ายกันสำหรับเปรียบเทียบ
+const similarWords=[
+  {word1:"太",pinyin1:"tài",meaning1:"มากเกินไป/เกินไป",word2:"大",pinyin2:"dà",meaning2:"ใหญ่",difference:"太 มีจุดเด่นที่แนวนอน หมายถึงมากเกินไป<br>大 มีขายืดแนวนอน หมายถึงขนาดใหญ่",example1:"太多了<br>Tài duō le<br>(มากเกินไป)",example2:"很大<br>Hěn dà<br>(ใหญ่มาก)"},
+  {word1:"人",pinyin1:"rén",meaning1:"คน",word2:"入",pinyin2:"rù",meaning2:"เข้า",difference:"人 ขาซ้ายชิดลง หมายถึงมนุษย์<br>入 ขาซ้ายชิดขึ้น หมายถึงการเข้าไป",example1:"一个人<br>Yí gè rén<br>(หนึ่งคน)",example2:"进去<br>Jìn qù<br>(เข้าไป)"},
+  {word1:"天",pinyin1:"tiān",meaning1:"ท้องฟ้า/วัน",word2:"夫",pinyin2:"fū",meaning2:"สามี",difference:"天 ขาบนขวามีแนวโค้ง<br>夫 ขาบนขวาตรง",example1:"今天<br>Jīntiān<br>(วันนี้)",example2:"丈夫<br>Zhàngfū<br>(สามี)"},
+  {word1:"日",pinyin1:"rì",meaning1:"วัน/ดวงอาทิตย์",word2:"目",pinyin2:"mù",meaning2:"ตา",difference:"日 รูปสี่เหลี่ยมยาวตั้ง<br>目 รูปสี่เหลี่ยมกว้างและมีขีดใน",example1:"明天<br>Míngtiān<br>(พรุ่งนี้)",example2:"目的<br>Mùdì<br>(จุดประสงค์)"},
+  {word1:"土",pinyin1:"tǔ",meaning1:"ดิน/ดินแดง",word2:"士",pinyin2:"shì",meaning2:"ขุนนาง/ทหาร",difference:"土 ขาล่างยาวกว่าขาบน<br>士 ขาบนยาวกว่าขาล่าง",example1:"土地<br>Tǔdì<br>(ที่ดิน)",example2:"博士<br>Bóshì<br>(ดุษฎีบัณฑิต)"},
+  {word1:"午",pinyin1:"wǔ",meaning1:"เที่ยง/เมื่อ",word2:"牛",pinyin2:"niú",meaning2:"วัว",difference:"午 ไม่มีจมูกยื่น<br>牛 มีจมูกยื่นขึ้น",example1:"中午<br>Zhōngwǔ<br>(เที่ยง)",example2:"牛肉<br>Niúròu<br>(เนื้อวัว)"},
+  {word1:"未",pinyin1:"wèi",meaning1:"ยังไม่",word2:"末",pinyin2:"mò",meaning2:"ปลาย/สิ้น",difference:"未 ขาบนยาวกว่าขาล่าง<br>末 ขาล่างยาวกว่าขาบน",example1:"未来<br>Weilái<br>(อนาคต)",example2:"周末<br>Zhōumò<br>(สุดสัปดาห์)"},
+  {word1:"代",pinyin1:"dài",meaning1:"ยุค/แทน",word2:"伐",pinyin2:"fá",meaning2:"ตัด/โจมตี",difference:"代 ขาขวามีจุดเด่น<br>伐 มีขีดแนวนอน",example1:"古代<br>Gǔdài<br>(ยุคโบราณ)",example2:"讨伐<br>Tǎofá<br>(โจมตี)"},
+  {word1:"己",pinyin1:"jǐ",meaning1:"ตัวเอง",word2:"已",pinyin2:"yǐ",meaning2:"แล้ว",difference:"己 เปิดด้านบน<br>已 ปิดด้านบน",example1:"自己<br>Zìjǐ<br>(ตัวเอง)",example2:"已经<br>Yǐjīng<br>(แล้ว)"},
+  {word1:"力",pinyin1:"lì",meaning1:"แรง/กำลัง",word2:"刀",pinyin2:"dāo",meaning2:"มีด",difference:"力 ขาบนเป็นแนวนอน<br>刀 ขาบนเป็นแนวเฉียง",example1:"努力<br>Nǔlì<br>(พยายาม)",example2:"刀子<br>Dāozi<br>(มีด)"},
+  {word1:"千",pinyin1:"qiān",meaning1:"พัน(1000)",word2:"干",pinyin2:"gàn",meaning2:"ทำ/แห้ง",difference:"千 มีขีดตัดแนวนอน<br>干 มีขีดตัดแนวเฉียง",example1:"一千<br>Yì qiān<br>(หนึ่งพัน)",example2:"干净<br>Gānjìng<br>(สะอาด)"},
+  {word1:"贝",pinyin1:"bèi",meaning1:"เปลือกหอย",word2:"见",pinyin2:"jiàn",meaning2:"เห็น",difference:"贝 ขาล่างตรง<br>见 ขาล่างเป็นขีดเฉียง",example1:"宝贝<br>Bǎobèi<br>(สมบัติ)",example2:"看见<br>Kànjiàn<br>(เห็น)"},
+  {word1:"由",pinyin1:"yóu",meaning1:"จาก/เพราะ",word2:"甲",pinyin2:"jiǎ",meaning2:"เกรา/อันดับแรก",difference:"由 มีจุดเด่นที่กลาง<br>甲 มีขีดแนวตั้ง",example1:"理由<br>Lǐyóu<br>(เหตุผล)",example2:"第一<br>Dì yī<br>(อันดับแรก)"},
+  {word1:"乌",pinyin1:"wū",meaning1:"ดำ/กา",word2:"鸟",pinyin2:"niǎo",meaning2:"นก",difference:"乌 ไม่มีจมูก<br>鸟 มีจมูกยื่นออก",example1:"乌云<br>Wūyún<br>(เมฆดำ)",example2:"小鸟<br>Xiǎoniǎo<br>(นกเล็ก)"},
+  {word1:"免",pinyin1:"miǎn",meaning1:"ยกเว้น",word2:"兔",pinyin2:"tù",meaning2:"กระต่าย",difference:"免 ไม่มีจุด<br>兔 มีจุดที่ด้านบน",example1:"免费<br>Miǎnfèi<br>(ฟรี)",example2:"兔子<br>Tùzi<br>(กระต่าย)"},
+  {word1:"户",pinyin1:"hù",meaning1:"ครัวเรือน",word2:"尸",pinyin2:"shī",meaning2:"ศพ",difference:"户 มีจุดที่ขวาบน<br>尸 ไม่มีจุด",example1:"户口<br>Hùkǒu<br>(ทะเบียนบ้าน)",example2:"尸体<br>Shītǐ<br>(ศพ)"},
+  {word1:"王",pinyin1:"wáng",meaning1:"ราชา",word2:"玉",pinyin2:"yù",meaning2:"หยก",difference:"王 ไม่มีจุด<br>玉 มีจุดที่ขวาล่าง",example1:"国王<br>Guówáng<br>(ราชา)",example2:"玉石<br>Yùshí<br>(หยก)"},
+  {word1:"主",pinyin1:"zhǔ",meaning1:"เจ้าของ/หลัก",word2:"玉",pinyin2:"yù",meaning2:"หยก",difference:"主 มีจุดที่บน<br>玉 มีจุดที่ขวาล่าง",example1:"主要<br>Zhǔyào<br>(สำคัญ)",example2:"玉米<br>Yùmǐ<br>(ข้าวโพด)"},
+  {word1:"来",pinyin1:"lái",meaning1:"มา",word2:"米",pinyin2:"mǐ",meaning2:"ข้าว/เมตร",difference:"ทั้งคู่เขียนคล้ายกัน แต่ความหมายต่างกัน",example1:"来<br>Lái<br>(มา)",example2:"米饭<br>Mǐfàn<br>(ข้าวสุก)"},
+  {word1:"东",pinyin1:"dōng",meaning1:"ตะวันออก",word2:"车",pinyin2:"chē",meaning2:"รถ",difference:"东 ขีดเฉียงไปทางขวา<br>车 ขีดเฉียงไปทางซ้าย",example1:"东方<br>Dōngfāng<br>(ทิศตะวันออก)",example2:"汽车<br>Qìchē<br>(รถยนต์)"},
+  {word1:"西",pinyin1:"xī",meaning1:"ตะวันตก",word2:"要",pinyin2:"yào",meaning2:"ต้องการ",difference:"西 ขีดเฉียงเป็นรูป U<br>要 ขีดเฉียงเป็นรูป V",example1:"西方<br>Xīfāng<br>(ทิศตะวันตก)",example2:"要<br>Yào<br>(ต้องการ)"},
+  {word1:"北",pinyin1:"běi",meaning1:"ทิศเหนือ",word2:"比",pinyin2:"bǐ",meaning2:"กว่า",difference:"北 มีขีดเฉียงทั้งสองข้าง<br>比 มีขีดเฉียงด้านขวาเท่านั้น",example1:"北方<br>Běifāng<br>(ทิศเหนือ)",example2:"比较<br>Bǐjiào<br>(เปรียบเทียบ)"},
+  {word1:"南",pinyin1:"nán",meaning1:"ทิศใต้",word2:"半",pinyin2:"bàn",meaning2:"ครึ่ง",difference:"南 มีขีดตัดแนวนอน<br>半 มีจุดที่บน",example1:"南方<br>Nánfāng<br>(ทิศใต้)",example2:"一半<br>Yíbàn<br>(ครึ่งหนึ่ง)"},
+  {word1:"右",pinyin1:"yòu",meaning1:"ขวา",word2:"左",pinyin2:"zuǒ",meaning2:"ซ้าย",difference:"右 ขีดเฉียงไปทางขวา<br>左 ขีดเฉียงไปทางซ้าย",example1:"右边<br>Yòubiān<br>(ด้านขวา)",example2:"左边<br>Zuǒbiān<br>(ด้านซ้าย)"},
+  {word1:"内",pinyin1:"nèi",meaning1:"ใน",word2:"肉",pinyin2:"ròu",meaning2:"เนื้อ",difference:"内 ขีดชิดด้านใน<br>肉 มีขีดเพิ่มที่ขวาล่าง",example1:"国内<br>Guónèi<br>(ในประเทศ)",example2:"牛肉<br>Niúròu<br>(เนื้อวัว)"},
+  {word1:"外",pinyin1:"wài",meaning1:"นอก",word2:"处",pinyin2:"chù",meaning2:"สถานที่",difference:"外 จุดอยู่ด้านนอก<br>处 จุดอยู่ด้านใน",example1:"国外<br>Guówài<br>(ต่างประเทศ)",example2:"到处<br>Dàochù<br>(ทุกที่)"},
+  {word1:"买",pinyin1:"mǎi",meaning1:"ซื้อ",word2:"卖",pinyin2:"mài",meaning2:"ขาย",difference:"买 หัวชี้ลง<br>卖 หัวชี้ขึ้น",example1:"买东西<br>Mǎi dōngxi<br>(ซื้อของ)",example2:"卖东西<br>Mài dōngxi<br>(ขายของ)"},
+  {word1:"手",pinyin1:"shǒu",meaning1:"มือ",word2:"毛",pinyin2:"máo",meaning2:"ขน",difference:"手 ขีดแนวตั้งชิดขวา<br>毛 ขีดแนวเฉียงชิดขวา",example1:"手<br>Shǒu<br>(มือ)",example2:"毛衣<br>Máoyī<br>(เสื้อขนสัตว์)"},
+  {word1:"心",pinyin1:"xīn",meaning1:"ใจ/หัวใจ",word2:"必",pinyin2:"bì",meaning2:"จะต้อง",difference:"心 มีจุดสามจุด<br>必 มีจุดหนึ่งจุด",example1:"开心<br>Kāixīn<br>(ยินดี)",example2:"必须<br>Bìxū<br>(จะต้อง)"},
+  {word1:"白",pinyin1:"bái",meaning1:"ขาว",word2:"百",pinyin2:"bǎi",meaning2:"ร้อย",difference:"白 มีขีดแนวนอนที่บน<br>百 มีขีดแนวนอนที่ล่าง",example1:"白色<br>Báisè<br>(สีขาว)",example2:"一百<br>Yì bǎi<br>(หนึ่งร้อย)"},
+  {word1:"包",pinyin1:"bāo",meaning1:"กระเป๋า",word2:"抱",pinyin2:"bào",meaning2:"กอด",difference:"包 มีรูปห่อหุ้ม<br>抱 มีมือ(扌)ด้านซ้าย",example1:"书包<br>Shūbāo<br>(กระเป๋านักเรียน)",example2:"抱着<br>Bàozhe<br>(กอดไว้)"},
+  {word1:"杯",pinyin1:"bēi",meaning1:"แก้ว",word2:"被",pinyin2:"bèi",meaning2:"ถูก",difference:"杯 มีไม้(木)ด้านซ้าย<br>被 มีเสื้อ(衤)ด้านซ้าย",example1:"杯子<br>Bēizi<br>(แก้วน้ำ)",example2:"被打<br>Bèi dǎ<br>(ถูกตี)"},
+  {word1:"本",pinyin1:"běn",meaning1:"เล่ม",word2:"笨",pinyin2:"bèn",meaning2:"โง่",difference:"本 ไม่มีไผ่(⺮)บน<br>笨 มีไผ่(⺮)บน",example1:"一本书<br>Yì běn shū<br>(หนังสือหนึ่งเล่ม)",example2:"很笨<br>Hěn bèn<br>(โง่มาก)"},
+  {word1:"比",pinyin1:"bǐ",meaning1:"กว่า",word2:"北",pinyin2:"běi",meaning2:"ทิศเหนือ",difference:"比 มีสองคนเทียบกัน<br>北 มีสองคนหันหลังกัน",example1:"比我高<br>Bǐ wǒ gāo<br>(สูงกว่าฉัน)",example2:"北方<br>Běifāng<br>(ทิศเหนือ)"},
+  {word1:"边",pinyin1:"biān",meaning1:"ข้าง",word2:"遍",pinyin2:"biàn",meaning2:"รอบ/ครั้ง",difference:"边 มีเส้นทาง(辶)ด้านล่าง<br>遍 มีเส้นทาง(辶)ด้านล่างและมีตัวซับซ้อนกว่า",example1:"旁边<br>Pángbiān<br>(ข้างๆ)",example2:"一遍<br>Yí biàn<br>(หนึ่งรอบ)"},
+  {word1:"别",pinyin1:"bié",meaning1:"อย่า",word2:"到",pinyin2:"dào",meaning2:"ถึง",difference:"别 มีมีด(刂)ด้านขวา<br>到 มีมีด(刂)ด้านซ้าย",example1:"别走<br>Bié zǒu<br>(อย่าไป)",example2:"到了<br>Dào le<br>(ถึงแล้ว)"},
+  {word1:"才",pinyin1:"cái",meaning1:"พึ่งจะ",word2:"材",pinyin2:"cái",meaning2:"วัสดุ",difference:"才 ไม่มีไม้(木)<br>材 มีไม้(木)ด้านขวา",example1:"才到<br>Cái dào<br>(เพิ่งมาถึง)",example2:"材料<br>Cáiliào<br>(วัสดุ)"},
+  {word1:"长",pinyin1:"cháng",meaning1:"ยาว",word2:"张",pinyin2:"zhāng",meaning2:"แผ่น",difference:"长 มีขีดยาวแนวตั้ง<br>张 มีธนู(弓)ด้านซ้าย",example1:"很长<br>Hěn cháng<br>(ยาวมาก)",example2:"一张纸<br>Yì zhāng zhǐ<br>(กระดาษหนึ่งแผ่น)"},
+  {word1:"成",pinyin1:"chéng",meaning1:"กลายเป็น",word2:"城",pinyin2:"chéng",meaning2:"เมือง",difference:"成 ไม่มีดิน(土)<br>城 มีดิน(土)ด้านซ้าย",example1:"成功<br>Chénggōng<br>(สำเร็จ)",example2:"城市<br>Chéngshì<br>(เมือง)"},
+  {word1:"吃",pinyin1:"chī",meaning1:"กิน",word2:"喝",pinyin2:"hē",meaning2:"ดื่ม",difference:"吃 มีขอทาน(乞)ด้านขวา<br>喝 มีคำ(曷)ด้านขวา",example1:"吃饭<br>Chī fàn<br>(กินข้าว)",example2:"喝水<br>Hē shuǐ<br>(ดื่มน้ำ)"},
+  {word1:"穿",pinyin1:"chuān",meaning1:"สวมใส่",word2:"船",pinyin2:"chuán",meaning2:"เรือ",difference:"穿 มีรู(穴)บน<br>船 มีเรือ(舟)ด้านซ้าย",example1:"穿衣服<br>Chuān yīfu<br>(ใส่เสื้อผ้า)",example2:"坐船<br>Zuò chuán<br>(นั่งเรือ)"},
+  {word1:"春",pinyin1:"chūn",meaning1:"ฤดูใบไม้ผลิ",word2:"秋",pinyin2:"qiū",meaning2:"ฤดูใบไม้ร่วง",difference:"春 มีสามขีดบน<br>秋 มีไฟ(火)ด้านล่าง",example1:"春天<br>Chūntiān<br>(ฤดูใบไม้ผลิ)",example2:"秋天<br>Qiūtiān<br>(ฤดูใบไม้ร่วง)"},
+  {word1:"从",pinyin1:"cóng",meaning1:"จาก",word2:"丛",pinyin2:"cóng",meaning2:"พุ่มไม้",difference:"从 มีสองคน<br>丛 มีหญ้า(艹)บน",example1:"从这里<br>Cóng zhèlǐ<br>(จากที่นี่)",example2:"草丛<br>Cǎocóng<br>(พุ่มหญ้า)"},
+  {word1:"带",pinyin1:"dài",meaning1:"นำ/พก",word2:"戴",pinyin2:"dài",meaning2:"สวม(หมวก)",difference:"带 มีผ้า(巾)ล่าง<br>戴 มีมือ(扌)บน",example1:"带钱<br>Dài qián<br>(พกเงิน)",example2:"戴帽子<br>Dài màozi<br>(สวมหมวก)"},
+  {word1:"当",pinyin1:"dāng",meaning1:"เป็น",word2:"党",pinyin2:"dǎng",meaning2:"พรรค",difference:"当 ไม่มีสีดำ(黑)บน<br>党 มีสีดำ(黑)บน",example1:"当老师<br>Dāng lǎoshī<br>(เป็นครู)",example2:"共产党<br>Gòngchǎndǎng<br>(พรรคคอมมิวนิสต์)"},
+  {word1:"到",pinyin1:"dào",meaning1:"ถึง",word2:"倒",pinyin2:"dào",meaning2:"เท/ล้ม",difference:"到 มีมีด(刂)ด้านขวา<br>倒 มีคน(亻)ด้านซ้าย",example1:"到了<br>Dào le<br>(ถึงแล้ว)",example2:"倒水<br>Dào shuǐ<br>(เทน้ำ)"},
+  {word1:"的",pinyin1:"de",meaning1:"ของ",word2:"地",pinyin2:"de",meaning2:"อย่าง(กริยาวิเศษณ์)",difference:"的 มีขาวขวาง(白)ซ้าย<br>地 มีดิน(土)ซ้าย",example1:"我的<br>Wǒ de<br>(ของฉัน)",example2:"慢慢地<br>Mànmàn de<br>(ช้าๆ)"},
+  {word1:"低",pinyin1:"dī",meaning1:"ต่ำ",word2:"底",pinyin2:"dǐ",meaning2:"ก้น/พื้น",difference:"低 มีคน(亻)ซ้าย<br>底 มีจุด(广)บน",example1:"很低<br>Hěn dī<br>(ต่ำมาก)",example2:"到底<br>Dàodǐ<br>(ท้ายที่สุด)"},
+  {word1:"点",pinyin1:"diǎn",meaning1:"จุด/นาฬิกา",word2:"店",pinyin2:"diàn",meaning2:"ร้าน",difference:"点 มีไฟ(灬)ล่าง<br>店 มีหลังคา(广)บน",example1:"三点<br>Sān diǎn<br>(สามนาฬิกา)",example2:"商店<br>Shāngdiàn<br>(ร้านค้า)"},
+  {word1:"东",pinyin1:"dōng",meaning1:"ตะวันออก",word2:"冬",pinyin2:"dōng",meaning2:"ฤดูหนาว",difference:"东 มีกล่อง(口)ตรงกลาง<br>冬 มีน้ำแข็ง(冫)ล่าง",example1:"东方<br>Dōngfāng<br>(ทิศตะวันออก)",example2:"冬天<br>Dōngtiān<br>(ฤดูหนาว)"},
+  {word1:"动",pinyin1:"dòng",meaning1:"เคลื่อนไหว",word2:"冻",pinyin2:"dòng",meaning2:"แข็ง/เยือกแข็ง",difference:"动 มีกำลัง(力)ขวา<br>冻 มีน้ำแข็ง(冫)ซ้าย",example1:"运动<br>Yùndòng<br>(กีฬา)",example2:"冰冻<br>Bīngdòng<br>(แข็งเป็นน้ำแข็ง)"},
+  {word1:"对",pinyin1:"duì",meaning1:"ถูกต้อง",word2:"队",pinyin2:"duì",meaning2:"ทีม/แถว",difference:"对 มีมือ(寸)ขวา<br>队 มีหู(阝)ขวา",example1:"对的<br>Duì de<br>(ถูกต้อง)",example2:"队伍<br>Duìwǔ<br>(แถว)"},
+  {word1:"发",pinyin1:"fā",meaning1:"ส่ง/ออก",word2:"友",pinyin2:"yǒu",meaning2:"เพื่อน",difference:"发 มีขีดเฉียงซ้าย<br>友 มีมือ(又)ขวา",example1:"发现<br>Fāxiàn<br>(ค้นพบ)",example2:"朋友<br>Péngyou<br>(เพื่อน)"},
+  {word1:"饭",pinyin1:"fàn",meaning1:"ข้าว",word2:"饮",pinyin2:"yǐn",meaning2:"ดื่ม",difference:"饭 มีอาหาร(饣)ซ้ายและ反ขวา<br>饮 มีอาหาร(饣)ซ้ายและ欠ขวา",example1:"吃饭<br>Chī fàn<br>(กินข้าว)",example2:"饮料<br>Yǐnliào<br>(เครื่องดื่ม)"},
+  {word1:"方",pinyin1:"fāng",meaning1:"ทิศทาง",word2:"万",pinyin2:"wàn",meaning2:"หมื่น",difference:"方 มีจุดบน<br>万 ไม่มีจุดบน",example1:"方向<br>Fāngxiàng<br>(ทิศทาง)",example2:"一万<br>Yí wàn<br>(หนึ่งหมื่น)"},
+  {word1:"分",pinyin1:"fēn",meaning1:"แบ่ง/นาที",word2:"份",pinyin2:"fèn",meaning2:"ส่วน/ชุด",difference:"分 มีมีด(刀/八)บน<br>份 มีคน(亻)ซ้าย",example1:"五分钟<br>Wǔ fēn zhōng<br>(ห้านาที)",example2:"一份<br>Yí fèn<br>(หนึ่งส่วน)"},
+  {word1:"干",pinyin1:"gàn",meaning1:"ทำ/แห้ง",word2:"千",pinyin2:"qiān",meaning2:"พัน",difference:"干 ขีดเฉียง<br>千 ขีดตรง",example1:"干活<br>Gàn huó<br>(ทำงาน)",example2:"一千<br>Yì qiān<br>(หนึ่งพัน)"},
+  {word1:"高",pinyin1:"gāo",meaning1:"สูง",word2:"告",pinyin2:"gào",meaning2:"บอก",difference:"高 มีหลังคา(高)สูง<br>告 มีปาก(口)ล่าง",example1:"很高<br>Hěn gāo<br>(สูงมาก)",example2:"告诉<br>Gàosu<br>(บอก)"},
+  {word1:"个",pinyin1:"gè",meaning1:"ลักษณนาม",word2:"各",pinyin2:"gè",meaning2:"แต่ละ",difference:"个 มีคน(亻)ซ้าย<br>各 มีเท้า(夂)ล่าง",example1:"一个人<br>Yí gè rén<br>(หนึ่งคน)",example2:"各种<br>Gèzhǒng<br>(แต่ละชนิด)"}
+];
+
 const catClass={action:"cat-action",noun:"cat-noun",adj:"cat-adj",adv:"cat-adv",other:"cat-other"};
 const catName={action:"กริยา",noun:"นาม",adj:"คุณศัพท์",adv:"กริยาวิเศษณ์",other:"อื่นๆ"};
 const PAGE=60;
@@ -1974,8 +2185,10 @@ function startMatchingGame(){
   matchedPairs=0;
   gameStartTime=Date.now();
   
-  // แสดง modal
+  // แสดง modal และซ่อน game over modal และ result modal
   document.getElementById('gameModal').classList.add('show');
+  document.getElementById('gameOverModal').style.display='none';
+  document.getElementById('gameResultModal').style.display='none';
   
   // render การ์ด
   renderGameCards();
@@ -2024,10 +2237,10 @@ function selectGameCard(idx){
         document.getElementById('matchedCount').textContent=matchedPairs;
         
         // ชนะเกม
-        if(matchedPairs===15){
+        if(matchedPairs===gamePairCount){
           clearInterval(gameTimer);
           setTimeout(()=>{
-            alert(`🎉 ยินดีด้วย! คุณจับคู่ครบทั้งหมดแล้ว\nใช้เวลา: ${document.getElementById('gameTime').textContent}`);
+            showGameOverModal();
           },500);
         }
         
@@ -2056,8 +2269,27 @@ function updateGameTime(){
   document.getElementById('gameTime').textContent=`${mins}:${secs.toString().padStart(2,'0')}`;
 }
 
+function showGameOverModal(){
+  const gameOverModal=document.getElementById('gameOverModal');
+  const gameContainer=document.querySelector('.game-container');
+  const timeText=document.getElementById('gameTime').textContent;
+  document.getElementById('gameOverTime').textContent=timeText;
+  gameOverModal.style.display='flex';
+  // Auto scroll to show the modal in viewport
+  gameContainer.scrollTo({top:0,behavior:'smooth'});
+}
+
+function showGameResultModal(){
+  const gameResultModal=document.getElementById('gameResultModal');
+  const timeText=document.getElementById('gameTime').textContent;
+  document.getElementById('gameResultTime').textContent=timeText;
+  gameResultModal.style.display='flex';
+}
+
 function closeGame(){
   document.getElementById('gameModal').classList.remove('show');
+  document.getElementById('gameOverModal').style.display='none';
+  document.getElementById('gameResultModal').style.display='none';
   if(gameTimer)clearInterval(gameTimer);
 }
 
@@ -2083,11 +2315,6 @@ function togglePinyin(){
     }else{
       showSampleArticles(currentArticleRange);
     }
-  }
-  // ถ้า modal แบบฝึกหัดเปิดอยู่ ให้ re-render แบบฝึกหัดด้วย
-  const quizModal=document.getElementById('quizModal');
-  if(quizModal.classList.contains('show')){
-    showQuiz(currentQuizRange);
   }
 }
 
@@ -2240,6 +2467,8 @@ function showWritingSummary(){
   const correctCount=writingAnswers.filter(a=>a.correct).length;
   const totalCount=writingAnswers.length;
   
+  document.querySelector('#writingModal .exercise-controls').style.display='none';
+  
   let summaryHtml=`<h3>📊 ผลลัพธ์แบบฝึกหัดเขียน</h3>`;
   summaryHtml+=`<p style="font-size:18px;margin:16px 0;">คะแนน: <strong>${correctCount}</strong>/${totalCount} ตัวอักษร</p>`;
   summaryHtml+=`<div style="max-height:300px;overflow-y:auto;">`;
@@ -2343,6 +2572,8 @@ function selectReadingOption(answer,idx){
 function showReadingSummary(){
   const correctCount=readingAnswers.filter(a=>a.correct).length;
   const totalCount=readingAnswers.length;
+  
+  document.querySelector('#readingModal .exercise-controls').style.display='none';
   
   let summaryHtml=`<h3>📊 ผลลัพธ์แบบฝึกหัดอ่านตอบคำถาม</h3>`;
   summaryHtml+=`<p style="font-size:18px;margin:16px 0;">คะแนน: <strong>${correctCount}</strong>/${totalCount}</p>`;
@@ -2480,6 +2711,8 @@ function showOrderingSummary(){
   const correctCount=orderingAnswers.filter(a=>a.correct).length;
   const totalCount=orderingAnswers.length;
   
+  document.querySelector('#orderingModal .exercise-controls').style.display='none';
+  
   let summaryHtml=`<h3>📊 ผลลัพธ์แบบฝึกหัดเรียงประโยค</h3>`;
   summaryHtml+=`<p style="font-size:18px;margin:16px 0;">คะแนน: <strong>${correctCount}</strong>/${totalCount}</p>`;
   summaryHtml+=`<div style="max-height:300px;overflow-y:auto;">`;
@@ -2500,6 +2733,95 @@ function showOrderingSummary(){
 
 function closeOrderingModal(){
   document.getElementById('orderingModal').classList.remove('show');
+}
+
+function showSimilarWords(){
+  const content=document.getElementById('similarContent');
+  let html='<div class="similar-list-view" id="similarListView">';
+  
+  html+='<div class="similar-list">';
+  similarWords.forEach((pair,index)=>{
+    html+=`
+      <div class="similar-card" onclick="showSimilarDetail(${index})">
+        <div class="similar-card-header">
+          <div>
+            <div class="similar-char">${pair.word1}</div>
+            <div class="similar-char-label">${pair.pinyin1}</div>
+          </div>
+          <div>
+            <div class="similar-char">${pair.word2}</div>
+            <div class="similar-char-label">${pair.pinyin2}</div>
+          </div>
+        </div>
+        <div class="similar-meaning">${pair.meaning1} vs ${pair.meaning2}</div>
+        <div class="similar-diff-box">🔍 คลิกเพื่อดูความแตกต่าง</div>
+      </div>
+    `;
+  });
+  html+='</div></div>';
+  
+  html+='<div class="similar-detail-view" id="similarDetailView"></div>';
+  
+  content.innerHTML=html;
+  document.getElementById('similarModal').classList.add('show');
+  if(window.innerWidth<=1024)toggleSidebar();
+}
+
+function showSimilarDetail(index){
+  const pair=similarWords[index];
+  const listView=document.getElementById('similarListView');
+  const detailView=document.getElementById('similarDetailView');
+  
+  listView.classList.add('hidden');
+  detailView.classList.add('active');
+  
+  let html=`
+    <button class="similar-back-btn" onclick="backToSimilarList()">← กลับไปรายการ</button>
+    <div class="similar-detail-content">
+      <div class="similar-detail-header">
+        <div class="similar-detail-box">
+          <div class="similar-detail-title">คำที่ 1</div>
+          <div class="similar-detail-char">${pair.word1}</div>
+          <div class="similar-detail-pinyin">${pair.pinyin1}</div>
+          <div class="similar-detail-meaning">${pair.meaning1}</div>
+          <div class="similar-example">
+            <div class="similar-example-zh">${pair.example1.split('<br>')[0]}</div>
+            <div class="similar-example-py">${pair.example1.split('<br>')[1]}</div>
+            <div class="similar-example-th">${pair.example1.split('<br>')[2]}</div>
+          </div>
+        </div>
+        <div style="font-size:32px;color:var(--accent);font-weight:600">vs</div>
+        <div class="similar-detail-box">
+          <div class="similar-detail-title">คำที่ 2</div>
+          <div class="similar-detail-char">${pair.word2}</div>
+          <div class="similar-detail-pinyin">${pair.pinyin2}</div>
+          <div class="similar-detail-meaning">${pair.meaning2}</div>
+          <div class="similar-example">
+            <div class="similar-example-zh">${pair.example2.split('<br>')[0]}</div>
+            <div class="similar-example-py">${pair.example2.split('<br>')[1]}</div>
+            <div class="similar-example-th">${pair.example2.split('<br>')[2]}</div>
+          </div>
+        </div>
+      </div>
+      <div class="similar-diff-highlight">
+        <strong>📌 ความแตกต่าง:</strong><br><br>
+        ${pair.difference}
+      </div>
+    </div>
+  `;
+  
+  detailView.innerHTML=html;
+}
+
+function backToSimilarList(){
+  document.getElementById('similarListView').classList.remove('hidden');
+  document.getElementById('similarDetailView').classList.remove('active');
+}
+
+function closeSimilarModal(){
+  document.getElementById('similarModal').classList.remove('show');
+  document.getElementById('similarListView').classList.remove('hidden');
+  document.getElementById('similarDetailView').classList.remove('active');
 }
 
 // ตัวอย่างบทความ 120 บทความ (30 บทความต่อช่วงคำศัพท์: 1-300, 301-600, 601-900, 901-1200)
@@ -3349,49 +3671,6 @@ const sampleArticles=[
 let currentArticle=null;
 let currentArticleRange='all';
 
-// คำถามแบบฝึกหัดตอบคำถามจากบทความ
-const quizQuestions=[
-  {articleId:1,range:"1-300",articleTitle:"我的家庭",question:"บทความนี้พูดถึงอะไร?",options:["ครอบครัว","โรงเรียน","การท่องเที่ยว","งานอดิเรก"],answer:0,answerText:"ครอบครัว"},
-  {articleId:2,range:"1-300",articleTitle:"学校生活",question:"ในบทความ ผู้เขียนเรียนภาษาอะไรที่มหาวิทยาลัย?",options:["อังกฤษ","ญี่ปุ่น","ภาษาจีน","เกาหลี"],answer:2,answerText:"ภาษาจีน"},
-  {articleId:3,range:"1-300",articleTitle:"去中国旅行",question:"ผู้เขียนตั้งใจจะไปเที่ยวที่ไหน?",options:["เซี่ยงไฮ้","ปักกิ่ง","กวางโจว","เสิ่นเจิ้น"],answer:1,answerText:"ปักกิ่ง"},
-  {articleId:4,range:"1-300",articleTitle:"我的爱好",question:"งานอดิเรกของผู้เขียนคืออะไร?",options:["เล่นฟุตบอล","เล่นบาสเกตบอล","เล่นเทนนิส","ว่ายน้ำ"],answer:1,answerText:"เล่นบาสเกตบอล"},
-  {articleId:5,range:"1-300",articleTitle:"工作环境",question:"ผู้เขียนทำงานที่ไหน?",options:["ร้านอาหาร","บริษัท","โรงพยาบาล","โรงเรียน"],answer:1,answerText:"บริษัท"},
-  {articleId:6,range:"1-300",articleTitle:"健康习惯",question:"สิ่งใดที่เป็นอันตรายต่อสุขภาพตามบทความ?",options:["การออกกำลังกาย","การกินผลไม้","การสูบบุหรี่","การนอนตรงเวลา"],answer:2,answerText:"การสูบบุหรี่"},
-  {articleId:7,range:"1-300",articleTitle:"购物经验",question:"ผู้เขียนไปซื้อของที่ไหน?",options:["ตลาด","ห้างสรรพสินค้า","ซูเปอร์มาร์เก็ต","ร้านค้า"],answer:2,answerText:"ซูเปอร์มาร์เก็ต"},
-  {articleId:8,range:"1-300",articleTitle:"我的城市",question:"ผู้เขียนอาศัยอยู่ในเมืองขนาดใด?",options:["เมืองเล็ก","เมืองกลาง","เมืองใหญ่","เมืองชายแดน"],answer:2,answerText:"เมืองใหญ่"},
-  {articleId:9,range:"1-300",articleTitle:"餐厅经历",question:"ผู้เขียนและเพื่อนสั่งอาหารอะไร?",options:["ข้าวผัด","ไข่ บะหมี่ และเบียร์","ต้มยำ","สเต็ก"],answer:1,answerText:"ไข่ บะหมี่ และเบียร์"},
-  {articleId:10,range:"1-300",articleTitle:"一次聚会",question:"ในงานเลี้ยง ทุกคนทำอะไร?",options:["ดูหนัง","ร้องเพลง เต้นรำ ดื่มเบียร์","เล่นเกม","คุยเล่น"],answer:1,answerText:"ร้องเพลง เต้นรำ ดื่มเบียร์"},
-  {articleId:11,range:"1-300",articleTitle:"学习方法",question:"สิ่งใดที่ช่วยพัฒนาภาษาพูด?",options:["อ่านหนังสือ","ฝึกบทสนทนา","ฟังเพลง","ดูหนัง"],answer:1,answerText:"ฝึกบทสนทนา"},
-  {articleId:12,range:"1-300",articleTitle:"看病经历",question:"ผู้เขียนป่วยอะไร?",options:["ปวดหัว","ปวดท้อง","ไข้","ไอ"],answer:1,answerText:"ปวดท้อง"},
-  {articleId:13,range:"1-300",articleTitle:"周末计划",question:"ผู้เขียนตั้งใจจะไปไหนสุดสัปดาห์?",options:["ชายหาด","ปีนเขา","ช้อปปิ้ง","พักผ่อนที่บ้าน"],answer:1,answerText:"ปีนเขา"},
-  {articleId:14,range:"1-300",articleTitle:"我的家乡",question:"บ้านเกิดของผู้เขียนอยู่ทางทิศใด?",options:["ทิศตะวันตก","ทิศตะวันออก","ทิศเหนือ","ทิศใต้"],answer:1,answerText:"ทิศตะวันออก"},
-  {articleId:15,range:"1-300",articleTitle:"找工作",question:"ผู้เขียนเริ่มหางานเมื่อไหร?",options:["ก่อนจบมหาวิทยาลัย","หลังจบมหาวิทยาลัย","ขณะเรียน","ไม่ได้หางาน"],answer:1,answerText:"หลังจบมหาวิทยาลัย"},
-  {articleId:16,range:"1-300",articleTitle:"一次误会",question:"เหตุผลที่ทำให้เกิดความเข้าใจผิดคืออะไร?",options:["เพื่อนลืมนัด","ผู้เขียนลืมนัด","ทั้งคู่มาสาย","ไม่ได้นัดกัน"],answer:0,answerText:"เพื่อนลืมนัด"},
-  {articleId:17,range:"1-300",articleTitle:"天气变化",question:"ช่วงนี้อากาศเปลี่ยนแปลงอย่างไร?",options:["เปลี่ยนน้อย","เปลี่ยนมาก","ไม่เปลี่ยน","เปลี่ยนเล็กน้อย"],answer:1,answerText:"เปลี่ยนมาก"},
-  {articleId:18,range:"1-300",articleTitle:"使用电梯",question:"ผู้เขียนทำงานชั้นที่เท่าไหร่?",options:["ชั้นสิบ","ชั้นยี่สิบ","ชั้นสามสิบ","ชั้นสี่สิบ"],answer:1,answerText:"ชั้นยี่สิบ"},
-  {articleId:19,range:"1-300",articleTitle:"动物园",question:"ผู้เขียนไปสวนสัตว์กับใคร?",options:["พี่ชาย","น้องชาย","พี่สาว","เพื่อน"],answer:1,answerText:"น้องชาย"},
-  {articleId:20,range:"1-300",articleTitle:"保护环境",question:"สิ่งใดที่เราไม่ควรทำตามบทความ?",options:["ปลูกต้นไม้","ทิ้งขยะทุกที่","รักษาโลก","ประหยัดพลังงาน"],answer:1,answerText:"ทิ้งขยะทุกที่"},
-  {articleId:31,range:"301-600",articleTitle:"发展经济",question:"บทความนี้พูดถึงอะไร?",options:["การพัฒนาเศรษฐกิจ","การศึกษา","การท่องเที่ยว","การกีฬา"],answer:0,answerText:"การพัฒนาเศรษฐกิจ"},
-  {articleId:32,range:"301-600",articleTitle:"学习进步",question:"การทบทวนบทเรียนมีความสำคัญอย่างไร?",options:["ไม่สำคัญ","สำคัญมาก","สำคัญน้อย","ไม่แน่ใจ"],answer:1,answerText:"สำคัญมาก"},
-  {articleId:33,range:"301-600",articleTitle:"日常生活",question:"สภาพแวดล้อมที่สะอาดทำให้รู้สึกอย่างไร?",options:["ไม่สบาย","สบาย","เฉยๆ","รำคาญ"],answer:1,answerText:"สบาย"},
-  {articleId:34,range:"301-600",articleTitle:"工作态度",question:"ควรทำงานอย่างไร?",options:["เกียจคร้าน","ตั้งใจ","ไม่สนใจ","หลีกเลี่ยง"],answer:1,answerText:"ตั้งใจ"},
-  {articleId:35,range:"301-600",articleTitle:"社交活动",question:"ผู้เขียนเข้าร่วมกิจกรรมอะไร?",options:["กิจกรรมทุกประเภท","กิจกรรมกีฬา","กิจกรรมศิลปะ","กิจกรรมการศึกษา"],answer:0,answerText:"กิจกรรมทุกประเภท"},
-  {articleId:61,range:"601-900",articleTitle:"旅游经历",question:"การท่องเที่ยวทำให้คนรู้สึกอย่างไร?",options:["เครียด","ผ่อนคลาย","เศร้า","โกรธ"],answer:1,answerText:"ผ่อนคลาย"},
-  {articleId:62,range:"601-900",articleTitle:"科技发展",question:"เทคโนโลยีทำให้ชีวิตเปลี่ยนแปลงอย่างไร?",options:["ไม่เปลี่ยน","เปลี่ยนน้อย","เปลี่ยนมาก","ไม่แน่ใจ"],answer:2,answerText:"เปลี่ยนมาก"},
-  {articleId:63,range:"601-900",articleTitle:"环境保护",question:"ทุกคนมีหน้าที่อะไร?",options:["ทำลายสิ่งแวดล้อม","ปกป้องสิ่งแวดล้อม","ไม่สนใจ","ละเลย"],answer:1,answerText:"ปกป้องสิ่งแวดล้อม"},
-  {articleId:64,range:"601-900",articleTitle:"文化交流",question:"การเข้าใจวัฒนธรรมที่แตกต่างช่วยอะไร?",options:["ไม่ช่วยอะไร","ช่วยสื่อสาร","ช่วยสร้างสันติภาพ","ทั้งกและข้อ 2 และ 3"],answer:3,answerText:"ทั้งกและข้อ 2 และ 3"},
-  {articleId:65,range:"601-900",articleTitle:"健康生活",question:"กิจวัตรที่สม่ำเสมอช่วยอะไร?",options:["ทำให้ป่วย","ทำให้สุขภาพดี","ไม่มีผล","ทำให้เหนื่อย"],answer:1,answerText:"ทำให้สุขภาพดี"},
-  {articleId:91,range:"901-1200",articleTitle:"职业发展",question:"การวางแผนอาชีพสำคัญอย่างไร?",options:["ไม่สำคัญ","สำคัญมาก","สำคัญน้อย","ไม่แน่ใจ"],answer:1,answerText:"สำคัญมาก"},
-  {articleId:92,range:"901-1200",articleTitle:"人际关系",question:"การปฏิบัติต่อผู้อื่นควรทำอย่างไร?",options:["ด้วยความจริงใจ","ด้วยความหลอกลวง","ไม่สนใจ","ด้วยความโกรธ"],answer:0,answerText:"ด้วยความจริงใจ"},
-  {articleId:93,range:"901-1200",articleTitle:"时间管理",question:"การจัดเวลาอย่างสมเหตุสมผลช่วยอะไร?",options:["ทำให้เสียเวลา","ทำให้มีประสิทธิภาพ","ไม่มีผล","ทำให้เหนื่อย"],answer:1,answerText:"ทำให้มีประสิทธิภาพ"},
-  {articleId:94,range:"901-1200",articleTitle:"学习态度",question:"ความมุ่งมั่นช่วยอะไร?",options:["ทำให้ล้มเหลว","ทำให้สำเร็จ","ไม่มีผล","ทำให้อ่อนผ่อน"],answer:1,answerText:"ทำให้สำเร็จ"},
-  {articleId:95,range:"901-1200",articleTitle:"生活智慧",question:"รู้จักพอใจช่วยให้มีอะไร?",options:["ความทุกข์","ความสุข","ความโกรธ","ความเศร้า"],answer:1,answerText:"ความสุข"}
-];
-
-let currentQuizRange='all';
-let currentQuizIndex=0;
-let quizScore=0;
-let showThaiTranslation=false;
 
 function showSampleArticles(range='all'){
   currentArticleRange=range;
@@ -3454,128 +3733,19 @@ function closeArticle(){
   currentArticle=null;
 }
 
-function showQuiz(range='all'){
-  currentQuizRange=range;
-  currentQuizIndex=0;
-  quizScore=0;
-  const content=document.getElementById('quizContent');
-  
-  // กรองคำถามตามช่วง
-  let filteredQuestions=quizQuestions;
-  if(range!=='all'){
-    filteredQuestions=quizQuestions.filter(q=>q.range===range);
-  }
-  
-  if(filteredQuestions.length===0){
-    content.innerHTML='<div style="text-align:center;padding:40px;color:#6B7280">ไม่มีคำถามในช่วงนี้</div>';
-    document.getElementById('quizModal').classList.add('show');
-    if(window.innerWidth<=1024)toggleSidebar();
-    return;
-  }
-  
-  let html='<div class="quiz-range-filter">';
-  const ranges=['all','1-300','301-600','601-900','901-1200'];
-  const rangeLabels=['ทั้งหมด','1-300','301-600','601-900','901-1200'];
-  ranges.forEach((r,i)=>{
-    const activeClass=r===range?'active':'';
-    html+=`<button class="quiz-range-btn ${activeClass}" onclick="showQuiz('${r}')">${rangeLabels[i]}</button>`;
-  });
-  html+='</div>';
-  
-  html+=`<div class="quiz-score">คำถามที่ ${currentQuizIndex+1} / ${filteredQuestions.length}</div>`;
-  
-  const question=filteredQuestions[currentQuizIndex];
-  const article=sampleArticles.find(a=>a.id===question.articleId);
-  
-  html+=`<div class="quiz-article-title">📖 ${article.title} (${article.range})</div>`;
-  
-  // แสดงเนื้อหาบทความ
-  html+='<div class="article-content" style="margin-bottom:20px;padding:16px;background:#F9FAFB;border-radius:8px">';
-  article.content.forEach(para=>{
-    html+=`<div class="article-para">
-      <span style="color:#1E40AF;font-weight:600">${para.zh}</span><br>
-      ${showPinyin?`<span style="color:#6B7280;font-size:13px">${para.pinyin}</span><br>`:''}
-      ${showThaiTranslation?`<span style="color:#059669">${para.th}</span>`:''}
-    </div>`;
-  });
-  html+='</div>';
-  
-  // เพิ่มปุ่มสลับคำแปลไทย
-  html+=`<button class="quiz-btn quiz-btn-secondary" onclick="toggleThaiTranslation()" style="margin-bottom:16px">
-    ${showThaiTranslation?'ซ่อนคำแปลไทย':'แสดงคำแปลไทย'}
-  </button>`;
-  
-  html+=`<div class="quiz-question">${question.question}</div>`;
-  
-  html+='<div class="quiz-options">';
-  question.options.forEach((opt,i)=>{
-    html+=`<div class="quiz-option" onclick="checkAnswer(${i}, ${question.answer}, '${question.answerText}', ${filteredQuestions.length})">${opt}</div>`;
-  });
-  html+='</div>';
-  
-  content.innerHTML=html;
-  document.getElementById('quizModal').classList.add('show');
-  if(window.innerWidth<=1024)toggleSidebar();
-}
-
-function checkAnswer(selected, correct, correctText, totalQuestions){
-  const options=document.querySelectorAll('.quiz-option');
-  options.forEach((opt,i)=>{
-    opt.onclick=null;
-    if(i===correct){
-      opt.classList.add('correct');
-    }else if(i===selected && selected!==correct){
-      opt.classList.add('wrong');
-    }
-  });
-  
-  const content=document.getElementById('quizContent');
-  let resultHtml='<div class="quiz-quiz-result ';
-  if(selected===correct){
-    resultHtml+='correct';
-    quizScore++;
-    resultHtml+='>✅ ตอบถูก! คำตอบที่ถูกคือ: '+correctText;
-  }else{
-    resultHtml+='wrong';
-    resultHtml+='>❌ ตอบผิด คำตอบที่ถูกคือ: '+correctText;
-  }
-  resultHtml+='</div>';
-  
-  let filteredQuestions=quizQuestions;
-  if(currentQuizRange!=='all'){
-    filteredQuestions=quizQuestions.filter(q=>q.range===currentQuizRange);
-  }
-  
-  if(currentQuizIndex<filteredQuestions.length-1){
-    resultHtml+='<div class="quiz-actions"><button class="quiz-btn quiz-btn-primary" onclick="nextQuestion()">คำถามถัดไป</button></div>';
-  }else{
-    resultHtml+=`<div class="quiz-score" style="margin-top:16px">คะแนนรวม: ${quizScore} / ${totalQuestions}</div>`;
-    resultHtml+='<div class="quiz-actions"><button class="quiz-btn quiz-btn-primary" onclick="showQuiz(\''+currentQuizRange+'\')">เริ่มใหม่</button></div>';
-  }
-  
-  content.innerHTML+=resultHtml;
-}
-
-function nextQuestion(){
-  currentQuizIndex++;
-  showQuiz(currentQuizRange);
-}
-
-function closeQuiz(){
-  document.getElementById('quizModal').classList.remove('show');
-}
-
 // เพิ่ม event listener สำหรับปิด modal เมื่อกดที่ overlay
 document.addEventListener('DOMContentLoaded',function(){
-  const modals=['articleModal','quizModal','strokeModal','gameModal','writingModal','readingModal','orderingModal'];
+  const modals=['articleModal','strokeModal','gameModal','writingModal','readingModal','orderingModal','similarModal','listeningModal','randomQuizModal'];
   const closeFunctions={
     articleModal:closeArticle,
-    quizModal:closeQuiz,
     strokeModal:closeStrokeModal,
     gameModal:closeGame,
     writingModal:closeWriting,
     readingModal:closeReading,
-    orderingModal:closeOrdering
+    orderingModal:closeOrdering,
+    similarModal:closeSimilarModal,
+    listeningModal:closeListening,
+    randomQuizModal:closeRandomQuiz
   };
   
   modals.forEach(modalId=>{
@@ -3592,11 +3762,6 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   });
 });
-
-function toggleThaiTranslation(){
-  showThaiTranslation=!showThaiTranslation;
-  showQuiz(currentQuizRange);
-}
 
 function lookupWord(zhText){
   const word=vocab.find(v=>zhText.includes(v.h));
@@ -3695,6 +3860,308 @@ function closeStrokeModal(){
   document.getElementById('strokeModal').classList.remove('show');
   strokeWriters=[];
   currentStrokeWord='';
+}
+
+// ===== Listening Dictation =====
+let listeningWords=[];
+let currentListeningIndex=0;
+let listeningScore=0;
+
+function startListeningDictation(){
+  listeningWords=vocab.sort(()=>Math.random()-0.5).slice(0,10);
+  currentListeningIndex=0;
+  listeningScore=0;
+  document.getElementById('listeningModal').classList.add('show');
+  document.getElementById('listeningTotal').textContent=listeningWords.length;
+  loadListeningWord();
+}
+
+function loadListeningWord(){
+  if(currentListeningIndex>=listeningWords.length){
+    showListeningComplete();
+    return;
+  }
+  const word=listeningWords[currentListeningIndex];
+  document.getElementById('listeningCurrent').textContent=currentListeningIndex+1;
+  document.getElementById('listeningScore').textContent=listeningScore;
+  document.getElementById('listeningWord').textContent='?';
+  document.getElementById('listeningInput').value='';
+  document.getElementById('listeningResult').innerHTML='';
+  document.getElementById('listeningResult').className='listening-result';
+}
+
+function playListeningAudio(){
+  const word=listeningWords[currentListeningIndex];
+  speakChinese(word.h);
+}
+
+function checkListeningAnswer(){
+  const word=listeningWords[currentListeningIndex];
+  const userAnswer=document.getElementById('listeningInput').value.trim();
+  const resultDiv=document.getElementById('listeningResult');
+  
+  if(userAnswer===word.h){
+    listeningScore++;
+    resultDiv.className='listening-result correct';
+    resultDiv.innerHTML=`✓ ถูกต้อง! ${word.h} (${word.p}) = ${word.m}`;
+    document.getElementById('listeningScore').textContent=listeningScore;
+    setTimeout(()=>{
+      currentListeningIndex++;
+      loadListeningWord();
+    },1500);
+  }else{
+    resultDiv.className='listening-result wrong';
+    resultDiv.innerHTML=`✗ ผิด! คำตอบที่ถูกคือ: ${word.h} (${word.p}) = ${word.m}<br>คุณพิมพ์: ${userAnswer||'(ว่างเปล่า)'}`;
+  }
+}
+
+function skipListening(){
+  const word=listeningWords[currentListeningIndex];
+  const resultDiv=document.getElementById('listeningResult');
+  resultDiv.className='listening-result';
+  resultDiv.innerHTML=`คำตอบ: ${word.h} (${word.p}) = ${word.m}`;
+  setTimeout(()=>{
+    currentListeningIndex++;
+    loadListeningWord();
+  },1500);
+}
+
+function showListeningComplete(){
+  const resultDiv=document.getElementById('listeningResult');
+  resultDiv.className='listening-result correct';
+  resultDiv.innerHTML=`🎉 เสร็จสิ้น!<br>คะแนน: ${listeningScore}/${listeningWords.length} (${Math.round(listeningScore/listeningWords.length*100)}%)`;
+  document.getElementById('listeningWord').textContent='✓';
+}
+
+function closeListening(){
+  document.getElementById('listeningModal').classList.remove('show');
+}
+
+// ===== Random Quiz =====
+let quizWords=[];
+let currentQuizIndex=0;
+let quizScore=0;
+let quizMode='easy';
+let quizHistory=[];
+
+function startRandomQuiz(){
+  quizWords=vocab.sort(()=>Math.random()-0.5).slice(0,10);
+  currentQuizIndex=0;
+  quizScore=0;
+  quizHistory=[];
+  quizMode='easy';
+  quizAnswerChecked=false;
+  document.getElementById('quizCheckBtn').textContent='ตรวจคำตอบ';
+  document.getElementById('quizCheckBtn').style.display='inline-block';
+  document.getElementById('randomQuizModal').classList.add('show');
+  document.getElementById('quizTotal').textContent=quizWords.length;
+  document.getElementById('quizChart').style.display='none';
+  loadQuizQuestion();
+}
+
+function setQuizMode(mode){
+  quizMode=mode;
+  document.querySelectorAll('.quiz-mode-btn').forEach(btn=>btn.classList.remove('active'));
+  event.target.classList.add('active');
+  currentQuizIndex=0;
+  quizScore=0;
+  quizHistory=[];
+  quizAnswerChecked=false;
+  document.getElementById('quizCheckBtn').textContent='ตรวจคำตอบ';
+  document.getElementById('quizCheckBtn').style.display='inline-block';
+  loadQuizQuestion();
+}
+
+function loadQuizQuestion(){
+  if(currentQuizIndex>=quizWords.length){
+    showQuizComplete();
+    return;
+  }
+  quizAnswerChecked=false;
+  document.getElementById('quizCheckBtn').textContent='ตรวจคำตอบ';
+  const word=quizWords[currentQuizIndex];
+  document.getElementById('quizCurrent').textContent=currentQuizIndex+1;
+  document.getElementById('quizScore').textContent=quizScore;
+  document.getElementById('quizResult').innerHTML='';
+  document.getElementById('quizResult').className='listening-result';
+  
+  const questionDiv=document.getElementById('quizQuestion');
+  const answerArea=document.getElementById('quizAnswerArea');
+  
+  if(quizMode==='easy'){
+    questionDiv.innerHTML=`${word.h} (${word.p})<br>ความหมายคือ?`;
+    const options=[word.m];
+    while(options.length<4){
+      const randomWord=vocab[Math.floor(Math.random()*vocab.length)];
+      if(!options.includes(randomWord.m))options.push(randomWord.m);
+    }
+    options.sort(()=>Math.random()-0.5);
+    answerArea.innerHTML=options.map(opt=>
+      `<div class="reading-option" onclick="selectQuizOption(this,'${opt}')">${opt}</div>`
+    ).join('');
+  }else if(quizMode==='medium'){
+    questionDiv.innerHTML=`${word.h} (${word.p}) = ${word.m}<br>เติมคำที่หายไป:`;
+    const blanked=word.h.split('').map((c,i)=>i===0?'___':c).join('');
+    answerArea.innerHTML=`<p style="font-size:24px;margin-bottom:12px">${blanked}</p><input type="text" class="quiz-input" id="quizInput" placeholder="เติมตัวอักษรที่หายไป...">`;
+  }else{
+    questionDiv.innerHTML=`${word.p}<br>${word.m}<br>เขียนเป็นภาษาจีน:`;
+    answerArea.innerHTML=`<input type="text" class="quiz-input" id="quizInput" placeholder="เขียนตัวอักษรจีน...">`;
+  }
+}
+
+function selectQuizOption(el,answer){
+  document.querySelectorAll('.reading-option').forEach(opt=>opt.classList.remove('selected'));
+  el.classList.add('selected');
+  el.dataset.answer=answer;
+}
+
+let quizAnswerChecked=false;
+
+function checkAndNextQuiz(){
+  const word=quizWords[currentQuizIndex];
+  const resultDiv=document.getElementById('quizResult');
+  const checkBtn=document.getElementById('quizCheckBtn');
+  
+  if(!quizAnswerChecked){
+    // ตรวจคำตอบ
+    let isCorrect=false;
+    
+    if(quizMode==='easy'){
+      const selected=document.querySelector('.reading-option.selected');
+      if(!selected){
+        resultDiv.className='listening-result';
+        resultDiv.innerHTML='กรุณาเลือกคำตอบ';
+        return;
+      }
+      isCorrect=selected.dataset.answer===word.m;
+      if(isCorrect){
+        selected.classList.add('correct');
+      }else{
+        selected.classList.add('wrong');
+        document.querySelectorAll('.reading-option').forEach(opt=>{
+          if(opt.textContent===word.m)opt.classList.add('correct');
+        });
+      }
+    }else{
+      const userAnswer=document.getElementById('quizInput').value.trim();
+      if(quizMode==='medium'){
+        isCorrect=userAnswer===word.h[0];
+      }else{
+        isCorrect=userAnswer===word.h;
+      }
+    }
+    
+    if(isCorrect){
+      quizScore++;
+      resultDiv.className='listening-result correct';
+      resultDiv.innerHTML='✓ ถูกต้อง!';
+      document.getElementById('quizScore').textContent=quizScore;
+    }else{
+      resultDiv.className='listening-result wrong';
+      if(quizMode==='medium'){
+        resultDiv.innerHTML=`✗ ผิด! คำตอบที่ถูกคือ: ${word.h[0]}`;
+      }else if(quizMode==='hard'){
+        resultDiv.innerHTML=`✗ ผิด! คำตอบที่ถูกคือ: ${word.h}`;
+      }else{
+        resultDiv.innerHTML='✗ ผิด!';
+      }
+    }
+    
+    quizHistory.push({word,isCorrect});
+    quizAnswerChecked=true;
+    checkBtn.textContent='ข้อถัดไป →';
+    
+    // ถ้าคำตอบถูก ไปข้อถัดไปอัตโนมัติ
+    if(isCorrect){
+      setTimeout(()=>{
+        currentQuizIndex++;
+        quizAnswerChecked=false;
+        checkBtn.textContent='ตรวจคำตอบ';
+        loadQuizQuestion();
+      },800);
+    }
+  }else{
+    // ไปข้อถัดไป
+    currentQuizIndex++;
+    quizAnswerChecked=false;
+    checkBtn.textContent='ตรวจคำตอบ';
+    loadQuizQuestion();
+  }
+}
+
+function showQuizComplete(){
+  document.getElementById('quizChart').style.display='block';
+  document.getElementById('chartScore').textContent=quizScore;
+  document.getElementById('chartTotal').textContent=quizWords.length;
+  const percentage=(quizScore/quizWords.length*100);
+  document.getElementById('chartBar').style.width=percentage+'%';
+  
+  const resultDiv=document.getElementById('quizResult');
+  resultDiv.className='listening-result correct';
+  resultDiv.innerHTML=`🎉 เสร็จสิ้น!<br>คะแนน: ${quizScore}/${quizWords.length} (${Math.round(percentage)}%)`;
+  document.getElementById('quizQuestion').textContent='ทำแบบทดสอบเสร็จสิ้น!';
+  document.getElementById('quizAnswerArea').innerHTML='';
+  document.getElementById('quizCheckBtn').style.display='none';
+}
+
+function closeRandomQuiz(){
+  document.getElementById('randomQuizModal').classList.remove('show');
+}
+
+// ===== Enhanced Memory Card Game =====
+let gameMode='chinese-thai';
+let gamePairCount=15;
+
+function startMatchingGame(mode='chinese-thai',pairCount=15){
+  gameMode=mode||'chinese-thai';
+  gamePairCount=pairCount||15;
+  
+  const randomWords=vocab.sort(()=>Math.random()-0.5).slice(0,gamePairCount);
+  let zhCards=[];
+  let otherCards=[];
+  
+  if(gameMode==='chinese-thai'){
+    randomWords.forEach((w,i)=>{
+      zhCards.push({idx:i*2,text:w.h,pinyin:w.p,pair:i,type:'zh'});
+      otherCards.push({idx:i*2+1,text:w.m,pair:i,type:'th'});
+    });
+  }else if(gameMode==='chinese-pinyin'){
+    randomWords.forEach((w,i)=>{
+      zhCards.push({idx:i*2,text:w.h,pinyin:w.p,pair:i,type:'zh'});
+      otherCards.push({idx:i*2+1,text:w.p,pair:i,type:'py'});
+    });
+  }
+  
+  zhCards.sort(()=>Math.random()-0.5);
+  otherCards.sort(()=>Math.random()-0.5);
+  
+  gameCards=[];
+  for(let i=0;i<zhCards.length;i++){
+    gameCards.push(zhCards[i]);
+    gameCards.push(otherCards[i]);
+  }
+  
+  matchedPairs=0;
+  selectedCards=[];
+  gameStartTime=Date.now();
+  
+  const grid=document.getElementById('gameGrid');
+  grid.innerHTML=gameCards.map((card,idx)=>`
+    <div class="game-card" data-idx="${idx}" onclick="selectGameCard(${idx})">
+      ${card.type==='zh'?`<div style="font-size:20px;font-weight:600;margin-bottom:4px">${card.text}</div><div style="font-size:12px;color:#6B7280">${card.pinyin}</div>`:`<div>${card.text}</div>`}
+    </div>
+  `).join('');
+  
+  document.getElementById('matchedCount').textContent='0';
+  document.getElementById('totalPairs').textContent=gamePairCount;
+  document.getElementById('gameTime').textContent='0:00';
+  document.getElementById('gameModal').classList.add('show');
+  
+  const gameOverModal=document.getElementById('gameOverModal');
+  if(gameOverModal)gameOverModal.style.display='none';
+  
+  if(gameTimer)clearInterval(gameTimer);
+  gameTimer=setInterval(updateGameTime,1000);
 }
 
 updateDifficultCount();
