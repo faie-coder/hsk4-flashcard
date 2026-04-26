@@ -10,41 +10,167 @@
 <body>
 <style>
 :root{
-  --bg: #FDFCF8;
+  --primary: #FFD93D;
+  --primary-dark: #F5C518;
+  --primary-light: #FFF5D6;
+  --secondary: #FF6B6B;
+  --accent: #4ECDC4;
+  --bg: #F8F9FA;
   --surface: #FFFFFF;
-  --border: #E8E4DC;
-  --text: #4A4238;
-  --text-soft: #6B6255;
-  --accent: #C9A86C;
-  --accent-soft: #D9C49A;
-  --accent-light: #E8DBC2;
+  --text: #2C3E50;
+  --text-soft: #5A6C7D;
+  --text-light: #5A6C7D;
+  --border: #E8ECF1;
+  --success: #1D9E75;
+  --success-bg: #D1FAE5;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --sidebar-width: 240px;
+  --topbar-height: 64px;
   --filter-collapsed-height: 150px;
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:'Noto Sans SC','Microsoft YaHei','SimHei','PingFang SC','Helvetica Neue',Arial,sans-serif}
-html,body{overflow-x:hidden;max-width:100vw}
-body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sans-serif;color:var(--text)}
-.sidebar{width:280px;background:var(--surface);border-right:1px solid var(--border);padding:20px;position:fixed;left:0;top:0;bottom:0;overflow-y:auto;z-index:101;transition:transform 0.3s;box-shadow:2px 0 8px rgba(201,168,108,0.12);height:100vh}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+html,body{
+  font-family:'Sarabun','Noto Sans SC',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  max-width:100vw;
+}
+
+/* Top Navigation */
+.topbar{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:var(--topbar-height);
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  z-index:1000;
+}
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:700;
+  font-size:18px;
+  color:var(--text);
+}
+.logo-icon{
+  width:36px;
+  height:36px;
+  background:linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+}
+.topbar-right{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.user-avatar{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:linear-gradient(135deg, var(--accent) 0%, #3DBBB4 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn{
+  display:none;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:8px;
+  width:40px;
+  height:40px;
+  font-size:20px;
+  cursor:pointer;
+  color:var(--text);
+  align-items:center;
+  justify-content:center;
+}
+.page-title{
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:24px;
+  color:var(--text);
+}
+.sidebar{
+  position:fixed;
+  left:0;
+  top:var(--topbar-height);
+  bottom:0;
+  width:var(--sidebar-width);
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  padding:20px 16px;
+  overflow-y:auto;
+  z-index:900;
+  transition:transform 0.3s ease;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border) transparent;
+}
+.sidebar::-webkit-scrollbar{width:6px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.sidebar::-webkit-scrollbar-thumb:hover{background:var(--text-light)}
 .sidebar.hidden{transform:translateX(-100%)}
-.sidebar-header{font-size:18px;font-weight:600;color:var(--text);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.menu-toggle{display:none;background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text);padding:4px}
-.mobile-menu-btn{display:none;position:fixed;top:12px;left:12px;z-index:1201;background:var(--surface);border:1px solid var(--border);border-radius:999px;width:40px;height:40px;padding:0;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.12);transition:opacity 0.3s,transform 0.2s;align-items:center;justify-content:center;line-height:1}
-.mobile-menu-btn:hover{transform:scale(1.04)}
-.mobile-menu-btn.hide{opacity:0;pointer-events:none}
-.sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:100}
+.sidebar-overlay{
+  display:none;
+  position:fixed;
+  top:var(--topbar-height);
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(0,0,0,0.5);
+  z-index:899;
+}
+.sidebar-overlay.show{
+  display:block;
+}
+.sidebar-header{
+  display:none;
+}
+.menu-toggle{display:none}
 @media (max-width:1024px){
 .sidebar{transform:translateX(-100%)}
 .sidebar.show{transform:translateX(0)}
-.main-content{margin-left:0!important;padding-left:56px;padding-right:20px}
-.controls{padding-left:8px}
-.menu-toggle{display:block}
+.main-content{margin-left:0!important;padding-left:20px;padding-right:20px}
 .mobile-menu-btn{display:flex}
+.mobile-menu-btn.hide{opacity:0;pointer-events:none}
 .sidebar-overlay.show{display:block}
+.topbar-left .mobile-menu-btn{display:flex;position:static}
 }
 @media (max-width:768px){
 .main-content{padding-left:70px;padding-right:12px}
 .grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
-.header-sticky{padding:12px 0}
-.controls{gap:4px}
+.header-sticky{flex-direction:column;align-items:flex-start;padding:12px 0}
+.page-title{font-size:20px;margin-bottom:12px}
+.controls{gap:8px}
 .tab{padding:4px 10px;font-size:12px}
 }
 @media (max-width:480px){
@@ -56,22 +182,122 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .topic-filter-list{flex-wrap:wrap}
 .topic-filter-clear{margin-left:0}
 }
-.menu-section{margin-bottom:24px}
-.menu-title{font-size:12px;font-weight:600;color:var(--text-soft);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.5px}
-.menu-item{padding:10px 12px;border-radius:8px;cursor:pointer;margin-bottom:4px;font-size:13px;color:var(--text-soft);transition:all 0.2s;display:flex;align-items:center;gap:8px}
-.menu-item:hover{background:var(--accent-light);color:var(--text)}
-.menu-item.active{background:var(--accent-light);color:var(--text)}
-.menu-icon{font-size:16px;width:20px;text-align:center}
-.main-content{margin-left:280px;flex:1;padding:0 20px;transition:margin-left 0.3s;min-width:0}
-.wrap{padding:1rem 0;max-width:100%;overflow-x:hidden}
-.header-sticky{position:sticky;top:0;background:var(--bg);z-index:1000;padding:12px 20px 10px;border-bottom:1px solid var(--border);margin-bottom:16px;backdrop-filter:blur(6px)}
-.controls{display:flex;flex-wrap:wrap;gap:24px;margin-bottom:8px;align-items:center;justify-content:flex-end}
-.tab{padding:5px 12px;border-radius:20px;border:0.5px solid var(--border);font-size:13px;cursor:pointer;background:transparent;color:var(--text-soft)}
-.tab.active{background:var(--accent);color:var(--surface);border-color:transparent}
+.sidebar-section{
+  margin-bottom:24px;
+}
+.menu-title{
+  font-size:11px;
+  font-weight:600;
+  color:var(--text-light);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-bottom:12px;
+  padding-left:8px;
+}
+.sidebar-menu{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.menu-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:all 0.2s;
+  font-size:14px;
+  color:var(--text-light);
+}
+.menu-item:hover{
+  background:var(--bg);
+  color:var(--text);
+}
+.menu-item.active{
+  background:var(--primary);
+  color:#1a1a1a;
+  font-weight:500;
+}
+.menu-icon{
+  font-size:18px;
+  width:24px;
+  text-align:center;
+}
+.main-content{
+  margin-left:var(--sidebar-width);
+  margin-top:var(--topbar-height);
+  padding:24px;
+  min-height:calc(100vh - var(--topbar-height));
+  flex:1;
+  transition:margin-left 0.3s;
+  min-width:0;
+}
+.wrap{
+  padding:0;
+  max-width:100%;
+  overflow-x:hidden;
+}
+.header-sticky{
+  position:sticky;
+  top:0;
+  background:var(--bg);
+  z-index:100;
+  padding:0 0 16px 0;
+  border-bottom:none;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:center;
+  justify-content:flex-end;
+}
+.tab{
+  padding:6px 14px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  font-size:13px;
+  cursor:pointer;
+  transition:all 0.2s;
+  color:var(--text-soft);
+}
+.tab:hover,.tab.active{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:#1a1a1a;
+}
 .stats{font-size:13px;color:var(--text-soft);margin-left:auto}
-.filter-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text-soft);font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:all 0.2s}
-.filter-btn:hover{background:var(--accent-light);color:var(--text)}
-.filter-btn.active{background:#4A4A4A;color:#fff;border-color:transparent}
+.filter-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 16px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:var(--surface);
+  color:var(--text-soft);
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.filter-btn:hover{
+  background:var(--bg);
+  color:var(--text);
+}
+.filter-btn.active{
+  background:var(--primary);
+  color:#1a1a1a;
+  border-color:var(--primary);
+}
 .filter-sidebar{width:320px;background:var(--surface);border-left:1px solid var(--border);padding:20px;position:fixed;right:0;top:0;bottom:0;overflow-y:auto;z-index:2001;transform:translateX(100%);transition:transform 0.3s;box-shadow:-2px 0 12px rgba(0,0,0,0.12)}
 .filter-sidebar.show{transform:translateX(0)}
 .filter-sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000}
@@ -86,10 +312,32 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .filter-section{margin-bottom:24px}
 .filter-section-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
 .filter-options{display:flex;flex-direction:column;gap:6px}
-.filter-radio{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;cursor:pointer;background:#FFFDF9;color:var(--text);transition:all 0.2s;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
-.filter-radio:hover{background:#F8F5F1}
-.filter-radio.checked{border-color:var(--accent);background:var(--accent-light);color:var(--text)}
-.filter-radio input{margin:0;accent-color:var(--accent);transform:scale(1.1)}
+.filter-radio{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  font-size:13px;
+  cursor:pointer;
+  background:var(--surface);
+  color:var(--text);
+  transition:all 0.2s;
+}
+.filter-radio:hover{
+  background:var(--bg);
+}
+.filter-radio.checked{
+  border-color:var(--primary);
+  background:var(--primary);
+  color:#1a1a1a;
+}
+.filter-radio input{
+  margin:0;
+  accent-color:var(--primary);
+  transform:scale(1.1);
+}
 .filter-radio::after{content:attr(data-count);margin-left:auto;color:var(--text-soft);font-size:12px;font-weight:600;min-width:28px;text-align:right}
 .compound-dropdown{width:320px;background:var(--surface);border-left:1px solid var(--border);padding:20px;position:fixed;right:0;top:0;bottom:0;overflow-y:auto;z-index:2001;transform:translateX(100%);transition:transform 0.3s;box-shadow:-2px 0 12px rgba(0,0,0,0.12)}
 .compound-dropdown.show{transform:translateX(0)}
@@ -99,69 +347,281 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .compound-dropdown-title{font-size:18px;font-weight:700;color:var(--text)}
 .compound-dropdown-close{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text-soft);cursor:pointer;font-size:18px;line-height:1;transition:all 0.2s}
 .compound-dropdown-close:hover{background:var(--accent-light);color:var(--text)}
-.compound-dropdown-item{padding:10px 14px;font-size:13px;color:var(--text);cursor:pointer;transition:background 0.15s}
+.compound-dropdown-item{padding:10px 14px;font-size:13px;color:var(--text);cursor:pointer;transition:background 0.15s;display:flex;justify-content:space-between;align-items:center}
 .compound-dropdown-item:hover{background:var(--accent-light)}
 .compound-dropdown-item.active{background:var(--accent);color:var(--surface)}
+.compound-dropdown-item::after{content:attr(data-count);color:var(--text-soft);font-size:12px;font-weight:600;min-width:28px;text-align:right}
+.compound-dropdown-item.active::after{color:var(--surface)}
+.grid.combo-mode{grid-template-columns:1fr;gap:10px}
+.combo-row{display:flex;align-items:stretch;gap:10px}
+.combo-card{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 10px;text-align:center;min-width:0}
+.combo-pinyin{font-size:11px;color:var(--text-soft);font-family:'Noto Sans SC',sans-serif;min-height:16px}
+.combo-card-result{background:var(--primary-light);border-color:var(--primary-light)}
+.combo-badge{display:inline-block;background:#5a6c7d;color:white;border-radius:999px;padding:3px 14px;font-size:11px;font-weight:600;font-family:'Noto Sans SC',sans-serif;white-space:nowrap;overflow:hidden;max-width:100%;text-overflow:ellipsis}
+.combo-card-result .combo-badge{background:rgba(0,0,0,0.22)}
+.combo-hanzi{font-size:28px;font-weight:700;font-family:'Noto Serif SC',serif;line-height:1.2;color:var(--text)}
+.combo-card-result .combo-hanzi{color:var(--text)}
+.combo-meaning{font-size:12px;color:var(--text-soft);line-height:1.4;margin-top:2px}
+.combo-card-result .combo-meaning{color:var(--text-soft)}
+.combo-symbol{font-size:20px;color:var(--text-soft);flex-shrink:0;align-self:center;font-weight:600}
+.combo-speak{background:transparent;border:none;cursor:pointer;font-size:15px;padding:0;margin-top:4px;opacity:0.7}
+.combo-speak:hover{opacity:1}
+@media(max-width:480px){.combo-hanzi{font-size:22px}.combo-badge{font-size:10px;padding:2px 8px}}
+
 .compound-dropdown-divider{height:1px;background:var(--border);margin:4px 0}
-.progress{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.pbar{flex:1;height:4px;background:var(--border);border-radius:2px}
-.pfill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s}
-.ptext{font-size:13px;color:var(--text-soft)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.progress{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:20px;
+  padding-bottom:16px;
+  border-bottom:1px solid var(--border);
+}
+.pbar{
+  flex:1;
+  height:8px;
+  background:var(--bg);
+  border-radius:4px;
+  overflow:hidden;
+}
+.pfill{
+  height:100%;
+  background:var(--success);
+  border-radius:4px;
+  transition:width 0.3s;
+}
+.ptext{
+  font-size:14px;
+  font-weight:600;
+  color:var(--text);
+  white-space:nowrap;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:20px;
+}
 .card-wrapper{perspective:1000px}
-.card{position:relative;width:100%;min-height:220px;transform-style:preserve-3d;transition:transform 0.6s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.card{
+  position:relative;
+  width:100%;
+  min-height:224px;
+  transform-style:preserve-3d;
+  transition:transform 0.6s cubic-bezier(.4,0,.2,1);
+  cursor:pointer;
+}
 .card.flipped{transform:rotateY(180deg)}
-.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:16px;padding:24px 20px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(201,168,108,0.15),0 1px 4px rgba(0,0,0,0.06)}
-.card-front{background:var(--surface);border:1.5px solid var(--border);min-height:220px}
-.card-front::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,var(--accent-light),var(--accent),var(--accent-light));border-radius:16px 16px 0 0}
-.card-back{background:linear-gradient(145deg,#F5F0E8 0%,var(--accent-light) 100%);transform:rotateY(180deg);border:1.5px solid var(--border);min-height:220px;height:220px;align-items:flex-start;justify-content:flex-start;padding:22px 20px 18px}
-.card-back::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent-soft));border-radius:16px 16px 0 0}
-.card-number{position:absolute;top:12px;left:14px;font-family:'Sarabun',sans-serif;font-size:0.72rem;color:var(--accent);font-weight:600;letter-spacing:0.5px}
-.learned-btn{position:absolute;top:8px;right:10px;background:none;border:none;font-size:1.1rem;cursor:pointer;opacity:0.4;transition:opacity .2s,transform .2s;z-index:2;visibility:visible;padding:8px;margin:-8px}
-.learned-btn:hover{opacity:0.8;transform:scale(1.2)}
-.learned-btn.done{opacity:1}
+.card-face{
+  position:absolute;
+  inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border-radius:16px;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.06);
+  background:var(--surface);
+  border:1px solid var(--border);
+}
+.card-face:hover{
+  border-color:var(--primary);
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+}
+.card-back{
+  background:var(--primary-light);
+  transform:rotateY(180deg);
+  border:1px solid var(--primary);
+  min-height:224px;
+  align-items:flex-start;
+  justify-content:flex-start;
+  padding:48px 20px 20px 20px;
+}
+.card-number{
+  position:absolute;
+  top:16px;
+  left:20px;
+  font-family:'Sarabun',sans-serif;
+  font-size:12px;
+  color:var(--text-light);
+  font-weight:500;
+}
+.learned-btn{
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:50%;
+  width:32px;
+  height:32px;
+  font-size:14px;
+  cursor:pointer;
+  opacity:0.6;
+  transition:all .2s;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.learned-btn:hover{
+  opacity:1;
+  transform:scale(1.1);
+  background:var(--primary);
+  border-color:var(--primary);
+}
+.learned-btn.done{
+  opacity:1;
+  background:var(--success);
+  border-color:var(--success);
+  color:#fff;
+}
 .card.flipped .card-front .learned-btn{visibility:hidden}
-.hanzi{font-family:'Noto Serif SC',serif;font-size:3.6rem;color:var(--text);line-height:1;margin-bottom:8px;text-shadow:1px 1px 0 rgba(201,168,108,0.2)}
+.hanzi{
+  font-family:'Noto Serif SC',serif;
+  font-size:42px;
+  font-weight:500;
+  color:var(--text);
+  line-height:1;
+  margin-bottom:12px;
+  text-align:center;
+}
 .hanzi-small{font-family:'Noto Serif SC',serif;font-size:1.15rem;color:var(--text);line-height:1.6;margin-bottom:4px}
-.pinyin{font-family:'Noto Sans SC',sans-serif;font-size:1.05rem;color:var(--text);font-weight:500;letter-spacing:1px;margin-bottom:6px}
+.pinyin{
+  font-family:'Noto Sans SC',sans-serif;
+  font-size:16px;
+  color:var(--text-light);
+  text-align:center;
+  margin-bottom:8px;
+}
 .pinyin.hidden{display:none}
-.pinyin-light{font-family:'Noto Sans SC',sans-serif;font-size:0.82rem;color:var(--text-soft);margin-bottom:6px;line-height:1.5}
-.meaning{font-family:'Sarabun',sans-serif;font-size:1.05rem;color:var(--text-soft);font-weight:600;text-align:center}
-.meaning-light{font-family:'Sarabun',sans-serif;font-size:0.88rem;color:var(--text-soft);line-height:1.5;border-top:1px solid var(--border);padding-top:6px;margin-top:2px}
-.flip-hint{margin-top:12px;font-family:'Sarabun',sans-serif;font-size:0.72rem;color:var(--accent);letter-spacing:0.5px}
-.back-label{font-family:'Sarabun',sans-serif;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;margin-top:4px}
+.pinyin-light{font-family:'Noto Sans SC',sans-serif;font-size:0.82rem;color:var(--text-soft);margin-bottom:6px;line-height:1.5;text-align:left}
+.meaning{
+  font-family:'Sarabun',sans-serif;
+  font-size:14px;
+  color:var(--text);
+  text-align:left;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+  width:100%;
+}
+.meaning-light{font-family:'Sarabun',sans-serif;font-size:0.88rem;color:var(--text-soft);line-height:1.5;text-align:left}
+.flip-hint{margin-top:12px;font-family:'Sarabun',sans-serif;font-size:12px;color:var(--text-light);letter-spacing:0.5px}
+.back-label{font-family:'Sarabun',sans-serif;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);margin-bottom:6px;margin-top:12px;text-align:left}
 .divider{width:100%;height:1px;background:var(--border);margin:8px 0}
-.cat-label{font-size:0.75rem;padding:4px 10px;border-radius:20px;margin-top:8px;text-align:center;display:inline-block;font-family:'Sarabun',sans-serif;font-weight:600}
-.cat-action{background:#F5E6D3;color:var(--text)}
-.cat-noun{background:#EDE4D3;color:var(--text)}
-.cat-adj{background:#E5DBCC;color:var(--text)}
-.cat-adv{background:#DDD2C3;color:var(--text)}
-.cat-other{background:var(--border);color:var(--text)}
-.example-sentence{font-family:'Noto Serif SC',serif;font-size:1.15rem;color:var(--text);line-height:1.6;margin-bottom:4px}
+.cat-label{
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:20px;
+  margin-top:8px;
+  text-align:center;
+  display:inline-block;
+  font-family:'Sarabun',sans-serif;
+  font-weight:500;
+  background:var(--bg);
+  color:var(--text-light);
+  border:1px solid var(--border);
+}
+.cat-action{background:var(--bg);color:var(--text-light)}
+.cat-noun{background:var(--bg);color:var(--text-light)}
+.cat-adj{background:var(--bg);color:var(--text-light)}
+.cat-adv{background:var(--bg);color:var(--text-light)}
+.cat-other{background:var(--bg);color:var(--text-light)}
+.example-sentence{font-family:'Noto Serif SC',serif;font-size:1.15rem;color:var(--text);line-height:1.6;margin-bottom:4px;text-align:left}
 .example{font-size:11px;color:var(--color-text-secondary);text-align:center;line-height:1.5;margin-top:6px;max-width:100%;word-wrap:break-word;overflow-wrap:break-word}
 .hint{font-size:11px;color:var(--color-text-tertiary);margin-top:2px;text-align:center}
-.page-ctrl{display:flex;align-items:center;gap:8px;margin-top:12px;justify-content:center;flex-wrap:wrap}
-.page-btn{padding:6px 16px;border-radius:8px;border:0.5px solid var(--border);font-size:13px;cursor:pointer;background:transparent;color:var(--text-soft)}
-.page-btn:disabled{opacity:0.4;cursor:default}
-.page-btn.active{background:var(--accent);color:var(--surface);border-color:transparent}
-.pinfo{font-size:13px;color:var(--text-soft)}
-.remove-btn{position:absolute;top:8px;right:8px;background:var(--accent);color:var(--surface);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1}
+.page-ctrl{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:24px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.page-btn{
+  padding:8px 16px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  font-size:13px;
+  cursor:pointer;
+  background:var(--surface);
+  color:var(--text-soft);
+  transition:all 0.2s;
+}
+.page-btn:hover{
+  background:var(--bg);
+}
+.page-btn:disabled{
+  opacity:0.4;
+  cursor:default;
+}
+.page-btn.active{
+  background:var(--primary);
+  color:#1a1a1a;
+  border-color:var(--primary);
+}
+.pinfo{
+  font-size:13px;
+  color:var(--text-light);
+}
+.remove-btn{position:absolute;top:8px;right:8px;background:var(--surface);color:var(--danger);border:1px solid var(--border);border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;line-height:1;transition:all 0.2s}
 .card:hover .remove-btn{display:flex}
-.remove-btn:hover{background:var(--text)}
-.speak-btn{position:absolute;top:8px;right:8px;background:var(--accent);color:var(--surface);border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;opacity:1;transition:opacity 0.2s;z-index:10}
-.speak-btn:hover{background:var(--text)}
-#gameModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+.remove-btn:hover{background:var(--danger);color:#fff}
+.speak-btn{position:absolute;top:8px;right:8px;background:var(--primary);color:#1a1a1a;border:none;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;opacity:1;transition:background 0.2s;z-index:10}
+.speak-btn:hover{background:var(--primary-dark)}
+#gameModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
 #gameModal.show{display:flex}
 .game-container{background:var(--surface);border-radius:12px;padding:0 24px 24px 24px;max-width:800px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 10px 10px -5px rgba(0,0,0,0.2);position:relative}
 .game-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:16px 0;position:sticky;top:0;z-index:10;background:var(--surface)}
 .game-title{font-size:20px;font-weight:600;color:var(--text)}
 .game-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
-.game-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
-.game-card{background:var(--bg);border:2px solid var(--border);border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:all 0.2s;min-height:80px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;color:var(--text)}
-.game-card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.game-card.selected{background:var(--accent-light);border-color:var(--accent);color:var(--text)}
-.game-card.matched{background:#D1FAE5;border-color:#10B981;pointer-events:none;opacity:0.6;color:#065F46}
-.game-card.wrong{background:#FEE2E2;border-color:#EF4444;animation:shake 0.3s;color:#991B1B}
+.game-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+  margin-bottom:20px;
+}
+.game-card{
+  background:var(--surface);
+  border:2px solid var(--border);
+  border-radius:12px;
+  padding:16px;
+  text-align:center;
+  cursor:pointer;
+  transition:all 0.2s;
+  min-height:80px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:500;
+  color:var(--text);
+}
+.game-card:hover{
+  border-color:var(--primary);
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+.game-card.selected{
+  background:var(--primary);
+  border-color:var(--primary);
+  color:#1a1a1a;
+}
+.game-card.matched{
+  background:var(--success-bg);
+  border-color:var(--success);
+  pointer-events:none;
+  opacity:0.6;
+  color:var(--success);
+}
+.game-card.wrong{
+  background:#FEE2E2;
+  border-color:var(--danger);
+  animation:shake 0.3s;
+  color:#991B1B;
+}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .game-stats{display:flex;gap:20px;justify-content:center;font-size:14px;color:var(--text-soft);margin-bottom:16px}
 .game-over-modal{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(253,252,248,0.95);display:flex;align-items:center;justify-content:center;z-index:100;border-radius:12px}
@@ -169,43 +629,43 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .game-over-title{font-size:32px;font-weight:600;color:#10B981;margin-bottom:16px}
 .game-over-message{font-size:18px;color:var(--text);margin-bottom:8px}
 .game-over-time{font-size:16px;color:var(--text-soft);margin-bottom:24px}
-.game-over-btn{background:var(--accent);color:var(--surface);border:none;border-radius:8px;padding:12px 32px;font-size:16px;cursor:pointer;transition:background 0.2s}
-.game-over-btn:hover{background:var(--text)}
+.game-over-btn{background:var(--primary);color:#1a1a1a;border:none;border-radius:8px;padding:12px 32px;font-size:16px;cursor:pointer;transition:background 0.2s;font-weight:600}
+.game-over-btn:hover{background:var(--primary-dark)}
 .game-result-modal{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(253,252,248,0.98);display:flex;align-items:center;justify-content:center;z-index:101;border-radius:12px}
 .game-result-content{text-align:center;padding:40px;background:var(--surface);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.15);max-width:350px;width:90%}
 .game-result-title{font-size:28px;font-weight:600;color:#10B981;margin-bottom:20px}
 .game-result-message{font-size:18px;color:var(--text);margin-bottom:12px}
 .game-result-time{font-size:16px;color:var(--text-soft);margin-bottom:20px}
 .game-result-stars{font-size:24px;margin-bottom:28px;letter-spacing:4px}
-.game-result-btn{background:var(--accent);color:var(--surface);border:none;border-radius:8px;padding:14px 40px;font-size:16px;cursor:pointer;transition:background 0.2s;font-weight:500}
-.game-result-btn:hover{background:var(--text)}
+.game-result-btn{background:var(--primary);color:#1a1a1a;border:none;border-radius:8px;padding:14px 40px;font-size:16px;cursor:pointer;transition:background 0.2s;font-weight:600}
+.game-result-btn:hover{background:var(--primary-dark)}
 .article-container{background:var(--surface);border-radius:12px;padding:0 24px 24px 24px;max-width:900px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.3),0 10px 10px -5px rgba(0,0,0,0.2);position:relative}
 .article-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding:16px 0 12px 0;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;background:var(--surface)}
 .article-title{font-size:22px;font-weight:600;color:var(--text)}
 .article-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
 .article-list{display:flex;flex-direction:column;gap:12px}
 .article-item{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all 0.2s}
-.article-item:hover{background:var(--accent-light);border-color:var(--border)}
+.article-item:hover{background:var(--surface);border-color:var(--primary)}
 .article-item-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
 .article-item-desc{font-size:13px;color:var(--text-soft)}
 .article-content{background:var(--surface);padding:20px;border-radius:10px}
 .article-content h3{font-size:18px;font-weight:600;color:var(--text);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .article-para{margin-bottom:16px;line-height:1.8;color:var(--text);font-size:15px}
-.article-para .zh-word{color:var(--accent);font-weight:600;cursor:pointer}
+.article-para .zh-word{color:var(--primary);font-weight:600;cursor:pointer}
 .article-para .zh-word:hover{text-decoration:underline}
-.article-back-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:14px;color:var(--text);cursor:pointer;margin-bottom:16px}
-.article-back-btn:hover{background:var(--accent-light)}
+.article-back-btn{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:14px;color:var(--text);cursor:pointer;margin-bottom:16px;transition:all 0.2s}
+.article-back-btn:hover{background:var(--surface);border-color:var(--primary)}
 .article-range-filter{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .article-range-btn{padding:6px 14px;border:1px solid var(--border);border-radius:20px;background:var(--bg);color:var(--text-soft);font-size:13px;cursor:pointer;transition:all 0.2s}
-.article-range-btn:hover{background:var(--accent-light);border-color:var(--accent)}
-.article-range-btn.active{background:var(--accent-light);border-color:var(--accent);color:var(--text);font-weight:500}
+.article-range-btn:hover{background:var(--surface);border-color:var(--primary)}
+.article-range-btn.active{background:var(--primary);border-color:var(--primary);color:#1a1a1a;font-weight:600}
 .submenu{display:none;padding-left:20px;background:rgba(255,255,255,0.5)}
 .submenu.show{display:block}
 .submenu-toggle{cursor:pointer;user-select:none}
 .submenu-item{padding-left:12px;font-size:13px}
-#articleModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+#articleModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
 #articleModal.show{display:flex}
-#strokeModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:1100;align-items:center;justify-content:center}
+#strokeModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1100;align-items:center;justify-content:center}
 #strokeModal.show{display:flex}
 .modal-overlay{cursor:pointer}
 .stroke-container{background:var(--surface);border-radius:16px;padding:24px;max-width:500px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3)}
@@ -217,18 +677,18 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .stroke-character-label{font-size:14px;color:var(--text-soft)}
 .stroke-character-canvas{width:150px;height:150px;border:2px solid var(--border);border-radius:12px;background:var(--bg)}
 .stroke-controls{display:flex;gap:10px;justify-content:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
-.stroke-btn{background:var(--accent);color:var(--surface);border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:background 0.2s}
-.stroke-btn:hover{background:var(--text)}
-.stroke-btn-secondary{background:var(--border);color:var(--text)}
-.stroke-btn-secondary:hover{background:var(--accent-light)}
+.stroke-btn{background:var(--primary);color:#1a1a1a;border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:background 0.2s;font-weight:600}
+.stroke-btn:hover{background:var(--primary-dark)}
+.stroke-btn-secondary{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:all 0.2s}
+.stroke-btn-secondary:hover{background:var(--border)}
 .stroke-info{text-align:center;margin-bottom:16px;color:var(--text-soft);font-size:14px}
-.stroke-btn-small{position:absolute;top:8px;right:8px;background:none;border:none;font-size:1.1rem;cursor:pointer;opacity:0.6;transition:opacity .2s,transform .2s;z-index:2;padding:8px;margin:-8px;visibility:visible}
-.stroke-btn-small:hover{opacity:1;transform:scale(1.2)}
+.stroke-btn-small{position:absolute;top:8px;right:8px;background:var(--bg);border:1px solid var(--border);border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;opacity:0.6;transition:all .2s;z-index:2;display:flex;align-items:center;justify-content:center;visibility:visible}
+.stroke-btn-small:hover{opacity:1;transform:scale(1.1);background:var(--primary);border-color:var(--primary)}
 .card.flipped .card-front .stroke-btn-small{visibility:hidden}
 .stroke-legend{display:flex;justify-content:center;gap:16px;margin-bottom:16px;font-size:13px;color:var(--text-soft)}
 .legend-item{display:flex;align-items:center;gap:6px}
 .legend-dot{width:12px;height:12px;border-radius:50%}
-#writingModal,#readingModal,#orderingModal,#similarModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+#writingModal,#readingModal,#orderingModal,#similarModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
 #writingModal.show,#readingModal.show,#orderingModal.show,#similarModal.show{display:flex}
 .exercise-container{background:var(--surface);border-radius:16px;padding:0 24px 24px 24px;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3);position:relative}
 .exercise-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:16px 0 12px 0;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;background:var(--surface)}
@@ -261,17 +721,17 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .exercise-feedback.correct{background:#D1FAE5;color:#065F46}
 .exercise-feedback.wrong{background:#FEE2E2;color:#991B1B}
 .exercise-controls{display:flex;gap:10px;justify-content:center;padding-top:16px;border-top:1px solid var(--border)}
-.exercise-btn{background:var(--accent);color:var(--surface);border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:background 0.2s}
-.exercise-btn:hover{background:var(--text)}
-.exercise-btn-secondary{background:var(--border);color:var(--text);border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:background 0.2s}
-.exercise-btn-secondary:hover{background:var(--accent-light)}
+.exercise-btn{background:var(--primary);color:#1a1a1a;border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:background 0.2s;font-weight:600}
+.exercise-btn:hover{background:var(--primary-dark)}
+.exercise-btn-secondary{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;transition:all 0.2s}
+.exercise-btn-secondary:hover{background:var(--border)}
 .similar-container{background:var(--surface);border-radius:16px;padding:0 24px 24px 24px;max-width:700px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3);position:relative}
 .similar-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:16px 0 12px 0;border-bottom:2px solid var(--border);position:sticky;top:0;z-index:10;background:var(--surface)}
 .similar-title{font-size:20px;font-weight:600;color:var(--text)}
 .similar-close{background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text-soft)}
 .similar-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
 .similar-card{border:2px solid var(--border);border-radius:12px;padding:16px;background:var(--bg);cursor:pointer;transition:all 0.2s}
-.similar-card:hover{border-color:var(--accent);background:var(--accent-light)}
+.similar-card:hover{border-color:var(--primary);background:var(--primary);opacity:0.8}
 .similar-card-header{display:flex;justify-content:center;gap:24px;margin-bottom:12px}
 .similar-char{font-size:48px;font-weight:600;color:var(--text)}
 .similar-char-label{font-size:12px;color:var(--text-soft);text-align:center;margin-top:4px}
@@ -285,8 +745,8 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .similar-detail-view.active{display:block}
 .similar-list-view{display:block}
 .similar-list-view.hidden{display:none}
-.similar-back-btn{background:var(--border);color:var(--text);border:none;border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;transition:background 0.2s;margin-bottom:16px}
-.similar-back-btn:hover{background:var(--accent-light)}
+.similar-back-btn{background:var(--bg);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:14px;cursor:pointer;transition:all 0.2s;margin-bottom:16px}
+.similar-back-btn:hover{background:var(--surface);border-color:var(--primary)}
 .similar-detail-content{background:var(--bg);border-radius:12px;padding:20px}
 .similar-detail-header{display:flex;justify-content:center;align-items:center;gap:40px;margin-bottom:20px}
 .similar-detail-char{font-size:64px;font-weight:600;color:var(--text)}
@@ -294,119 +754,61 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .similar-detail-meaning{font-size:16px;color:var(--text);text-align:center;margin-bottom:12px}
 .similar-detail-box{flex:1;background:var(--surface);border-radius:12px;padding:16px;border:2px solid var(--border)}
 .similar-detail-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:8px;text-align:center}
-.similar-diff-highlight{background:var(--accent-light);padding:12px;border-radius:8px;margin-bottom:16px;font-size:14px;line-height:1.6;color:var(--text)}
-#listeningModal,#randomQuizModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center}
+.similar-diff-highlight{background:var(--bg);padding:12px;border-radius:8px;margin-bottom:16px;font-size:14px;line-height:1.6;color:var(--text);border:1px solid var(--border)}
+#listeningModal,#randomQuizModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
 #listeningModal.show,#randomQuizModal.show{display:flex}
 .listening-container,.quiz-container{background:var(--surface);border-radius:16px;padding:0 24px 24px 24px;max-width:700px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 25px -5px rgba(0,0,0,0.4),0 10px 10px -5px rgba(0,0,0,0.3);position:relative}
 .listening-word{font-size:64px;text-align:center;margin:30px 0;color:var(--text-soft);opacity:0.3}
 .listening-input{width:100%;padding:16px;font-size:32px;text-align:center;border:2px solid var(--border);border-radius:12px;font-family:'Noto Serif SC',serif;margin-bottom:16px}
-.listening-input:focus{outline:none;border-color:var(--accent)}
+.listening-input:focus{outline:none;border-color:var(--primary)}
 .listening-result{text-align:center;padding:8px;border-radius:6px;margin:8px 0;font-size:14px}
 .listening-result.correct{background:#D1FAE5;color:#065F46}
 .listening-result.wrong{background:#FEE2E2;color:#991B1B}
 .quiz-mode-selector{display:flex;gap:10px;margin-bottom:20px;justify-content:center;flex-wrap:wrap}
 .quiz-mode-btn{padding:10px 20px;border:2px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text-soft);cursor:pointer;transition:all 0.2s;font-size:14px}
-.quiz-mode-btn:hover{border-color:var(--accent);background:var(--accent-light)}
-.quiz-mode-btn.active{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.quiz-mode-btn:hover{border-color:var(--primary);background:var(--surface)}
+.quiz-mode-btn.active{background:var(--primary);color:#1a1a1a;border-color:var(--primary);font-weight:600}
 .quiz-question{font-size:20px;color:var(--text);margin-bottom:20px;text-align:center;font-weight:500}
 .quiz-input{width:100%;padding:12px;font-size:18px;border:2px solid var(--border);border-radius:8px;margin-bottom:16px;font-family:'Noto Serif SC',serif}
 .quiz-progress-chart{margin-top:24px;padding:20px;background:var(--bg);border-radius:12px}
-.quiz-chart-bar{height:30px;background:var(--accent);border-radius:4px;margin-bottom:8px;position:relative;transition:width 0.3s}
+.quiz-chart-bar{height:30px;background:var(--primary);border-radius:4px;margin-bottom:8px;position:relative;transition:width 0.3s}
 .quiz-chart-label{font-size:13px;color:var(--text-soft);margin-bottom:4px}
 .game-mode-selector{display:flex;gap:10px;margin-bottom:16px;justify-content:center;flex-wrap:wrap}
 .game-mode-btn{padding:8px 16px;border:2px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text-soft);cursor:pointer;transition:all 0.2s;font-size:13px}
-.game-mode-btn:hover{border-color:var(--accent);background:var(--accent-light)}
-.game-mode-btn.active{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+.game-mode-btn:hover{border-color:var(--primary);background:var(--surface)}
+.game-mode-btn.active{background:var(--primary);color:#1a1a1a;border-color:var(--primary);font-weight:600}
 </style>
-<button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
-<div class="sidebar-overlay" onclick="toggleSidebar()"></div>
-<div class="sidebar">
-  <div class="sidebar-header">
-    <span>📚 HSK4 Flashcards</span>
-    <button class="menu-toggle" onclick="toggleSidebar()">✕</button>
+
+<!-- Top Navigation -->
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="mobile-menu-btn" onclick="toggleSidebar()">☰</button>
+    <div class="logo">
+      <div class="logo-icon">🇨🇳</div>
+      <span>HSK4 Flashcards</span>
+    </div>
   </div>
-  
-  <div class="menu-section">
-    <div class="menu-title">แบบฝึกหัด</div>
-    <div class="menu-item" onclick="startPractice(null)">
-      <span class="menu-icon">🎯</span>
-      <span>สุ่มท่องศัพท์ 50 คำจากทั้งหมด</span>
-    </div>
-    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu1')">
-      <span class="menu-icon">📘</span>
-      <span>คำที่ 1-300 ▾</span>
-    </div>
-    <div class="submenu" id="submenu1">
-      <div class="menu-item submenu-item" onclick="startWritingPractice(1,300)">
-        <span class="menu-icon">✍️</span>
-        <span>แบบฝึกหัดเขียน</span>
-      </div>
-      <div class="menu-item submenu-item" onclick="startReadingQuiz(1,300)">
-        <span class="menu-icon">📖</span>
-        <span>อ่าน แล้วตอบคำถาม</span>
-      </div>
-      <div class="menu-item submenu-item" onclick="startSentenceOrdering(1,300)">
-        <span class="menu-icon">🔤</span>
-        <span>เรียงประโยค</span>
-      </div>
-    </div>
-    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu2')">
-      <span class="menu-icon">📗</span>
-      <span>คำที่ 301-600 ▾</span>
-    </div>
-    <div class="submenu" id="submenu2">
-      <div class="menu-item submenu-item" onclick="startWritingPractice(301,600)">
-        <span class="menu-icon">✍️</span>
-        <span>แบบฝึกหัดเขียน</span>
-      </div>
-      <div class="menu-item submenu-item" onclick="startReadingQuiz(301,600)">
-        <span class="menu-icon">📖</span>
-        <span>อ่าน แล้วตอบคำถาม</span>
-      </div>
-      <div class="menu-item submenu-item" onclick="startSentenceOrdering(301,600)">
-        <span class="menu-icon">🔤</span>
-        <span>เรียงประโยค</span>
-      </div>
-    </div>
-    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu3')">
-      <span class="menu-icon">📙</span>
-      <span>คำที่ 601-900 ▾</span>
-    </div>
-    <div class="submenu" id="submenu3">
-      <div class="menu-item submenu-item" onclick="startWritingPractice(601,900)">
-        <span class="menu-icon">✍️</span>
-        <span>แบบฝึกหัดเขียน</span>
-      </div>
-      <div class="menu-item submenu-item" onclick="startReadingQuiz(601,900)">
-        <span class="menu-icon">📖</span>
-        <span>อ่าน แล้วตอบคำถาม</span>
-      </div>
-      <div class="menu-item submenu-item" onclick="startSentenceOrdering(601,900)">
-        <span class="menu-icon">🔤</span>
-        <span>เรียงประโยค</span>
-      </div>
-    </div>
-    <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu4')">
-      <span class="menu-icon">📕</span>
-      <span>คำที่ 901-1200 ▾</span>
-    </div>
-    <div class="submenu" id="submenu4">
-      <div class="menu-item submenu-item" onclick="startWritingPractice(901,1200)">
-        <span class="menu-icon">✍️</span>
-        <span>แบบฝึกหัดเขียน</span>
-      </div>
-      <div class="menu-item submenu-item" onclick="startReadingQuiz(901,1200)">
-        <span class="menu-icon">📖</span>
-        <span>อ่าน แล้วตอบคำถาม</span>
-      </div>
-      <div class="menu-item submenu-item" onclick="startSentenceOrdering(901,1200)">
-        <span class="menu-icon">🔤</span>
-        <span>เรียงประโยค</span>
+  <div class="topbar-right">
+    <div class="user-avatar">U</div>
+  </div>
+</div>
+
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="menu-title">Flashcards</div>
+    <div class="sidebar-menu">
+      <div class="menu-item" onclick="showAllFlashcards()">
+        <span class="menu-icon">🎴</span>
+        <span>ทั้งหมด 1200 คำ</span>
       </div>
     </div>
   </div>
   
-  <div class="menu-section">
+  <div class="sidebar-section">
     <div class="menu-title">เครื่องมือ</div>
     <div class="menu-item" onclick="showDifficultWords(null)">
       <span class="menu-icon">❌</span>
@@ -452,7 +854,89 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
     </div>
   </div>
   
-  <div class="menu-section">
+  <div class="sidebar-section">
+    <div class="menu-title">แบบฝึกหัด</div>
+    <div class="sidebar-menu">
+      <div class="menu-item" onclick="startPractice(null)">
+        <span class="menu-icon">🎯</span>
+        <span>สุ่มท่องศัพท์ 50 คำจากทั้งหมด</span>
+      </div>
+      <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu1')">
+        <span class="menu-icon">📘</span>
+        <span>คำที่ 1-300 ▾</span>
+      </div>
+      <div class="submenu" id="submenu1">
+        <div class="menu-item submenu-item" onclick="startWritingPractice(1,300)">
+          <span class="menu-icon">✍️</span>
+          <span>แบบฝึกหัดเขียน</span>
+        </div>
+        <div class="menu-item submenu-item" onclick="startReadingQuiz(1,300)">
+          <span class="menu-icon">📖</span>
+          <span>อ่าน แล้วตอบคำถาม</span>
+        </div>
+        <div class="menu-item submenu-item" onclick="startSentenceOrdering(1,300)">
+          <span class="menu-icon">🔤</span>
+          <span>เรียงประโยค</span>
+        </div>
+      </div>
+      <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu2')">
+        <span class="menu-icon">📗</span>
+        <span>คำที่ 301-600 ▾</span>
+      </div>
+      <div class="submenu" id="submenu2">
+        <div class="menu-item submenu-item" onclick="startWritingPractice(301,600)">
+          <span class="menu-icon">✍️</span>
+          <span>แบบฝึกหัดเขียน</span>
+        </div>
+        <div class="menu-item submenu-item" onclick="startReadingQuiz(301,600)">
+          <span class="menu-icon">📖</span>
+          <span>อ่าน แล้วตอบคำถาม</span>
+        </div>
+        <div class="menu-item submenu-item" onclick="startSentenceOrdering(301,600)">
+          <span class="menu-icon">🔤</span>
+          <span>เรียงประโยค</span>
+        </div>
+      </div>
+      <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu3')">
+        <span class="menu-icon">📙</span>
+        <span>คำที่ 601-900 ▾</span>
+      </div>
+      <div class="submenu" id="submenu3">
+        <div class="menu-item submenu-item" onclick="startWritingPractice(601,900)">
+          <span class="menu-icon">✍️</span>
+          <span>แบบฝึกหัดเขียน</span>
+        </div>
+        <div class="menu-item submenu-item" onclick="startReadingQuiz(601,900)">
+          <span class="menu-icon">📖</span>
+          <span>อ่าน แล้วตอบคำถาม</span>
+        </div>
+        <div class="menu-item submenu-item" onclick="startSentenceOrdering(601,900)">
+          <span class="menu-icon">🔤</span>
+          <span>เรียงประโยค</span>
+        </div>
+      </div>
+      <div class="menu-item submenu-toggle" onclick="toggleSubmenu('submenu4')">
+        <span class="menu-icon">📕</span>
+        <span>คำที่ 901-1200 ▾</span>
+      </div>
+      <div class="submenu" id="submenu4">
+        <div class="menu-item submenu-item" onclick="startWritingPractice(901,1200)">
+          <span class="menu-icon">✍️</span>
+          <span>แบบฝึกหัดเขียน</span>
+        </div>
+        <div class="menu-item submenu-item" onclick="startReadingQuiz(901,1200)">
+          <span class="menu-icon">📖</span>
+          <span>อ่าน แล้วตอบคำถาม</span>
+        </div>
+        <div class="menu-item submenu-item" onclick="startSentenceOrdering(901,1200)">
+          <span class="menu-icon">🔤</span>
+          <span>เรียงประโยค</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="sidebar-section">
     <div class="menu-title">แบบทดสอบ</div>
     <div class="menu-item" onclick="startListeningDictation()">
       <span class="menu-icon">🎧</span>
@@ -464,7 +948,7 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
     </div>
   </div>
   
-  <div class="menu-section">
+  <div class="sidebar-section">
     <div class="menu-title">บทความ</div>
     <div class="menu-item" onclick="showSampleArticles()">
       <span class="menu-icon">📖</span>
@@ -510,19 +994,24 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 </div>
 
 <div class="header-sticky">
+<h1 class="page-title">การ์ดคำศัพท์</h1>
 <div class="controls">
   <span class="stats" id="dispCount"></span>
+  <button class="filter-btn" id="filterBtn" type="button" onclick="toggleFilterSidebar()">
+    <span>Filter</span>
+    <span id="filterBtnValue" style="font-size:11px;opacity:0.8">(ทั้งหมด)</span>
+  </button>
+  <button class="filter-btn" id="compoundBtn" type="button" onclick="toggleCompoundDropdown()">
+    <span>📝</span>
+    <span>คำประสม</span>
+    <span id="compoundBtnValue" style="font-size:11px;opacity:0.8"></span>
+  </button>
+  <button class="filter-btn" id="radicalBtn" type="button" onclick="toggleRadicalDropdown()">
+    <span>部</span>
+    <span>อักษรข้าง</span>
+    <span id="radicalBtnValue" style="font-size:11px;opacity:0.8"></span>
+  </button>
 </div>
-<button class="filter-btn" id="filterBtn" type="button" onclick="toggleFilterSidebar()">
-  <span>🔍</span>
-  <span>Filter</span>
-  <span id="filterBtnValue" style="font-size:11px;opacity:0.8">(ทั้งหมด)</span>
-</button>
-<button class="filter-btn" id="compoundBtn" type="button" onclick="toggleCompoundDropdown()">
-  <span>📝</span>
-  <span>คำประสม</span>
-  <span id="compoundBtnValue" style="font-size:11px;opacity:0.8"></span>
-</button>
 </div>
 <div class="compound-dropdown-overlay" id="compoundDropdownOverlay" onclick="toggleCompoundDropdown()"></div>
 <div class="compound-dropdown" id="compoundDropdown">
@@ -530,32 +1019,60 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
     <div class="compound-dropdown-title">คำประสม</div>
     <button class="compound-dropdown-close" onclick="toggleCompoundDropdown()" type="button" aria-label="ปิดคำประสม">✕</button>
   </div>
-  <div class="compound-dropdown-item" onclick="setCompound(null,this)">ทั้งหมด</div>
+  <div class="compound-dropdown-item" data-key="all" data-count="0" onclick="setCompound(null,this)">ทั้งหมด</div>
   <div class="compound-dropdown-divider"></div>
-  <div class="compound-dropdown-item" onclick="setCompound('好',this)">คำที่มี 好</div>
-  <div class="compound-dropdown-item" onclick="setCompound('不',this)">คำที่มี 不</div>
-  <div class="compound-dropdown-item" onclick="setCompound('大',this)">คำที่มี 大</div>
-  <div class="compound-dropdown-item" onclick="setCompound('出',this)">คำที่มี 出</div>
-  <div class="compound-dropdown-item" onclick="setCompound('上',this)">คำที่มี 上</div>
-  <div class="compound-dropdown-item" onclick="setCompound('下',this)">คำที่มี 下</div>
-  <div class="compound-dropdown-item" onclick="setCompound('打',this)">คำที่มี 打</div>
-  <div class="compound-dropdown-item" onclick="setCompound('发',this)">คำที่มี 发</div>
-  <div class="compound-dropdown-item" onclick="setCompound('人',this)">คำที่มี 人</div>
-  <div class="compound-dropdown-item" onclick="setCompound('心',this)">คำที่มี 心</div>
-  <div class="compound-dropdown-item" onclick="setCompound('学',this)">คำที่มี 学</div>
-  <div class="compound-dropdown-item" onclick="setCompound('工',this)">คำที่มี 工</div>
-  <div class="compound-dropdown-item" onclick="setCompound('以',this)">คำที่มี 以</div>
-  <div class="compound-dropdown-item" onclick="setCompound('时',this)">คำที่มี 时</div>
-  <div class="compound-dropdown-item" onclick="setCompound('来',this)">คำที่มี 来</div>
-  <div class="compound-dropdown-item" onclick="setCompound('成',this)">คำที่มี 成</div>
-  <div class="compound-dropdown-item" onclick="setCompound('关',this)">คำที่มี 关</div>
-  <div class="compound-dropdown-item" onclick="setCompound('经',this)">คำที่มี 经</div>
-  <div class="compound-dropdown-item" onclick="setCompound('感',this)">คำที่มี 感</div>
-  <div class="compound-dropdown-item" onclick="setCompound('自',this)">คำที่มี 自</div>
-  <div class="compound-dropdown-item" onclick="setCompound('高',this)">คำที่มี 高</div>
-  <div class="compound-dropdown-item" onclick="setCompound('一',this)">คำที่มี 一</div>
-  <div class="compound-dropdown-item" onclick="setCompound('方',this)">คำที่มี 方</div>
-  <div class="compound-dropdown-item" onclick="setCompound('家',this)">คำที่มี 家</div>
+  <div class="compound-dropdown-item" data-key="好" data-count="0" onclick="setCompound('好',this)">คำที่มี 好</div>
+  <div class="compound-dropdown-item" data-key="不" data-count="0" onclick="setCompound('不',this)">คำที่มี 不</div>
+  <div class="compound-dropdown-item" data-key="大" data-count="0" onclick="setCompound('大',this)">คำที่มี 大</div>
+  <div class="compound-dropdown-item" data-key="出" data-count="0" onclick="setCompound('出',this)">คำที่มี 出</div>
+  <div class="compound-dropdown-item" data-key="上" data-count="0" onclick="setCompound('上',this)">คำที่มี 上</div>
+  <div class="compound-dropdown-item" data-key="下" data-count="0" onclick="setCompound('下',this)">คำที่มี 下</div>
+  <div class="compound-dropdown-item" data-key="打" data-count="0" onclick="setCompound('打',this)">คำที่มี 打</div>
+  <div class="compound-dropdown-item" data-key="发" data-count="0" onclick="setCompound('发',this)">คำที่มี 发</div>
+  <div class="compound-dropdown-item" data-key="人" data-count="0" onclick="setCompound('人',this)">คำที่มี 人</div>
+  <div class="compound-dropdown-item" data-key="心" data-count="0" onclick="setCompound('心',this)">คำที่มี 心</div>
+  <div class="compound-dropdown-item" data-key="学" data-count="0" onclick="setCompound('学',this)">คำที่มี 学</div>
+  <div class="compound-dropdown-item" data-key="工" data-count="0" onclick="setCompound('工',this)">คำที่มี 工</div>
+  <div class="compound-dropdown-item" data-key="以" data-count="0" onclick="setCompound('以',this)">คำที่มี 以</div>
+  <div class="compound-dropdown-item" data-key="时" data-count="0" onclick="setCompound('时',this)">คำที่มี 时</div>
+  <div class="compound-dropdown-item" data-key="来" data-count="0" onclick="setCompound('来',this)">คำที่มี 来</div>
+  <div class="compound-dropdown-item" data-key="成" data-count="0" onclick="setCompound('成',this)">คำที่มี 成</div>
+  <div class="compound-dropdown-item" data-key="关" data-count="0" onclick="setCompound('关',this)">คำที่มี 关</div>
+  <div class="compound-dropdown-item" data-key="经" data-count="0" onclick="setCompound('经',this)">คำที่มี 经</div>
+  <div class="compound-dropdown-item" data-key="感" data-count="0" onclick="setCompound('感',this)">คำที่มี 感</div>
+  <div class="compound-dropdown-item" data-key="自" data-count="0" onclick="setCompound('自',this)">คำที่มี 自</div>
+  <div class="compound-dropdown-item" data-key="高" data-count="0" onclick="setCompound('高',this)">คำที่มี 高</div>
+  <div class="compound-dropdown-item" data-key="一" data-count="0" onclick="setCompound('一',this)">คำที่มี 一</div>
+  <div class="compound-dropdown-item" data-key="方" data-count="0" onclick="setCompound('方',this)">คำที่มี 方</div>
+  <div class="compound-dropdown-item" data-key="家" data-count="0" onclick="setCompound('家',this)">คำที่มี 家</div>
+</div>
+
+<div class="compound-dropdown-overlay" id="radicalDropdownOverlay" onclick="toggleRadicalDropdown()"></div>
+<div class="compound-dropdown" id="radicalDropdown">
+  <div class="compound-dropdown-head">
+    <div class="compound-dropdown-title">อักษรข้าง (Radicals)</div>
+    <button class="compound-dropdown-close" onclick="toggleRadicalDropdown()" type="button" aria-label="ปิดอักษรข้าง">✕</button>
+  </div>
+  <div class="compound-dropdown-item" data-key="all" data-count="0" onclick="setRadical(null,this)">ทั้งหมด</div>
+  <div class="compound-dropdown-divider"></div>
+  <div class="compound-dropdown-item" data-key="氵" data-count="0" onclick="setRadical('氵',this)">氵 น้ำ (水)</div>
+  <div class="compound-dropdown-item" data-key="扌" data-count="0" onclick="setRadical('扌',this)">扌 มือ (手)</div>
+  <div class="compound-dropdown-item" data-key="口" data-count="0" onclick="setRadical('口',this)">口 ปาก</div>
+  <div class="compound-dropdown-item" data-key="亻" data-count="0" onclick="setRadical('亻',this)">亻 คน (人)</div>
+  <div class="compound-dropdown-item" data-key="心" data-count="0" onclick="setRadical('心',this)">心/忄 ใจ (心)</div>
+  <div class="compound-dropdown-item" data-key="讠" data-count="0" onclick="setRadical('讠',this)">讠 คำพูด (言)</div>
+  <div class="compound-dropdown-item" data-key="纟" data-count="0" onclick="setRadical('纟',this)">纟 ไหม (糸)</div>
+  <div class="compound-dropdown-item" data-key="艹" data-count="0" onclick="setRadical('艹',this)">艹 หญ้า (草)</div>
+  <div class="compound-dropdown-item" data-key="钅" data-count="0" onclick="setRadical('钅',this)">钅 โลหะ (金)</div>
+  <div class="compound-dropdown-item" data-key="宀" data-count="0" onclick="setRadical('宀',this)">宀 หลังคา</div>
+  <div class="compound-dropdown-item" data-key="辶" data-count="0" onclick="setRadical('辶',this)">辶 เดิน</div>
+  <div class="compound-dropdown-item" data-key="阝" data-count="0" onclick="setRadical('阝',this)">阝 เนิน/ที่</div>
+  <div class="compound-dropdown-item" data-key="木" data-count="0" onclick="setRadical('木',this)">木 ไม้</div>
+  <div class="compound-dropdown-item" data-key="女" data-count="0" onclick="setRadical('女',this)">女 หญิง</div>
+  <div class="compound-dropdown-item" data-key="犭" data-count="0" onclick="setRadical('犭',this)">犭 สัตว์ (犬)</div>
+  <div class="compound-dropdown-item" data-key="月" data-count="0" onclick="setRadical('月',this)">月 ร่างกาย</div>
+  <div class="compound-dropdown-item" data-key="火" data-count="0" onclick="setRadical('火',this)">火/灬 ไฟ (火)</div>
+  <div class="compound-dropdown-item" data-key="石" data-count="0" onclick="setRadical('石',this)">石 หิน</div>
 </div>
 
 <div class="progress">
@@ -2133,6 +2650,29 @@ const COMPOUNDS=[
 ];
 
 let compoundMode=null;
+let radicalMode=null;
+
+function radMatch(s){const r=new RegExp('['+s+']');return v=>r.test(v.h);}
+const RADICALS=[
+  {key:"氵",name:"氵 น้ำ (水)",match:radMatch("海洋汉活河法流清满汗减温消演激游泳洗注决深渐漂沙污泪浪湿况淡澡汤沿没")},
+  {key:"扌",name:"扌 มือ (手)",match:radMatch("搬抱擦掉打换挂接拿排批提推握摇指扔扰扫担按押折拉报控摸捡摔")},
+  {key:"口",name:"口 ปาก",match:radMatch("吃喝唱叫哭吧啊吗呢吐呼嘛呀哈号吵叹嗓哦嗯哇吓品否唯嘴吸")},
+  {key:"亻",name:"亻 คน (人)",match:radMatch("你他们做使倒信但代件位候借健停传体保低修假像依份伤优便值仍")},
+  {key:"心",name:"心/忄 ใจ (心)",match:radMatch("情性快怕怀惊慢忙忘恨懒怒悔惜怪恼忍惯恐怜恢慌愉悠悲愁感思想念意")},
+  {key:"讠",name:"讠 คำพูด (言)",match:radMatch("说话语读请谢认课词记该诚试许讲论议询谁诉讨访证评让设谈误译调训识")},
+  {key:"纟",name:"纟 ไหม (糸)",match:radMatch("给经练结级红绿约继续线细绑纯织纹终绕统维综绩纸")},
+  {key:"艹",name:"艹 หญ้า (草)",match:radMatch("草菜花茶英节药蓝苦落荣茫蔬著萝葡萄")},
+  {key:"钅",name:"钅 โลหะ (金)",match:radMatch("钱银铁钟锻错钥键镜钢铃针")},
+  {key:"宀",name:"宀 หลังคา",match:radMatch("家安字室宾宿官客宽实空富寒察寄容定完宇宣密")},
+  {key:"辶",name:"辶 เดิน",match:radMatch("过这进还连边道运遇逛迟适通逃追远近迎速遍送选退逐述违")},
+  {key:"阝",name:"阝 เนิน/ที่",match:radMatch("阿都那院队际陪随陆限险阳阴附邮邻郊部")},
+  {key:"木",name:"木 ไม้",match:radMatch("树楼桌椅样桥杯板棒格校材林相概根架标检模")},
+  {key:"女",name:"女 หญิง",match:radMatch("妈姐她妹姓婚妻婆好如姿娘")},
+  {key:"犭",name:"犭 สัตว์ (犬)",match:radMatch("狗猫猴猪猎猛独猜")},
+  {key:"月",name:"月 ร่างกาย",match:radMatch("脸脑腿肚背胸腰胖肩胃脏脾朋服期")},
+  {key:"火",name:"火/灬 ไฟ (火)",match:radMatch("热然照熟烧炒烟灯灾炸煮烦")},
+  {key:"石",name:"石 หิน",match:radMatch("确碗破硬矿砖")},
+];
 
 // ระบบจดจำคำที่จำยาก: {wordNumber: {views: count, flips: count, lastSeen: timestamp}}
 let difficultWords=JSON.parse(localStorage.getItem('hsk4_difficult')||'{}');
@@ -2158,6 +2698,26 @@ function updateFilterCounts(){
     const value=label.dataset.value;
     label.dataset.count=topicCounts[value]??0;
   });
+
+  // Update compound counts
+  const compoundCounts={all:vocab.length};
+  COMPOUNDS.forEach(c=>{
+    compoundCounts[c.key]=vocab.filter(v=>c.match(v)).length;
+  });
+  document.querySelectorAll('#compoundDropdown .compound-dropdown-item[data-key]').forEach(item=>{
+    const key=item.dataset.key;
+    item.dataset.count=compoundCounts[key]??0;
+  });
+
+  // Update radical counts
+  const radicalCounts={all:vocab.length};
+  RADICALS.forEach(r=>{
+    radicalCounts[r.key]=vocab.filter(v=>r.match(v)).length;
+  });
+  document.querySelectorAll('#radicalDropdown .compound-dropdown-item[data-key]').forEach(item=>{
+    const key=item.dataset.key;
+    item.dataset.count=radicalCounts[key]??0;
+  });
 }
 
 function syncFilterCheckedStyles(){
@@ -2173,15 +2733,32 @@ function updateFilterBtnText(){
   const btnValue=document.getElementById('filterBtnValue');
   const filterBtn=document.getElementById('filterBtn');
   if(!btnValue)return;
-  
-  let text='ทั้งหมด';
+
+  let text='หมวดหมู่';
   if(currentTopic!=='all'){
     text=topicNames[currentTopic];
   }
   btnValue.textContent=`(${text})`;
-  
+
   if(filterBtn){
     filterBtn.classList.toggle('active',currentTopic!=='all');
+  }
+}
+
+function updateRadicalBtnText(){
+  const btnValue=document.getElementById('radicalBtnValue');
+  const radicalBtn=document.getElementById('radicalBtn');
+  if(!btnValue)return;
+
+  if(radicalMode){
+    const radical=RADICALS.find(r=>r.key===radicalMode);
+    btnValue.textContent=radical?`(${radical.key})`:'';
+  }else{
+    btnValue.textContent='';
+  }
+
+  if(radicalBtn){
+    radicalBtn.classList.toggle('active',radicalMode!==null);
   }
 }
 
@@ -2198,6 +2775,9 @@ function toggleCompoundDropdown(){
 
 function setCompound(key,el){
   compoundMode=key;
+  // Reset topic and radical filters
+  currentTopic='all';
+  radicalMode=null;
   page=1;
   learned.clear();
 
@@ -2215,12 +2795,23 @@ function setCompound(key,el){
     compoundBtn.classList.toggle('active',key!==null);
   }
 
-  document.querySelectorAll('.compound-dropdown-item').forEach(item=>{
+  document.querySelectorAll('#compoundDropdown .compound-dropdown-item').forEach(item=>{
     item.classList.remove('active');
   });
   if(el){
     el.classList.add('active');
   }
+
+  // Reset topic sidebar
+  syncRadioSelection('topic','all');
+  updateFilterBtnText();
+
+  // Reset radical button
+  const radicalBtnValue=document.getElementById('radicalBtnValue');
+  const radicalBtn=document.getElementById('radicalBtn');
+  if(radicalBtnValue)radicalBtnValue.textContent='';
+  if(radicalBtn)radicalBtn.classList.remove('active');
+  document.querySelectorAll('#radicalDropdown .compound-dropdown-item').forEach(item=>item.classList.remove('active'));
 
   const dropdown=document.getElementById('compoundDropdown');
   const overlay=document.getElementById('compoundDropdownOverlay');
@@ -2230,7 +2821,70 @@ function setCompound(key,el){
   if(overlay){
     overlay.classList.remove('show');
   }
-  
+
+  render();
+}
+
+function toggleRadicalDropdown(){
+  const dropdown=document.getElementById('radicalDropdown');
+  const overlay=document.getElementById('radicalDropdownOverlay');
+  if(!dropdown||!overlay)return;
+  dropdown.classList.toggle('show');
+  overlay.classList.toggle('show');
+  if(dropdown.classList.contains('show')){
+    dropdown.scrollTop=0;
+  }
+}
+
+function setRadical(key,el){
+  radicalMode=key;
+  // Reset topic and compound filters
+  currentTopic='all';
+  compoundMode=null;
+  page=1;
+  learned.clear();
+
+  const btnValue=document.getElementById('radicalBtnValue');
+  const radicalBtn=document.getElementById('radicalBtn');
+  if(btnValue){
+    if(key){
+      const radical=RADICALS.find(r=>r.key===key);
+      btnValue.textContent=`(${radical.key})`;
+    }else{
+      btnValue.textContent='';
+    }
+  }
+  if(radicalBtn){
+    radicalBtn.classList.toggle('active',key!==null);
+  }
+
+  document.querySelectorAll('#radicalDropdown .compound-dropdown-item').forEach(item=>{
+    item.classList.remove('active');
+  });
+  if(el){
+    el.classList.add('active');
+  }
+
+  // Reset topic sidebar
+  syncRadioSelection('topic','all');
+  updateFilterBtnText();
+
+  // Reset compound button
+  const compoundBtnValue=document.getElementById('compoundBtnValue');
+  const compoundBtn=document.getElementById('compoundBtn');
+  if(compoundBtnValue)compoundBtnValue.textContent='';
+  if(compoundBtn)compoundBtn.classList.remove('active');
+  document.querySelectorAll('#compoundDropdown .compound-dropdown-item').forEach(item=>item.classList.remove('active'));
+
+  const dropdown=document.getElementById('radicalDropdown');
+  const overlay=document.getElementById('radicalDropdownOverlay');
+  if(dropdown){
+    dropdown.classList.remove('show');
+  }
+  if(overlay){
+    overlay.classList.remove('show');
+  }
+
   render();
 }
 
@@ -2252,21 +2906,60 @@ function resetAllFilters(){
   showDifficult=false;
   currentTopic='all';
   compoundMode=null;
+  radicalMode=null;
   page=1;
   learned.clear();
   syncRadioSelection('topic','all');
   updateFilterBtnText();
-  
+
   const btnValue=document.getElementById('compoundBtnValue');
   const compoundBtn=document.getElementById('compoundBtn');
   if(btnValue)btnValue.textContent='';
   if(compoundBtn)compoundBtn.classList.remove('active');
-  
+
+  const radicalBtnValue=document.getElementById('radicalBtnValue');
+  const radicalBtn=document.getElementById('radicalBtn');
+  if(radicalBtnValue)radicalBtnValue.textContent='';
+  if(radicalBtn)radicalBtn.classList.remove('active');
+
   document.querySelectorAll('.compound-dropdown-item').forEach(item=>{
     item.classList.remove('active');
   });
+
+  render();
+}
+
+function showAllFlashcards(){
+  practiceMode=false;
+  showDifficult=false;
+  currentTopic='all';
+  compoundMode=null;
+  radicalMode=null;
+  page=1;
+  learned.clear();
+  search='';
+  
+  // Clear search input if exists
+  const searchInput=document.getElementById('searchInput');
+  if(searchInput)searchInput.value='';
+  
+  syncRadioSelection('topic','all');
+  updateFilterBtnText();
+  
+  // Close sidebar on mobile
+  const sidebar=document.getElementById('sidebar');
+  const overlay=document.getElementById('sidebarOverlay');
+  if(window.innerWidth<=1024){
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+  }
+  
+  // Highlight the menu item
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  event.currentTarget.classList.add('active');
   
   render();
+  document.querySelector('.wrap').scrollIntoView({behavior:'smooth'});
 }
 
 function syncRadioSelection(name,value){
@@ -2295,7 +2988,14 @@ function getFiltered(){
         mc=compound.match(v);
       }
     }
-    return ms&&mt&&mc;
+    let mr=true;
+    if(radicalMode){
+      const radical=RADICALS.find(r=>r.key===radicalMode);
+      if(radical){
+        mr=radical.match(v);
+      }
+    }
+    return ms&&mt&&mc&&mr;
   });
 }
 
@@ -2333,36 +3033,35 @@ function render(){
   const totalP=Math.ceil(filtered.length/PAGE);
   if(page>totalP)page=1;
   const slice=filtered.slice((page-1)*PAGE,page*PAGE);
+  
   document.getElementById("grid").innerHTML=slice.map(v=>{
-    const ex=parseExample(v.ex);
-    return`
-    <div class="card-wrapper">
-      <div class="card${learned.has(v.n)?" flipped":""}" onclick="flip(${v.n})" data-n="${v.n}">
-        <div class="card-face card-front">
-          <span class="card-number">#${v.n}</span>
-          <button class="learned-btn" style="top:8px;right:8px" onclick="event.stopPropagation();speakChinese('${v.h}')" title="ฟังเสียง">🔊</button>
-          <button class="stroke-btn-small" style="top:8px;right:36px" onclick="event.stopPropagation();showStrokeOrder(${v.n})" title="ดูลำดับการลากเส้น">✍️</button>
-          ${showDifficult?`<button class="learned-btn${learned.has(v.n)?' done':''}" style="top:8px;right:64px" onclick="event.stopPropagation();toggleLearned(${v.n})" title="ทำเครื่องหมายว่าจำได้">✓</button>`:''}
-          <span class="hanzi">${v.h}</span>
-          <span class="pinyin${showPinyin?'':' hidden'}">${v.p}</span>
-          <span class="cat-label" style="background:var(--accent-light);color:var(--text)">${topicNames[resolveTopic(v)]||'-'}</span>
-          <span class="flip-hint">คลิกเพื่อดูความหมาย</span>
+      const ex=parseExample(v.ex);
+      return`
+      <div class="card-wrapper">
+        <div class="card${learned.has(v.n)?" flipped":""}" onclick="flip(${v.n})" data-n="${v.n}">
+          <div class="card-face card-front">
+            <span class="card-number">#${v.n}</span>
+            <button class="learned-btn" style="top:8px;right:8px" onclick="event.stopPropagation();speakChinese('${v.h}')" title="ฟังเสียง">🔊</button>
+            <button class="stroke-btn-small" style="top:8px;right:48px" onclick="event.stopPropagation();showStrokeOrder(${v.n})" title="ดูลำดับการลากเส้น">✍️</button>
+            ${showDifficult?`<button class="learned-btn${learned.has(v.n)?' done':''}" style="top:8px;right:64px" onclick="event.stopPropagation();toggleLearned(${v.n})" title="ทำเครื่องหมายว่าจำได้">✓</button>`:''}
+            <span class="hanzi">${v.h}</span>
+            <span class="pinyin${showPinyin?'':' hidden'}">${v.p}</span>
+            <span class="cat-label">${topicNames[resolveTopic(v)]||'-'}</span>
+            <span class="flip-hint">คลิกเพื่อดูความหมาย</span>
+          </div>
+          <div class="card-face card-back">
+            <span class="card-number">#${v.n}</span>
+            <button class="stroke-btn-small" style="top:8px;right:8px" onclick="event.stopPropagation();showStrokeOrder(${v.n})" title="ดูลำดับการลากเส้น">✍️</button>
+            <span class="meaning">${v.m}</span>
+            ${ex?`
+            <div class="back-label">ตัวอย่างประโยค</div>
+            <div class="example-sentence">${ex.zh}</div>
+            <div class="pinyin-light">${ex.pinyin}</div>
+            <div class="meaning-light">${ex.th}</div>
+            `:''}
+          </div>
         </div>
-        <div class="card-face card-back">
-          <span class="card-number" style="color:var(--accent)">#${v.n}</span>
-          <button class="stroke-btn-small" onclick="event.stopPropagation();showStrokeOrder(${v.n})" title="ดูลำดับการลากเส้น">✍️</button>
-          <div class="back-label">ความหมาย</div>
-          <span class="meaning" style="color:var(--text)">${v.m}</span>
-          ${ex?`
-          <div class="divider"></div>
-          <div class="back-label">ตัวอย่างประโยค</div>
-          <div class="example-sentence">${ex.zh}</div>
-          <div class="pinyin-light">${ex.pinyin}</div>
-          <div class="meaning-light">${ex.th}</div>
-          `:''}
-        </div>
-      </div>
-    </div>`;
+      </div>`;
   }).join("");
   
   const pc=document.getElementById("pageCtrl");
@@ -2430,10 +3129,25 @@ function setTopic(topic,el){
   practiceMode=false;
   showDifficult=false;
   currentTopic=topic;
+  // Reset compound and radical filters
+  compoundMode=null;
+  radicalMode=null;
   page=1;
   learned.clear();
   syncRadioSelection('topic',topic);
   updateFilterBtnText();
+  // Reset compound button
+  const compoundBtnValue=document.getElementById('compoundBtnValue');
+  const compoundBtn=document.getElementById('compoundBtn');
+  if(compoundBtnValue)compoundBtnValue.textContent='';
+  if(compoundBtn)compoundBtn.classList.remove('active');
+  document.querySelectorAll('#compoundDropdown .compound-dropdown-item').forEach(item=>item.classList.remove('active'));
+  // Reset radical button
+  const radicalBtnValue=document.getElementById('radicalBtnValue');
+  const radicalBtn=document.getElementById('radicalBtn');
+  if(radicalBtnValue)radicalBtnValue.textContent='';
+  if(radicalBtn)radicalBtn.classList.remove('active');
+  document.querySelectorAll('#radicalDropdown .compound-dropdown-item').forEach(item=>item.classList.remove('active'));
   toggleFilterSidebar();
   render();
 }
@@ -2593,7 +3307,7 @@ function renderGameCards(){
   const grid=document.getElementById('gameGrid');
   grid.innerHTML=gameCards.map((card,idx)=>`
     <div class="game-card" data-idx="${idx}" onclick="selectGameCard(${idx})">
-      ${card.type==='zh'?(gameShowPinyin?`<div style="font-size:20px;font-weight:600;margin-bottom:4px">${card.text}</div><div style="font-size:12px;color:#6B7280">${card.pinyin}</div>`:`<div style="font-size:20px;font-weight:600">${card.text}</div>`):`<div>${card.text}</div>`}
+      ${card.type==='zh'?(gameShowPinyin?`<div style="font-size:24px;font-weight:600;margin-bottom:4px;font-family:'Noto Serif SC',serif">${card.text}</div><div style="font-size:12px;color:#6B7280;font-family:'Noto Sans SC',sans-serif">${card.pinyin}</div>`:`<div style="font-size:24px;font-weight:600;font-family:'Noto Serif SC',serif">${card.text}</div>`):`<div>${card.text}</div>`}
     </div>
   `).join('');
   
@@ -2611,7 +3325,7 @@ function toggleGamePinyinUnified(){
     const grid=document.getElementById('gameGrid');
     grid.innerHTML=gameCards.map((card,idx)=>`
       <div class="game-card" data-idx="${idx}" onclick="selectGameCard(${idx})">
-        ${card.type==='zh'?(gameMode==='chinese-thai'?(gameShowPinyinEnhanced?`<div style="font-size:20px;font-weight:600;margin-bottom:4px">${card.text}</div><div style="font-size:12px;color:#6B7280">${card.pinyin}</div>`:`<div style="font-size:20px;font-weight:600">${card.text}</div>`):`<div style="font-size:20px;font-weight:600">${card.text}</div>`):`<div>${card.text}</div>`}
+        ${card.type==='zh'?(gameMode==='chinese-thai'?(gameShowPinyinEnhanced?`<div style="font-size:24px;font-weight:600;margin-bottom:4px;font-family:'Noto Serif SC',serif">${card.text}</div><div style="font-size:12px;color:#6B7280;font-family:'Noto Sans SC',sans-serif">${card.pinyin}</div>`:`<div style="font-size:24px;font-weight:600;font-family:'Noto Serif SC',serif">${card.text}</div>`):`<div style="font-size:24px;font-weight:600;font-family:'Noto Serif SC',serif">${card.text}</div>`):`<div>${card.text}</div>`}
       </div>
     `).join('');
   }else{
@@ -2711,8 +3425,8 @@ function closeGame(){
 }
 
 function toggleSidebar(){
-  const sidebar=document.querySelector('.sidebar');
-  const overlay=document.querySelector('.sidebar-overlay');
+  const sidebar=document.getElementById('sidebar');
+  const overlay=document.getElementById('sidebarOverlay');
   const menuBtn=document.querySelector('.mobile-menu-btn');
   sidebar.classList.toggle('show');
   overlay.classList.toggle('show');
@@ -4566,7 +5280,7 @@ function startMatchingGame(mode='chinese-thai',pairCount=15){
   const grid=document.getElementById('gameGrid');
   grid.innerHTML=gameCards.map((card,idx)=>`
     <div class="game-card" data-idx="${idx}" onclick="selectGameCard(${idx})">
-      ${card.type==='zh'?(gameMode==='chinese-thai'?(gameShowPinyinEnhanced?`<div style="font-size:20px;font-weight:600;margin-bottom:4px">${card.text}</div><div style="font-size:12px;color:#6B7280">${card.pinyin}</div>`:`<div style="font-size:20px;font-weight:600">${card.text}</div>`):`<div style="font-size:20px;font-weight:600">${card.text}</div>`):`<div>${card.text}</div>`}
+      ${card.type==='zh'?(gameMode==='chinese-thai'?(gameShowPinyinEnhanced?`<div style="font-size:24px;font-weight:600;margin-bottom:4px;font-family:'Noto Serif SC',serif">${card.text}</div><div style="font-size:12px;color:#6B7280;font-family:'Noto Sans SC',sans-serif">${card.pinyin}</div>`:`<div style="font-size:24px;font-weight:600;font-family:'Noto Serif SC',serif">${card.text}</div>`):`<div style="font-size:24px;font-weight:600;font-family:'Noto Serif SC',serif">${card.text}</div>`):`<div>${card.text}</div>`}
     </div>
   `).join('');
   
@@ -4597,6 +5311,7 @@ updateDifficultCount();
 document.getElementById('pinyinToggleText').textContent=showPinyin?'ซ่อน Pinyin':'แสดง Pinyin';
 updateFilterCounts();
 updateFilterBtnText();
+updateRadicalBtnText();
 render();
 </script>
 </body>
