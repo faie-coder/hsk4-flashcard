@@ -18,24 +18,43 @@
   --accent: #C9A86C;
   --accent-soft: #D9C49A;
   --accent-light: #E8DBC2;
+  --filter-collapsed-height: 150px;
 }
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Noto Sans SC','Microsoft YaHei','SimHei','PingFang SC','Helvetica Neue',Arial,sans-serif}
+html,body{overflow-x:hidden;max-width:100vw}
 body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sans-serif;color:var(--text)}
-.sidebar{width:280px;background:var(--surface);border-right:1px solid var(--border);padding:20px;position:fixed;left:0;top:0;bottom:0;overflow-y:auto;z-index:101;transition:transform 0.3s;box-shadow:2px 0 8px rgba(201,168,108,0.12)}
+.sidebar{width:280px;background:var(--surface);border-right:1px solid var(--border);padding:20px;position:fixed;left:0;top:0;bottom:0;overflow-y:auto;z-index:101;transition:transform 0.3s;box-shadow:2px 0 8px rgba(201,168,108,0.12);height:100vh}
 .sidebar.hidden{transform:translateX(-100%)}
 .sidebar-header{font-size:18px;font-weight:600;color:var(--text);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .menu-toggle{display:none;background:transparent;border:none;font-size:24px;cursor:pointer;color:var(--text);padding:4px}
-.mobile-menu-btn{display:none;position:fixed;top:16px;left:16px;z-index:99;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:opacity 0.3s}
+.mobile-menu-btn{display:none;position:fixed;top:12px;left:12px;z-index:1201;background:var(--surface);border:1px solid var(--border);border-radius:999px;width:40px;height:40px;padding:0;font-size:18px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.12);transition:opacity 0.3s,transform 0.2s;align-items:center;justify-content:center;line-height:1}
+.mobile-menu-btn:hover{transform:scale(1.04)}
 .mobile-menu-btn.hide{opacity:0;pointer-events:none}
 .sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:100}
 @media (max-width:1024px){
 .sidebar{transform:translateX(-100%)}
 .sidebar.show{transform:translateX(0)}
-.main-content{margin-left:0!important;padding-left:60px}
+.main-content{margin-left:0!important;padding-left:56px;padding-right:20px}
 .controls{padding-left:8px}
 .menu-toggle{display:block}
-.mobile-menu-btn{display:block}
+.mobile-menu-btn{display:flex}
 .sidebar-overlay.show{display:block}
+}
+@media (max-width:768px){
+.main-content{padding-left:70px;padding-right:12px}
+.grid{grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.header-sticky{padding:12px 0}
+.controls{gap:4px}
+.tab{padding:4px 10px;font-size:12px}
+}
+@media (max-width:480px){
+.main-content{padding-left:70px;padding-right:8px}
+.grid{grid-template-columns:1fr;gap:12px}
+.controls{gap:3px}
+.tab{padding:3px 8px;font-size:11px}
+.topic-filter-bar{flex-direction:column;align-items:flex-start;gap:8px}
+.topic-filter-list{flex-wrap:wrap}
+.topic-filter-clear{margin-left:0}
 }
 .menu-section{margin-bottom:24px}
 .menu-title{font-size:12px;font-weight:600;color:var(--text-soft);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.5px}
@@ -43,14 +62,47 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
 .menu-item:hover{background:var(--accent-light);color:var(--text)}
 .menu-item.active{background:var(--accent-light);color:var(--text)}
 .menu-icon{font-size:16px;width:20px;text-align:center}
-.main-content{margin-left:280px;flex:1;padding:0 20px;transition:margin-left 0.3s}
-.wrap{padding:1rem 0}
-.header-sticky{position:sticky;top:0;background:var(--bg);z-index:50;padding:16px 0;border-bottom:1px solid var(--border);margin-bottom:16px}
-.controls{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
+.main-content{margin-left:280px;flex:1;padding:0 20px;transition:margin-left 0.3s;min-width:0}
+.wrap{padding:1rem 0;max-width:100%;overflow-x:hidden}
+.header-sticky{position:sticky;top:0;background:var(--bg);z-index:1000;padding:12px 20px 10px;border-bottom:1px solid var(--border);margin-bottom:16px;backdrop-filter:blur(6px)}
+.controls{display:flex;flex-wrap:wrap;gap:24px;margin-bottom:8px;align-items:center;justify-content:flex-end}
 .tab{padding:5px 12px;border-radius:20px;border:0.5px solid var(--border);font-size:13px;cursor:pointer;background:transparent;color:var(--text-soft)}
 .tab.active{background:var(--accent);color:var(--surface);border-color:transparent}
-.search{padding:5px 10px;border-radius:8px;border:0.5px solid var(--border);font-size:14px;width:160px;background:var(--surface);color:var(--text)}
 .stats{font-size:13px;color:var(--text-soft);margin-left:auto}
+.filter-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text-soft);font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:all 0.2s}
+.filter-btn:hover{background:var(--accent-light);color:var(--text)}
+.filter-btn.active{background:#4A4A4A;color:#fff;border-color:transparent}
+.filter-sidebar{width:320px;background:var(--surface);border-left:1px solid var(--border);padding:20px;position:fixed;right:0;top:0;bottom:0;overflow-y:auto;z-index:2001;transform:translateX(100%);transition:transform 0.3s;box-shadow:-2px 0 12px rgba(0,0,0,0.12)}
+.filter-sidebar.show{transform:translateX(0)}
+.filter-sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000}
+.filter-sidebar-overlay.show{display:block}
+.filter-sidebar-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.filter-sidebar-title{font-size:18px;font-weight:700;color:var(--text)}
+.filter-sidebar-close{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text-soft);cursor:pointer;font-size:18px;line-height:1;transition:all 0.2s}
+.filter-sidebar-close:hover{background:var(--accent-light);color:var(--text)}
+.filter-sidebar-actions{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.filter-action-link{border:none;background:transparent;color:#3B82F6;font-size:13px;font-weight:600;cursor:pointer;padding:0}
+.filter-action-link:hover{color:var(--text)}
+.filter-section{margin-bottom:24px}
+.filter-section-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
+.filter-options{display:flex;flex-direction:column;gap:6px}
+.filter-radio{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;cursor:pointer;background:#FFFDF9;color:var(--text);transition:all 0.2s;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.filter-radio:hover{background:#F8F5F1}
+.filter-radio.checked{border-color:var(--accent);background:var(--accent-light);color:var(--text)}
+.filter-radio input{margin:0;accent-color:var(--accent);transform:scale(1.1)}
+.filter-radio::after{content:attr(data-count);margin-left:auto;color:var(--text-soft);font-size:12px;font-weight:600;min-width:28px;text-align:right}
+.compound-dropdown{width:320px;background:var(--surface);border-left:1px solid var(--border);padding:20px;position:fixed;right:0;top:0;bottom:0;overflow-y:auto;z-index:2001;transform:translateX(100%);transition:transform 0.3s;box-shadow:-2px 0 12px rgba(0,0,0,0.12)}
+.compound-dropdown.show{transform:translateX(0)}
+.compound-dropdown-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:2000}
+.compound-dropdown-overlay.show{display:block}
+.compound-dropdown-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.compound-dropdown-title{font-size:18px;font-weight:700;color:var(--text)}
+.compound-dropdown-close{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--text-soft);cursor:pointer;font-size:18px;line-height:1;transition:all 0.2s}
+.compound-dropdown-close:hover{background:var(--accent-light);color:var(--text)}
+.compound-dropdown-item{padding:10px 14px;font-size:13px;color:var(--text);cursor:pointer;transition:background 0.15s}
+.compound-dropdown-item:hover{background:var(--accent-light)}
+.compound-dropdown-item.active{background:var(--accent);color:var(--surface)}
+.compound-dropdown-divider{height:1px;background:var(--border);margin:4px 0}
 .progress{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .pbar{flex:1;height:4px;background:var(--border);border-radius:2px}
 .pfill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.3s}
@@ -419,20 +471,93 @@ body{display:flex;min-height:100vh;background:var(--bg);font-family:'Sarabun',sa
       <span>ตัวอย่างบทความ (120)</span>
     </div>
   </div>
+
 </div>
 <div class="main-content">
 <div class="wrap">
+<div class="filter-sidebar-overlay" id="filterSidebarOverlay" onclick="toggleFilterSidebar()"></div>
+<div class="filter-sidebar" id="filterSidebar">
+  <div class="filter-sidebar-head">
+    <div class="filter-sidebar-title">ตัวกรองคำศัพท์</div>
+    <button class="filter-sidebar-close" onclick="toggleFilterSidebar()" type="button" aria-label="ปิดตัวกรอง">✕</button>
+  </div>
+  <div class="filter-sidebar-actions">
+    <button class="filter-action-link" onclick="resetAllFilters()" type="button">Reset</button>
+  </div>
+  <div class="filter-section">
+    <div class="filter-section-title">หมวดหมู่</div>
+    <div class="filter-options">
+      <label class="filter-radio" data-filter="topic" data-value="all" data-count="0"><input type="radio" name="topic" value="all" checked onchange="setTopic('all',this)"/> ทั้งหมด</label>
+      <label class="filter-radio" data-filter="topic" data-value="action" data-count="0"><input type="radio" name="topic" value="action" onchange="setTopic('action',this)"/> กริยาทั่วไป</label>
+      <label class="filter-radio" data-filter="topic" data-value="body" data-count="0"><input type="radio" name="topic" value="body" onchange="setTopic('body',this)"/> ร่างกาย</label>
+      <label class="filter-radio" data-filter="topic" data-value="describe" data-count="0"><input type="radio" name="topic" value="describe" onchange="setTopic('describe',this)"/> คำคุณศัพท์</label>
+      <label class="filter-radio" data-filter="topic" data-value="emotion" data-count="0"><input type="radio" name="topic" value="emotion" onchange="setTopic('emotion',this)"/> อารมณ์</label>
+      <label class="filter-radio" data-filter="topic" data-value="family" data-count="0"><input type="radio" name="topic" value="family" onchange="setTopic('family',this)"/> ครอบครัว</label>
+      <label class="filter-radio" data-filter="topic" data-value="food" data-count="0"><input type="radio" name="topic" value="food" onchange="setTopic('food',this)"/> อาหาร</label>
+      <label class="filter-radio" data-filter="topic" data-value="misc" data-count="0"><input type="radio" name="topic" value="misc" onchange="setTopic('misc',this)"/> คำเชื่อม</label>
+      <label class="filter-radio" data-filter="topic" data-value="money" data-count="0"><input type="radio" name="topic" value="money" onchange="setTopic('money',this)"/> เงิน</label>
+      <label class="filter-radio" data-filter="topic" data-value="nature" data-count="0"><input type="radio" name="topic" value="nature" onchange="setTopic('nature',this)"/> ธรรมชาติ</label>
+      <label class="filter-radio" data-filter="topic" data-value="place" data-count="0"><input type="radio" name="topic" value="place" onchange="setTopic('place',this)"/> สถานที่</label>
+      <label class="filter-radio" data-filter="topic" data-value="social" data-count="0"><input type="radio" name="topic" value="social" onchange="setTopic('social',this)"/> สังคม</label>
+      <label class="filter-radio" data-filter="topic" data-value="sport" data-count="0"><input type="radio" name="topic" value="sport" onchange="setTopic('sport',this)"/> กีฬา</label>
+      <label class="filter-radio" data-filter="topic" data-value="study" data-count="0"><input type="radio" name="topic" value="study" onchange="setTopic('study',this)"/> การเรียน</label>
+      <label class="filter-radio" data-filter="topic" data-value="tech" data-count="0"><input type="radio" name="topic" value="tech" onchange="setTopic('tech',this)"/> เทคโนโลยี</label>
+      <label class="filter-radio" data-filter="topic" data-value="time" data-count="0"><input type="radio" name="topic" value="time" onchange="setTopic('time',this)"/> เวลา</label>
+      <label class="filter-radio" data-filter="topic" data-value="transport" data-count="0"><input type="radio" name="topic" value="transport" onchange="setTopic('transport',this)"/> การเดินทาง</label>
+      <label class="filter-radio" data-filter="topic" data-value="work" data-count="0"><input type="radio" name="topic" value="work" onchange="setTopic('work',this)"/> การทำงาน</label>
+    </div>
+  </div>
+</div>
+
 <div class="header-sticky">
 <div class="controls">
-  <button class="tab active" onclick="setGroup('all',this)">ทั้งหมด</button>
-  <button class="tab" onclick="setGroup('action',this)">กริยา</button>
-  <button class="tab" onclick="setGroup('noun',this)">นาม</button>
-  <button class="tab" onclick="setGroup('adj',this)">คุณศัพท์</button>
-  <button class="tab" onclick="setGroup('adv',this)">กริยาวิเศษณ์</button>
-  <button class="tab" onclick="setGroup('other',this)">อื่นๆ</button>
-  <input class="search" type="text" placeholder="ค้นหา..." oninput="doSearch(this.value)"/>
   <span class="stats" id="dispCount"></span>
 </div>
+<button class="filter-btn" id="filterBtn" type="button" onclick="toggleFilterSidebar()">
+  <span>🔍</span>
+  <span>Filter</span>
+  <span id="filterBtnValue" style="font-size:11px;opacity:0.8">(ทั้งหมด)</span>
+</button>
+<button class="filter-btn" id="compoundBtn" type="button" onclick="toggleCompoundDropdown()">
+  <span>📝</span>
+  <span>คำประสม</span>
+  <span id="compoundBtnValue" style="font-size:11px;opacity:0.8"></span>
+</button>
+</div>
+<div class="compound-dropdown-overlay" id="compoundDropdownOverlay" onclick="toggleCompoundDropdown()"></div>
+<div class="compound-dropdown" id="compoundDropdown">
+  <div class="compound-dropdown-head">
+    <div class="compound-dropdown-title">คำประสม</div>
+    <button class="compound-dropdown-close" onclick="toggleCompoundDropdown()" type="button" aria-label="ปิดคำประสม">✕</button>
+  </div>
+  <div class="compound-dropdown-item" onclick="setCompound(null,this)">ทั้งหมด</div>
+  <div class="compound-dropdown-divider"></div>
+  <div class="compound-dropdown-item" onclick="setCompound('好',this)">คำที่มี 好</div>
+  <div class="compound-dropdown-item" onclick="setCompound('不',this)">คำที่มี 不</div>
+  <div class="compound-dropdown-item" onclick="setCompound('大',this)">คำที่มี 大</div>
+  <div class="compound-dropdown-item" onclick="setCompound('出',this)">คำที่มี 出</div>
+  <div class="compound-dropdown-item" onclick="setCompound('上',this)">คำที่มี 上</div>
+  <div class="compound-dropdown-item" onclick="setCompound('下',this)">คำที่มี 下</div>
+  <div class="compound-dropdown-item" onclick="setCompound('打',this)">คำที่มี 打</div>
+  <div class="compound-dropdown-item" onclick="setCompound('发',this)">คำที่มี 发</div>
+  <div class="compound-dropdown-item" onclick="setCompound('人',this)">คำที่มี 人</div>
+  <div class="compound-dropdown-item" onclick="setCompound('心',this)">คำที่มี 心</div>
+  <div class="compound-dropdown-item" onclick="setCompound('学',this)">คำที่มี 学</div>
+  <div class="compound-dropdown-item" onclick="setCompound('工',this)">คำที่มี 工</div>
+  <div class="compound-dropdown-item" onclick="setCompound('以',this)">คำที่มี 以</div>
+  <div class="compound-dropdown-item" onclick="setCompound('时',this)">คำที่มี 时</div>
+  <div class="compound-dropdown-item" onclick="setCompound('来',this)">คำที่มี 来</div>
+  <div class="compound-dropdown-item" onclick="setCompound('成',this)">คำที่มี 成</div>
+  <div class="compound-dropdown-item" onclick="setCompound('关',this)">คำที่มี 关</div>
+  <div class="compound-dropdown-item" onclick="setCompound('经',this)">คำที่มี 经</div>
+  <div class="compound-dropdown-item" onclick="setCompound('感',this)">คำที่มี 感</div>
+  <div class="compound-dropdown-item" onclick="setCompound('自',this)">คำที่มี 自</div>
+  <div class="compound-dropdown-item" onclick="setCompound('高',this)">คำที่มี 高</div>
+  <div class="compound-dropdown-item" onclick="setCompound('一',this)">คำที่มี 一</div>
+  <div class="compound-dropdown-item" onclick="setCompound('方',this)">คำที่มี 方</div>
+  <div class="compound-dropdown-item" onclick="setCompound('家',this)">คำที่มี 家</div>
+</div>
+
 <div class="progress">
   <span class="ptext" id="memCount">จำได้ 0 คำ</span>
   <div class="pbar"><div class="pfill" id="pfill" style="width:0%"></div></div>
@@ -1911,10 +2036,245 @@ const catName={action:"กริยา",noun:"นาม",adj:"คุณศัพ
 const PAGE=60;
 let group="all",search="",page=1,learned=new Set(),filtered=[],practiceMode=false,practiceWords=[];
 let showPinyin=localStorage.getItem('hsk4_showPinyin')!=='false';
+let currentTopic="all";
+
+const topicMap={1:"family",2:"misc",3:"describe",4:"emotion",5:"social",6:"emotion",7:"describe",8:"action",9:"describe",10:"describe",11:"time",12:"misc",13:"misc",14:"misc",15:"family",16:"misc",17:"describe",18:"misc",19:"study",20:"action",21:"misc",22:"action",23:"work",24:"action",25:"action",26:"misc",27:"misc",28:"food",29:"action",30:"action",31:"action",32:"social",33:"tech",34:"action",35:"tech",36:"food",37:"place",38:"place",39:"misc",40:"misc",41:"misc",42:"misc",43:"describe",44:"body",45:"misc",46:"misc",47:"sport",48:"study",49:"misc",50:"study",51:"misc",52:"action",53:"work",54:"action",55:"work",56:"action",57:"sport",58:"social",59:"misc",60:"social",61:"place",62:"place",63:"food",64:"misc",65:"study",66:"misc",67:"misc",68:"social",69:"misc",70:"misc",71:"misc",72:"misc",73:"misc",74:"action",75:"action",76:"misc",77:"work",78:"food",79:"food",80:"action",81:"action",82:"nature",83:"place",84:"food",85:"describe",86:"misc",87:"food",88:"describe",89:"place",90:"nature",91:"misc",92:"sport",93:"action",94:"money",95:"food",96:"misc",97:"action",98:"study",99:"describe",100:"action",101:"describe",102:"place",103:"transport",104:"food",105:"emotion",106:"time",107:"action",108:"body",109:"action",110:"work",111:"transport",112:"family",113:"action",114:"transport",115:"place",116:"misc",117:"action",118:"transport",119:"tech",120:"place",121:"time",122:"study",123:"study",124:"misc",125:"describe",126:"misc",127:"misc",128:"describe",129:"describe",130:"study",131:"action",132:"tech",133:"sport",134:"action",135:"action",136:"action",137:"work",138:"money",139:"body",140:"describe",141:"misc",142:"social",143:"place",144:"misc",145:"action",146:"action",147:"work",148:"action",149:"body",150:"emotion",151:"food",152:"misc",153:"misc",154:"place",155:"misc",156:"time",157:"food",158:"transport",159:"action",160:"place",161:"misc",162:"social",163:"emotion",164:"misc",165:"misc",166:"misc",167:"misc",168:"place",169:"action",170:"misc",171:"describe",172:"misc",173:"family",174:"place",175:"nature",176:"transport",177:"transport",178:"place",179:"misc",180:"time",181:"tech",182:"tech",183:"place",184:"sport",185:"tech",186:"action",187:"work",188:"action",189:"time",190:"place",191:"misc",192:"action",193:"nature",194:"action",195:"misc",196:"study",197:"transport",198:"body",199:"describe",200:"misc",201:"action",202:"body",203:"describe",204:"misc",205:"social",206:"study",207:"place",208:"food",209:"describe",210:"misc",211:"misc",212:"nature",213:"food",214:"misc",215:"misc",216:"family",217:"family",218:"body",219:"misc",220:"action",221:"body",222:"action",223:"action",224:"social",225:"social",226:"study",227:"emotion",228:"social",229:"action",230:"food",231:"work",232:"describe",233:"work",234:"misc",235:"transport",236:"place",237:"social",238:"action",239:"action",240:"time",241:"emotion",242:"misc",243:"transport",244:"time",245:"misc",246:"time",247:"misc",248:"describe",249:"nature",250:"misc",251:"action",252:"work",253:"describe",254:"place",255:"family",256:"study",257:"work",258:"describe",259:"work",260:"action",261:"food",262:"describe",263:"describe",264:"describe",265:"emotion",266:"emotion",267:"body",268:"emotion",269:"social",270:"work",271:"time",272:"time",273:"describe",274:"describe",275:"emotion",276:"action",277:"family",278:"misc",279:"misc",280:"body",281:"action",282:"misc",283:"misc",284:"misc",285:"transport",286:"misc",287:"misc",288:"work",289:"place",290:"work",291:"money",292:"work",293:"social",294:"nature",295:"action",296:"money",297:"emotion",298:"action",299:"social",300:"social",301:"money",302:"social",303:"action",304:"nature",305:"action",306:"action",307:"work",308:"social",309:"emotion",310:"misc",311:"sport",312:"work",313:"nature",314:"tech",315:"tech",316:"money",317:"social",318:"money",319:"social",320:"social",321:"misc",322:"food",323:"action",324:"misc",325:"work",326:"time",327:"misc",328:"misc",329:"family",330:"nature",331:"emotion",332:"emotion",333:"time",334:"body",335:"study",336:"transport",337:"describe",338:"food",339:"describe",340:"misc",341:"time",342:"tech",343:"food",344:"misc",345:"nature",346:"study",347:"describe",348:"misc",349:"describe",350:"study",351:"misc",352:"describe",353:"nature",354:"describe",355:"emotion",356:"time",357:"place",358:"misc",359:"body",360:"transport",361:"social",362:"nature",363:"nature",364:"sport",365:"emotion",366:"describe",367:"social",368:"action",369:"nature",370:"action",371:"describe",372:"action",373:"study",374:"emotion",375:"action",376:"work",377:"social",378:"describe",379:"nature",380:"transport",381:"action",382:"misc",383:"transport",384:"work",385:"study",386:"food",387:"emotion",388:"misc",389:"describe",390:"action",391:"misc",392:"misc",393:"action",394:"time",395:"misc",396:"misc",397:"action",398:"action",399:"work",400:"work",401:"time",402:"misc",403:"tech",404:"action",405:"family",406:"place",407:"work",408:"transport",409:"time",410:"money",411:"action",412:"body",413:"describe",414:"body",415:"action",416:"misc",417:"body",418:"social",419:"time",420:"study",421:"money",422:"action",423:"study",424:"action",425:"social",426:"transport",427:"emotion",428:"money",429:"body",430:"food",431:"action",432:"study",433:"study",434:"study",435:"action",436:"action",437:"place",438:"work",439:"family",440:"action",441:"tech",442:"social",443:"money",444:"family",445:"action",446:"study",447:"action",448:"social",449:"time",450:"misc",451:"emotion",452:"place",453:"action",454:"action",455:"social",456:"describe",457:"body",458:"misc",459:"action",460:"social",461:"work",462:"work",463:"work",464:"social",465:"social",466:"misc",467:"work",468:"place",469:"misc",470:"misc",471:"time",472:"describe",473:"misc",474:"social",475:"social",476:"action",477:"transport",478:"study",479:"emotion",480:"action",481:"food",482:"action",483:"action",484:"social",485:"action",486:"social",487:"action",488:"action",489:"study",490:"nature",491:"study",492:"body",493:"body",494:"describe",495:"emotion",496:"misc",497:"misc",498:"emotion",499:"misc",500:"time",501:"study",502:"social",503:"misc",504:"nature",505:"place",506:"emotion",507:"body",508:"emotion",509:"food",510:"misc",511:"money",512:"describe",513:"emotion",514:"food",515:"describe",516:"body",517:"describe",518:"action",519:"action",520:"place",521:"food",522:"action",523:"time",524:"time",525:"describe",526:"describe",527:"money",528:"emotion",529:"describe",530:"nature",531:"study",532:"misc",533:"body",534:"describe",535:"describe",536:"place",537:"action",538:"misc",539:"body",540:"action",541:"emotion",542:"social",543:"social",544:"describe",545:"body",546:"misc",547:"social",548:"misc",549:"misc",550:"social",551:"body",552:"study",553:"describe",554:"misc",555:"describe",556:"transport",557:"social",558:"action",559:"social",560:"misc",561:"misc",562:"action",563:"study",564:"emotion",565:"study",566:"social",567:"misc",568:"place",569:"transport",570:"describe",571:"transport",572:"describe",573:"work",574:"family",575:"describe",576:"nature",577:"describe",578:"time",579:"misc",580:"money",581:"money",582:"describe",583:"emotion",584:"describe",585:"work",586:"nature",587:"body",588:"misc",589:"misc",590:"social",591:"misc",592:"describe",593:"family",594:"place",595:"emotion",596:"food",597:"food",598:"tech",599:"money",600:"food",601:"food",602:"social",603:"action",604:"time",605:"social",606:"family",607:"work",608:"action",609:"misc",610:"misc",611:"family",612:"describe",613:"place",614:"describe",615:"misc",616:"emotion",617:"body",618:"family",619:"misc",620:"misc",621:"study",622:"misc",623:"work",624:"social",625:"time",626:"study",627:"family",628:"describe",629:"nature",630:"social",631:"food",632:"place",633:"action",634:"action",635:"describe",636:"family",637:"family",638:"time",639:"sport",640:"action",641:"food",642:"action",643:"place",644:"body",645:"sport",646:"social",647:"social",648:"social",649:"body",650:"food",651:"emotion",652:"misc",653:"money",654:"action",655:"transport",656:"describe",657:"sport",658:"food",659:"time",660:"food",661:"describe",662:"food",663:"describe",664:"study",665:"misc",666:"family",667:"transport",668:"misc",669:"misc",670:"misc",671:"misc",672:"describe",673:"body",674:"transport",675:"action",676:"nature",677:"misc",678:"misc",679:"study",680:"transport",681:"money",682:"place",683:"place",684:"action",685:"place",686:"food",687:"family",688:"describe",689:"emotion",690:"describe",691:"nature",692:"social",693:"social",694:"work",695:"food",696:"describe",697:"time",698:"misc",699:"action",700:"action",701:"time",702:"misc",703:"describe",704:"action",705:"misc",706:"misc",707:"social",708:"misc",709:"misc",710:"misc",711:"action",712:"describe",713:"describe",714:"describe",715:"family",716:"money",717:"misc",718:"work",719:"social",720:"action",721:"describe",722:"action",723:"misc",724:"time",725:"study",726:"describe",727:"misc",728:"place",729:"describe",730:"misc",731:"misc",732:"sport",733:"nature",734:"place",735:"money",736:"social",737:"emotion",738:"misc",739:"work",740:"tech",741:"time",742:"misc",743:"describe",744:"social",745:"misc",746:"describe",747:"work",748:"body",749:"misc",750:"misc",751:"body",752:"social",753:"body",754:"emotion",755:"family",756:"misc",757:"place",758:"action",759:"action",760:"emotion",761:"work",762:"describe",763:"nature",764:"misc",765:"misc",766:"time",767:"time",768:"describe",769:"misc",770:"food",771:"action",772:"action",773:"misc",774:"action",775:"money",776:"action",777:"action",778:"time",779:"social",780:"misc",781:"action",782:"money",783:"action",784:"time",785:"tech",786:"place",787:"misc",788:"body",789:"emotion",790:"action",791:"money",792:"study",793:"sport",794:"body",795:"family",796:"action",797:"nature",798:"misc",799:"study",800:"misc",801:"body",802:"describe",803:"misc",804:"food",805:"food",806:"study",807:"body",808:"misc",809:"describe",810:"misc",811:"action",812:"study",813:"study",814:"transport",815:"action",816:"misc",817:"action",818:"transport",819:"misc",820:"food",821:"action",822:"misc",823:"misc",824:"misc",825:"family",826:"family",827:"misc",828:"misc",829:"social",830:"social",831:"misc",832:"misc",833:"action",834:"misc",835:"nature",836:"social",837:"social",838:"sport",839:"food",840:"food",841:"body",842:"misc",843:"study",844:"emotion",845:"misc",846:"describe",847:"body",848:"sport",849:"study",850:"action",851:"work",852:"time",853:"action",854:"sport",855:"nature",856:"food",857:"study",858:"misc",859:"work",860:"sport",861:"action",862:"action",863:"misc",864:"action",865:"work",866:"emotion",867:"work",868:"study",869:"social",870:"body",871:"misc",872:"place",873:"action",874:"action",875:"body",876:"action",877:"misc",878:"place",879:"sport",880:"action",881:"action",882:"misc",883:"food",884:"time",885:"misc",886:"misc",887:"misc",888:"sport",889:"tech",890:"action",891:"describe",892:"social",893:"misc",894:"misc",895:"misc",896:"misc",897:"food",898:"nature",899:"social",900:"study",901:"action",902:"study",903:"social",904:"social",905:"social",906:"nature",907:"misc",908:"emotion",909:"misc",910:"misc",911:"action",912:"place",913:"food",914:"food",915:"emotion",916:"action",917:"social",918:"action",919:"place",920:"place",921:"body",922:"emotion",923:"time",924:"misc",925:"time",926:"nature",927:"misc",928:"social",929:"food",930:"time",931:"time",932:"emotion",933:"social",934:"food",935:"food",936:"describe",937:"describe",938:"action",939:"describe",940:"describe",941:"action",942:"misc",943:"misc",944:"tech",945:"describe",946:"social",947:"time",948:"study",949:"action",950:"emotion",951:"social",952:"work",953:"study",954:"misc",955:"misc",956:"study",957:"social",958:"describe",959:"tech",960:"food",961:"describe",962:"emotion",963:"tech",964:"social",965:"emotion",966:"money",967:"emotion",968:"time",969:"misc",970:"transport",971:"body",972:"social",973:"family",974:"describe",975:"emotion",976:"emotion",977:"nature",978:"action",979:"body",980:"action",981:"misc",982:"action",983:"study",984:"study",985:"study",986:"nature",987:"body",988:"emotion",989:"body",990:"place",991:"misc",992:"food",993:"describe",994:"describe",995:"study",996:"describe",997:"sport",998:"sport",999:"body",1000:"body",1001:"nature",1002:"food",1003:"action",1004:"describe",1005:"social",1006:"work",1007:"misc",1008:"body",1009:"place",1010:"family",1011:"misc",1012:"misc",1013:"misc",1014:"nature",1015:"misc",1016:"misc",1017:"body",1018:"body",1019:"misc",1020:"misc",1021:"time",1022:"misc",1023:"describe",1024:"misc",1025:"time",1026:"time",1027:"action",1028:"misc",1029:"place",1030:"misc",1031:"describe",1032:"misc",1033:"misc",1034:"misc",1035:"social",1036:"study",1037:"social",1038:"nature",1039:"misc",1040:"misc",1041:"sport",1042:"money",1043:"food",1044:"action",1045:"emotion",1046:"misc",1047:"sport",1048:"action",1049:"describe",1050:"describe",1051:"misc",1052:"action",1053:"describe",1054:"describe",1055:"describe",1056:"misc",1057:"misc",1058:"misc",1059:"sport",1060:"sport",1061:"misc",1062:"social",1063:"describe",1064:"social",1065:"social",1066:"misc",1067:"place",1068:"food",1069:"emotion",1070:"misc",1071:"misc",1072:"study",1073:"study",1074:"sport",1075:"action",1076:"study",1077:"money",1078:"describe",1079:"misc",1080:"social",1081:"misc",1082:"place",1083:"emotion",1084:"social",1085:"misc",1086:"time",1087:"nature",1088:"study",1089:"nature",1090:"social",1091:"sport",1092:"tech",1093:"misc",1094:"misc",1095:"social",1096:"social",1097:"time",1098:"describe",1099:"time",1100:"work",1101:"misc",1102:"misc",1103:"action",1104:"action",1105:"describe",1106:"action",1107:"misc",1108:"action",1109:"family",1110:"work",1111:"emotion",1112:"action",1113:"action",1114:"tech",1115:"tech",1116:"misc",1117:"misc",1118:"describe",1119:"describe",1120:"action",1121:"describe",1122:"describe",1123:"misc",1124:"describe",1125:"describe",1126:"misc",1127:"work",1128:"misc",1129:"misc",1130:"social",1131:"action",1132:"study",1133:"action",1134:"describe",1135:"nature",1136:"work",1137:"action",1138:"misc",1139:"misc",1140:"misc",1141:"work",1142:"misc",1143:"work",1144:"place",1145:"place",1146:"study",1147:"time",1148:"misc",1149:"misc",1150:"study",1151:"action",1152:"describe",1153:"time",1154:"place",1155:"nature",1156:"misc",1157:"describe",1158:"describe",1159:"work",1160:"place",1161:"social",1162:"social",1163:"describe",1164:"action",1165:"misc",1166:"study",1167:"money",1168:"action",1169:"action",1170:"describe",1171:"time",1172:"place",1173:"describe",1174:"study",1175:"study",1176:"social",1177:"nature",1178:"transport",1179:"study",1180:"misc",1181:"action",1182:"money",1183:"action",1184:"work",1185:"body",1186:"misc",1187:"misc",1188:"time",1189:"time",1190:"social",1191:"time",1192:"place",1193:"action",1194:"action",1195:"money",1196:"misc",1197:"place",1198:"study",1199:"work",1200:"study"};
+
+const topicNames={
+  all:"ทั้งหมด",
+  action:"กริยาทั่วไป",
+  body:"ร่างกาย & สุขภาพ",
+  describe:"คำคุณศัพท์",
+  emotion:"อารมณ์ & ความรู้สึก",
+  family:"ครอบครัว & คน",
+  food:"อาหาร & เครื่องดื่ม",
+  misc:"คำเชื่อม & อื่นๆ",
+  money:"เงิน & การซื้อขาย",
+  nature:"ธรรมชาติ & สัตว์",
+  place:"สถานที่",
+  social:"สังคม & วัฒนธรรม",
+  sport:"กีฬา & ความบันเทิง",
+  study:"การเรียน & ภาษา",
+  tech:"เทคโนโลยี & สื่อ",
+  time:"เวลา & ฤดูกาล",
+  transport:"การเดินทาง",
+  work:"การทำงาน & ธุรกิจ"
+};
+
+const topicPriority=[
+  "action",
+  "body",
+  "describe",
+  "emotion",
+  "family",
+  "food",
+  "misc",
+  "money",
+  "nature",
+  "place",
+  "social",
+  "sport",
+  "study",
+  "tech",
+  "time",
+  "transport",
+  "work"
+];
+
+const COMPOUNDS=[
+  {key:"好",name:"คำที่มี 好",desc:"好吃/好像/好处...",color:"#D85A30",bg:"#FAECE7",tc:"#993C1D",
+   match:v=>v.h.includes("好")},
+  {key:"不",name:"คำที่มี 不",desc:"不但/不过/不管...",color:"#A32D2D",bg:"#FCEBEB",tc:"#791F1F",
+   match:v=>v.h.includes("不")},
+  {key:"大",name:"คำที่มี 大",desc:"大家/大概/大约...",color:"#854F0B",bg:"#FAEEDA",tc:"#633806",
+   match:v=>v.h.includes("大")},
+  {key:"出",name:"คำที่มี 出",desc:"出发/出差/出现...",color:"#185FA5",bg:"#E6F1FB",tc:"#0C447C",
+   match:v=>v.h.includes("出")},
+  {key:"上",name:"คำที่มี 上",desc:"上班/上网/上午...",color:"#3B6D11",bg:"#EAF3DE",tc:"#27500A",
+   match:v=>v.h.includes("上")},
+  {key:"下",name:"คำที่มี 下",desc:"下午/下雨/以下...",color:"#534AB7",bg:"#EEEDFE",tc:"#3C3489",
+   match:v=>v.h.includes("下")},
+  {key:"打",name:"คำที่มี 打",desc:"打电话/打扫/打折...",color:"#D4537E",bg:"#FBEAF0",tc:"#993556",
+   match:v=>v.h.includes("打")},
+  {key:"发",name:"คำที่มี 发",desc:"发烧/发现/发展...",color:"#0F6E56",bg:"#E1F5EE",tc:"#085041",
+   match:v=>v.h.includes("发")},
+  {key:"人",name:"คำที่มี 人",desc:"人民币/别人/男人...",color:"#639922",bg:"#EAF3DE",tc:"#3B6D11",
+   match:v=>v.h.includes("人")},
+  {key:"心",name:"คำที่มี 心",desc:"小心/担心/放心...",color:"#A32D2D",bg:"#FCEBEB",tc:"#791F1F",
+   match:v=>v.h.includes("心")},
+  {key:"学",name:"คำที่มี 学",desc:"学生/学习/学校...",color:"#534AB7",bg:"#EEEDFE",tc:"#3C3489",
+   match:v=>v.h.includes("学")},
+  {key:"工",name:"คำที่มี 工",desc:"工作/工资/工具...",color:"#BA7517",bg:"#FAEEDA",tc:"#854F0B",
+   match:v=>v.h.includes("工")},
+  {key:"以",name:"คำที่มี 以",desc:"以后/以前/以为...",color:"#888780",bg:"#F1EFE8",tc:"#5F5E5A",
+   match:v=>v.h.includes("以")},
+  {key:"时",name:"คำที่มี 时",desc:"时候/时间/按时...",color:"#178AB4",bg:"#E1F5EE",tc:"#085041",
+   match:v=>v.h.includes("时")},
+  {key:"来",name:"คำที่มี 来",desc:"来不及/来得及/后来...",color:"#D85A30",bg:"#FAECE7",tc:"#993C1D",
+   match:v=>v.h.includes("来")},
+  {key:"成",name:"คำที่มี 成",desc:"成功/成熟/成为...",color:"#0F6E56",bg:"#E1F5EE",tc:"#085041",
+   match:v=>v.h.includes("成")},
+  {key:"关",name:"คำที่มี 关",desc:"关系/关心/关于...",color:"#D4537E",bg:"#FBEAF0",tc:"#993556",
+   match:v=>v.h.includes("关")},
+  {key:"经",name:"คำที่มี 经",desc:"经常/经过/经济...",color:"#185FA5",bg:"#E6F1FB",tc:"#0C447C",
+   match:v=>v.h.includes("经")},
+  {key:"感",name:"คำที่มี 感",desc:"感觉/感冒/感谢...",color:"#A32D2D",bg:"#FCEBEB",tc:"#791F1F",
+   match:v=>v.h.includes("感")},
+  {key:"自",name:"คำที่มี 自",desc:"自己/自然/自行车...",color:"#3B6D11",bg:"#EAF3DE",tc:"#27500A",
+   match:v=>v.h.includes("自")},
+  {key:"高",name:"คำที่มี 高",desc:"高兴/高级/提高...",color:"#639922",bg:"#EAF3DE",tc:"#3B6D11",
+   match:v=>v.h.includes("高")},
+  {key:"一",name:"คำที่มี 一",desc:"一起/一直/一般...",color:"#854F0B",bg:"#FAEEDA",tc:"#633806",
+   match:v=>v.h.includes("一")},
+  {key:"方",name:"คำที่มี 方",desc:"方便/方法/方向...",color:"#534AB7",bg:"#EEEDFE",tc:"#3C3489",
+   match:v=>v.h.includes("方")},
+  {key:"家",name:"คำที่มี 家",desc:"家具/大家/国家...",color:"#D4537E",bg:"#FBEAF0",tc:"#993556",
+   match:v=>v.h.includes("家")},
+];
+
+let compoundMode=null;
 
 // ระบบจดจำคำที่จำยาก: {wordNumber: {views: count, flips: count, lastSeen: timestamp}}
 let difficultWords=JSON.parse(localStorage.getItem('hsk4_difficult')||'{}');
 let showDifficult=false;
+
+function resolveTopic(v){
+  return topicMap[v.n]||null;
+}
+
+function getGroupLabel(g){
+  return catName[g]||'ทั้งหมด';
+}
+
+function updateFilterCounts(){
+  const topicCounts={all:vocab.length};
+  vocab.forEach(v=>{
+    const t=resolveTopic(v);
+    if(t){
+      topicCounts[t]=(topicCounts[t]||0)+1;
+    }
+  });
+  document.querySelectorAll('.filter-radio[data-filter="topic"]').forEach(label=>{
+    const value=label.dataset.value;
+    label.dataset.count=topicCounts[value]??0;
+  });
+}
+
+function syncFilterCheckedStyles(){
+  document.querySelectorAll('.filter-radio').forEach(label=>{
+    const input=label.querySelector('input[type="radio"]');
+    if(input){
+      label.classList.toggle('checked',input.checked);
+    }
+  });
+}
+
+function updateFilterBtnText(){
+  const btnValue=document.getElementById('filterBtnValue');
+  const filterBtn=document.getElementById('filterBtn');
+  if(!btnValue)return;
+  
+  let text='ทั้งหมด';
+  if(currentTopic!=='all'){
+    text=topicNames[currentTopic];
+  }
+  btnValue.textContent=`(${text})`;
+  
+  if(filterBtn){
+    filterBtn.classList.toggle('active',currentTopic!=='all');
+  }
+}
+
+function toggleCompoundDropdown(){
+  const dropdown=document.getElementById('compoundDropdown');
+  const overlay=document.getElementById('compoundDropdownOverlay');
+  if(!dropdown||!overlay)return;
+  dropdown.classList.toggle('show');
+  overlay.classList.toggle('show');
+  if(dropdown.classList.contains('show')){
+    dropdown.scrollTop=0;
+  }
+}
+
+function setCompound(key,el){
+  compoundMode=key;
+  page=1;
+  learned.clear();
+
+  const btnValue=document.getElementById('compoundBtnValue');
+  const compoundBtn=document.getElementById('compoundBtn');
+  if(btnValue){
+    if(key){
+      const compound=COMPOUNDS.find(c=>c.key===key);
+      btnValue.textContent=`(${compound.key})`;
+    }else{
+      btnValue.textContent='';
+    }
+  }
+  if(compoundBtn){
+    compoundBtn.classList.toggle('active',key!==null);
+  }
+
+  document.querySelectorAll('.compound-dropdown-item').forEach(item=>{
+    item.classList.remove('active');
+  });
+  if(el){
+    el.classList.add('active');
+  }
+
+  const dropdown=document.getElementById('compoundDropdown');
+  const overlay=document.getElementById('compoundDropdownOverlay');
+  if(dropdown){
+    dropdown.classList.remove('show');
+  }
+  if(overlay){
+    overlay.classList.remove('show');
+  }
+  
+  render();
+}
+
+function toggleFilterSidebar(){
+  const sidebar=document.getElementById('filterSidebar');
+  const overlay=document.getElementById('filterSidebarOverlay');
+  if(!sidebar||!overlay)return;
+  sidebar.classList.toggle('show');
+  overlay.classList.toggle('show');
+  if(sidebar.classList.contains('show')){
+    sidebar.scrollTop=0;
+  }
+  syncFilterCheckedStyles();
+  updateFilterCounts();
+}
+
+function resetAllFilters(){
+  practiceMode=false;
+  showDifficult=false;
+  currentTopic='all';
+  compoundMode=null;
+  page=1;
+  learned.clear();
+  syncRadioSelection('topic','all');
+  updateFilterBtnText();
+  
+  const btnValue=document.getElementById('compoundBtnValue');
+  const compoundBtn=document.getElementById('compoundBtn');
+  if(btnValue)btnValue.textContent='';
+  if(compoundBtn)compoundBtn.classList.remove('active');
+  
+  document.querySelectorAll('.compound-dropdown-item').forEach(item=>{
+    item.classList.remove('active');
+  });
+  
+  render();
+}
+
+function syncRadioSelection(name,value){
+  document.querySelectorAll(`input[type="radio"][name="${name}"]`).forEach(r=>{
+    r.checked=r.value===value;
+  });
+  syncFilterCheckedStyles();
+}
 
 function getFiltered(){
   if(practiceMode){
@@ -1925,10 +2285,17 @@ function getFiltered(){
     return vocab.filter(v=>difficultNums.includes(v.n));
   }
   return vocab.filter(v=>{
-    const mg=group==="all"||v.cat===group;
     const q=search.toLowerCase();
     const ms=!q||v.h.includes(q)||v.p.toLowerCase().includes(q)||v.m.toLowerCase().includes(q);
-    return mg&&ms;
+    const mt=currentTopic==="all"?true:resolveTopic(v)===currentTopic;
+    let mc=true;
+    if(compoundMode){
+      const compound=COMPOUNDS.find(c=>c.key===compoundMode);
+      if(compound){
+        mc=compound.match(v);
+      }
+    }
+    return ms&&mt&&mc;
   });
 }
 
@@ -1958,6 +2325,8 @@ function render(){
   const dispCountEl=document.getElementById("dispCount");
   if(showDifficult){
     dispCountEl.innerHTML=`${filtered.length} คำ <button class="tab" style="margin-left:8px;padding:4px 12px;font-size:12px" onclick="clearAllDifficult()">Clear All</button>`;
+  }else if(currentTopic!=="all"){
+    dispCountEl.innerHTML=`${filtered.length} คำ <span style="color:var(--accent);margin-left:8px;font-size:12px">(${topicNames[currentTopic]})</span>`;
   }else{
     dispCountEl.textContent=filtered.length+" คำ";
   }
@@ -1976,7 +2345,7 @@ function render(){
           ${showDifficult?`<button class="learned-btn${learned.has(v.n)?' done':''}" style="top:8px;right:64px" onclick="event.stopPropagation();toggleLearned(${v.n})" title="ทำเครื่องหมายว่าจำได้">✓</button>`:''}
           <span class="hanzi">${v.h}</span>
           <span class="pinyin${showPinyin?'':' hidden'}">${v.p}</span>
-          <span class="cat-label ${catClass[v.cat]}">${catName[v.cat]}</span>
+          <span class="cat-label" style="background:var(--accent-light);color:var(--text)">${topicNames[resolveTopic(v)]||'-'}</span>
           <span class="flip-hint">คลิกเพื่อดูความหมาย</span>
         </div>
         <div class="card-face card-back">
@@ -2057,18 +2426,17 @@ function goPage(p){
   document.querySelector(".wrap").scrollIntoView({behavior:"smooth"});
 }
 
-function setGroup(g,el){
+function setTopic(topic,el){
   practiceMode=false;
   showDifficult=false;
-  group=g;page=1;
-  learned.clear(); // เคลียร์การ์ดที่ถูกพลิก
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  document.querySelectorAll(".menu-item").forEach(m=>m.classList.remove("active"));
-  el.classList.add("active");
+  currentTopic=topic;
+  page=1;
+  learned.clear();
+  syncRadioSelection('topic',topic);
+  updateFilterBtnText();
+  toggleFilterSidebar();
   render();
 }
-
-function doSearch(v){search=v;page=1;render();}
 
 function startPractice(el){
   practiceMode=true;
@@ -4227,6 +4595,8 @@ function startMatchingGame(mode='chinese-thai',pairCount=15){
 
 updateDifficultCount();
 document.getElementById('pinyinToggleText').textContent=showPinyin?'ซ่อน Pinyin':'แสดง Pinyin';
+updateFilterCounts();
+updateFilterBtnText();
 render();
 </script>
 </body>
