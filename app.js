@@ -421,7 +421,7 @@ function render(){
             <span class="card-number">#${v.n}</span>
             <button class="learned-btn" style="top:8px;right:8px" onclick="event.stopPropagation();speakChinese('${v.h}')" title="ฟังเสียง">🔊</button>
             <button class="stroke-btn-small" style="top:8px;right:48px" onclick="event.stopPropagation();showStrokeOrder(${v.n})" title="ดูลำดับการลากเส้น">✍️</button>
-            ${showDifficult?`<button class="learned-btn${learned.has(v.n)?' done':''}" style="top:8px;right:64px" onclick="event.stopPropagation();toggleLearned(${v.n})" title="ทำเครื่องหมายว่าจำได้">✓</button>`:''}
+            ${showDifficult?`<button class="learned-btn${learned.has(v.n)?' done':''}" style="top:8px;right:88px" onclick="event.stopPropagation();toggleLearned(${v.n})" title="ทำเครื่องหมายว่าจำได้">✓</button>`:''}
             <span class="hanzi">${v.h}</span>
             <span class="pinyin${showPinyin?'':' hidden'}">${v.p}</span>
             <span class="cat-label">${topicNames[resolveTopic(v)]||'-'}</span>
@@ -607,6 +607,33 @@ function showDifficultWords(el){
   }
   
   render();
+}
+
+function startWritingPracticeDifficult(){
+  const difficultNums=getDifficultWordNumbers();
+  if(difficultNums.length===0){
+    alert('ยังไม่มีคำที่จำยาก');
+    return;
+  }
+  const words=vocab.filter(v=>difficultNums.includes(v.n));
+  writingWords=[...words].sort(()=>Math.random()-0.5).slice(0,10);
+  writingIndex=0;
+  writingScore=0;
+  writingAnswers=[];
+  document.getElementById('writingTitle').textContent=`✍️ แบบฝึกหัดเขียน (คำที่จำยาก)`;
+  document.getElementById('writingTotal').textContent=writingWords.length;
+  document.getElementById('writingModal').classList.add('show');
+  showWritingQuestion();
+  
+  // Close sidebar on mobile (but keep hamburger menu visible)
+  const sidebar=document.getElementById('sidebar');
+  const overlay=document.getElementById('sidebarOverlay');
+  const menuBtn=document.querySelector('.mobile-menu-btn');
+  if(window.innerWidth<=1024){
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+    menuBtn.classList.remove('hide');
+  }
 }
 
 function removeDifficult(n){
